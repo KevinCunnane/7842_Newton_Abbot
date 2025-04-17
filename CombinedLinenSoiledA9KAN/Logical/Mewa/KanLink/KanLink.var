@@ -1,0 +1,20 @@
+(********************************************************************
+ * COPYRIGHT -- HP
+ ********************************************************************
+ * Package: KanLink
+ * File: KanLink.var
+ * Author: treamsbottom
+ * Created: April 23, 2012
+ ********************************************************************
+ * Variables of package KanLink
+ ********************************************************************)
+VAR
+	Batch : ARRAY[0..9] OF BatchData_typ;
+	Kan : ARRAY[0..9] OF BatchData_typ;
+	PTResp : ARRAY[0..9] OF KL_BTxf_typ;
+	PT100 : ARRAY[0..9] OF KL_BTxf_typ;
+	McState : State_typ;
+END_VAR
+VAR RETAIN
+	KanLink_Param : ARRAY[0..9] OF KanLink_Param_typ;
+END_VAR

@@ -1,0 +1,150 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;----------------------------------------------
+;Sequence 10 - SPC1 Pneumatic Conveyor 1 D[910]
+;----------------------------------------------
+
+;Inputs
+;Incline Conveyor
+;-----------------------------------------
+;Revision 1.00 09/01/2002 D.J. First Issue
+;-----------------------------------------
+
+I_CarrAtTop				= X[2].X01
+I_CarrAtBottom			= X[2].X02
+I_BagOnCarr				= X[2].X03
+I_BagArrived            = X[2].X04
+I_BagInCIC6             = X[6].X14
+
+
+O_MoveCarrUp			= FALSE
+O_MoveCarrDown			= FALSE
+O_OpenCarrStop			= FALSE
+O_RailEndStop           = FALSE
+
+mySeq                          = 5
+;-----------------------
+STEP = D[920]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 58
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+;Run Incline until paddle in position
+IF (STEP = 1) THEN
+	O_MoveCarrUp = TRUE
+	IF I_CarrAtTop THEN
+		D[920] = 2
+	ENDIF
+ENDIF
+
+
+;Check romm in buffer
+TON_10ms(I_BagatBuffer,300,BagSettledBuffer,BagSettledBufferET)
+;Check Status
+IF (STEP = 2) THEN
+	O_MoveCarrUp = TRUE
+	IF (NOT I_BagOnCarr AND (Bag[58].Cat = 0)) THEN
+		D[920] = 3
+	ENDIF
+ENDIF
+
+;
+
+;Wait for bag in incline
+
+IF (STEP = 3) THEN
+	O_MoveCarrUp = TRUE
+    O_RailEndStop = TRUE
+   IF I_BagOnCarr THEN
+	D[920] = 4
+   ENDIF
+ENDIF
+
+;Let bag settle on carriage
+TON_10ms(I_BagOnCarr,500,BagSettledOnCarr,BagSettledOnCarrET)
+IF (STEP = 4) THEN
+    O_RailEndStop = TRUE
+	O_MoveCarrUp = TRUE
+	IF (BagSettledOnCarr) THEN
+		D[920] = 5
+	ENDIF
+ENDIF
+
+;Check top switch
+IF (STEP = 5) THEN
+	O_MoveCarrUp = TRUE
+	IF NOT I_CarrAtBottom THEN
+		D[920] = 6
+	ENDIF
+ENDIF
+
+;Move Carriage up to top position
+IF (STEP = 6) THEN
+	O_MoveCarrDown = TRUE
+	IF I_CarrAtBottom THEN
+		D[920] = 7
+	ENDIF
+ENDIF
+
+
+;Check Destination Of Bag
+IF (STEP = 7) THEN
+	   O_MoveCarrDown 	= TRUE
+		IF ((D[921] = 3) AND (Bag[59].Cat = 0)) THEN
+		D[920]  = 8
+	ENDIF
+ENDIF
+
+;Set LoadDropped to False
+IF (STEP <> 8) THEN
+	BagInCIC6 = FALSE
+ENDIF
+
+;Run incline conveyor until bag at destination
+IF (STEP = 8) THEN
+	O_OpenCarrStop 	= TRUE
+    O_MoveCarrDown 	= TRUE
+	IF I_BagInCIC6 THEN
+		BagInCIC6 = TRUE
+	ENDIF
+	IF (BagInCIC6) THEN
+		IF (Bag[58].Cat>0) AND (Bag[59].Cat=0) THEN
+				Bag[59] = Bag[58]
+				Bag[58] = Bag[0]
+			ENDIF
+		D[920] = 9
+	ENDIF
+ENDIF
+
+;Check Bottom position switch
+IF (STEP = 9) THEN
+	O_MoveCarrDown 	= TRUE
+	IF NOT I_CarrAtTop AND NOT I_BagOnCarr THEN
+		D[920] = 1
+	ENDIF
+ENDIF
+
+
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+
+;Outputs
+Y[2].Y01 = O_MoveCarrUp
+Y[2].Y02 = O_MoveCarrDown
+Y[2].Y04 = O_RailEndStop
+Y[2].Y03 = (O_OpenCarrStop 	AND O_MoveCarrDown)
+
+
+
+END_PROGRAM
+

@@ -1,0 +1,16 @@
+VAR RETAIN
+	I_CancelAlarm	:BOOL;	
+END_VAR
+
+
+VAR
+	BuildD220	:UINT;	
+	AlmNumber	:UINT;	
+	n	:UINT;	
+	AlarmCount	:UINT;	
+	CancelBeacon	:BOOL;	
+	I_MotorOverload	:BOOL;	
+	UnloadingAlarm	:BOOL;	
+	I_InverterFault	:BOOL;	
+	BeaconInList	:BOOL;	
+END_VAR

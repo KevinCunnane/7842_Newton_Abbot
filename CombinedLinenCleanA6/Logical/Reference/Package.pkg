@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="Program" Language="IEC" Description="*ppn">4_ppn1</Object>
+    <Object Type="Program" Language="IEC" Description="*PPF1 Offgoing lines 1-13">5_ppf1</Object>
+    <Object Type="Program" Language="IEC" Description="*PWB1 Weigh beam 1">6_pwb1</Object>
+    <Object Type="Program" Language="IEC" Description="*PWB2 Weigh beam 2">7_pwb2</Object>
+    <Object Type="Program" Language="IEC" Description="*PWB3 Weigh beam 3">8_pwb3</Object>
+    <Object Type="Program" Language="IEC" Description="*PUP2 Unloading point">10_pup2</Object>
+    <Object Type="Program" Language="IEC" Description="*PUP3 Unloading point">11_pup3</Object>
+    <Object Type="Program" Language="IEC" Description="*PUP4 Unloading point">12_pup4</Object>
+    <Object Type="Program" Language="IEC" Description="*PUP6 Unloading point">14_pup6</Object>
+    <Object Type="Program" Language="IEC" Description="*PBR1 Bag Remover">15_pbr1</Object>
+    <Object Type="Program" Language="IEC" Description="*PBR2 Bag Remover">16_pbr2</Object>
+    <Object Type="Program" Language="IEC" Description="*PP3 Full bags to PICD 4&amp;5">17_pp3</Object>
+    <Object Type="Program" Language="IEC" Description="*PP5 Full bags to PUP 2&amp;3">19_pp5</Object>
+    <Object Type="Program" Language="IEC" Description="*PP6 Empty trolleys feeding PICU7">20_pp6</Object>
+    <Object Type="Program" Language="IEC" Description="*PP7 Empty trolleys from PUP 1-3">21_pp7</Object>
+    <Object Type="Program" Language="IEC" Description="*PP8 Full bag from PID5">22_pp8</Object>
+    <Object Type="Program" Language="IEC" Description="*PP9 Full bags to PUP 5&amp;6">23_pp9</Object>
+    <Object Type="Program" Language="IEC" Description="*PP10 Empty trolleys feeding PICU9">24_pp10</Object>
+    <Object Type="Program" Language="IEC" Description="*PP11 Empty trolleys from PUP 4-6">25_pp11</Object>
+    <Object Type="Program" Language="IEC" Description="*PP12 Empty trolleys from PUP 1-6">26_pp12</Object>
+    <Object Type="Program" Language="IEC" Description="*PP13 Empty trolleys to PICD13 + PP14">27_pp13</Object>
+    <Object Type="Program" Language="IEC" Description="*PP14 Empty trolleys to PICD14+ PICD15">28_pp14</Object>
+    <Object Type="Program" Language="IEC" Description="*PP17 Full bags goings onto PIC1&amp;2">29_pp17</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU1 Incline Up Full bags">30_picu1</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU2 Incline Up Full bags">31_picu13</Object>
+    <Object Type="Program" Language="IEC" Description="*PICD3 Incline Down Full bags">32_picd3</Object>
+    <Object Type="Program" Language="IEC" Description="*PICD4 Incline Down Full bags">33_picd4</Object>
+    <Object Type="Program" Language="IEC" Description="*PICD5 Incline Down Full bags">34_picd5</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU6 Incline up Empty trolleys - Special not outgoing buffer">35_picu6</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU7 Incline up Empty trolleys">36_picu7</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU8 Incline up Empty trolleys">37_picu8</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU9 Incline up Empty trolleys">38_picu9</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU10 Incline up Empty trolleys">39_picu10</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU11 Incline up Empty trolleys">40_picu11</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU12 Incline down Empty trolleys">41_picd12</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU13 Incline down Empty trolleys">42_picd13</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU14 Incline down Empty trolleys">43_picd14</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU15 Incline down Empty trolleys">44_picd15</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU16 Incline up Empty trolleys">45_picu16</Object>
+    <Object Type="Program" Language="IEC" Description="*PICU17 Incline up Empty trolleys">46_picu17</Object>
+    <Object Type="Program" Language="IEC" Description="*Full bag pressure reliefs buffers before PUPs">48_49_fbppr</Object>
+    <Object Type="Program" Language="IEC" Description="*Full bag pressure reliefs">50_fb_pr</Object>
+  </Objects>
+</Package>

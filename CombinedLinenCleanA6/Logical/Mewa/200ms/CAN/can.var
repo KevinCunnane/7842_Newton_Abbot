@@ -1,0 +1,4 @@
+VAR
+	Box : ARRAY[0..10] OF CAN_Vars;
+	CAN : ARRAY[0..32] OF CAN_Vars;
+END_VAR

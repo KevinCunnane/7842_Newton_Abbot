@@ -1,0 +1,68 @@
+PROGRAM _CYCLIC
+(* cyclic program *)
+
+;----------------------------
+;Output forcing from Graphics
+;----------------------------
+
+;Version 1.00 02/09/2006 D.J. First Issue
+
+
+n = D[303]
+
+IF (n > Std.MaxIO) THEN
+	n = 0
+ENDIF
+
+YForce.Y01 		= BIT_TST(D[306],0)
+YForce.Y02 		= BIT_TST(D[306],1)
+YForce.Y03 		= BIT_TST(D[306],2)
+YForce.Y04 		= BIT_TST(D[306],3)
+YForce.Y05 		= BIT_TST(D[306],4)
+YForce.Y06 		= BIT_TST(D[306],5)
+YForce.Y07 		= BIT_TST(D[306],6)
+YForce.Y08 		= BIT_TST(D[306],7)
+YForce.Y09 		= BIT_TST(D[306],8)
+YForce.Y10 		= BIT_TST(D[306],9)
+YForce.Y11 		= BIT_TST(D[306],10)
+YForce.Y12 		= BIT_TST(D[306],11)
+YForce.Y13 		= BIT_TST(D[306],12)
+YForce.Y14 		= BIT_TST(D[306],13)
+YForce.Y15 		= BIT_TST(D[306],14)
+YForce.Y16 		= BIT_TST(D[306],15)
+
+YForceVal.Y01 	= BIT_TST(D[307],0)
+YForceVal.Y02 	= BIT_TST(D[307],1)
+YForceVal.Y03 	= BIT_TST(D[307],2)
+YForceVal.Y04 	= BIT_TST(D[307],3)
+YForceVal.Y05 	= BIT_TST(D[307],4)
+YForceVal.Y06 	= BIT_TST(D[307],5)
+YForceVal.Y07 	= BIT_TST(D[307],6)
+YForceVal.Y08 	= BIT_TST(D[307],7)
+YForceVal.Y09 	= BIT_TST(D[307],8)
+YForceVal.Y10 	= BIT_TST(D[307],9)
+YForceVal.Y11 	= BIT_TST(D[307],10)
+YForceVal.Y12 	= BIT_TST(D[307],11)
+YForceVal.Y13 	= BIT_TST(D[307],12)
+YForceVal.Y14 	= BIT_TST(D[307],13)
+YForceVal.Y15 	= BIT_TST(D[307],14)
+YForceVal.Y16 	= BIT_TST(D[307],15)
+
+Y[n].Y01 = (Y[n].Y01 AND NOT YForce.Y01) OR (YForce.Y01 AND YForceVal.Y01 AND NOT YForceDisable[n].Y01)
+Y[n].Y02 = (Y[n].Y02 AND NOT YForce.Y02) OR (YForce.Y02 AND YForceVal.Y02 AND NOT YForceDisable[n].Y02)
+Y[n].Y03 = (Y[n].Y03 AND NOT YForce.Y03) OR (YForce.Y03 AND YForceVal.Y03 AND NOT YForceDisable[n].Y03)
+Y[n].Y04 = (Y[n].Y04 AND NOT YForce.Y04) OR (YForce.Y04 AND YForceVal.Y04 AND NOT YForceDisable[n].Y04)
+Y[n].Y05 = (Y[n].Y05 AND NOT YForce.Y05) OR (YForce.Y05 AND YForceVal.Y05 AND NOT YForceDisable[n].Y05)
+Y[n].Y06 = (Y[n].Y06 AND NOT YForce.Y06) OR (YForce.Y06 AND YForceVal.Y06 AND NOT YForceDisable[n].Y06)
+Y[n].Y07 = (Y[n].Y07 AND NOT YForce.Y07) OR (YForce.Y07 AND YForceVal.Y07 AND NOT YForceDisable[n].Y07)
+Y[n].Y08 = (Y[n].Y08 AND NOT YForce.Y08) OR (YForce.Y08 AND YForceVal.Y08 AND NOT YForceDisable[n].Y08)
+Y[n].Y09 = (Y[n].Y09 AND NOT YForce.Y09) OR (YForce.Y09 AND YForceVal.Y09 AND NOT YForceDisable[n].Y09)
+Y[n].Y10 = (Y[n].Y10 AND NOT YForce.Y10) OR (YForce.Y10 AND YForceVal.Y10 AND NOT YForceDisable[n].Y10)
+Y[n].Y11 = (Y[n].Y11 AND NOT YForce.Y11) OR (YForce.Y11 AND YForceVal.Y11 AND NOT YForceDisable[n].Y11)
+Y[n].Y12 = (Y[n].Y12 AND NOT YForce.Y12) OR (YForce.Y12 AND YForceVal.Y12 AND NOT YForceDisable[n].Y12)
+Y[n].Y13 = (Y[n].Y13 AND NOT YForce.Y13) OR (YForce.Y13 AND YForceVal.Y13 AND NOT YForceDisable[n].Y13)
+Y[n].Y14 = (Y[n].Y14 AND NOT YForce.Y14) OR (YForce.Y14 AND YForceVal.Y14 AND NOT YForceDisable[n].Y14)
+Y[n].Y15 = (Y[n].Y15 AND NOT YForce.Y15) OR (YForce.Y15 AND YForceVal.Y15 AND NOT YForceDisable[n].Y15)
+Y[n].Y16 = (Y[n].Y16 AND NOT YForce.Y16) OR (YForce.Y16 AND YForceVal.Y16 AND NOT YForceDisable[n].Y16)
+END_PROGRAM
+

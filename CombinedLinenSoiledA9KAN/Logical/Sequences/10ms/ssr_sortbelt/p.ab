@@ -1,0 +1,51 @@
+;-------------
+;Speed Reducer
+;-------------
+
+PROGRAM _INIT
+	
+END_PROGRAM
+PROGRAM _CYCLIC
+
+myZone					= 0	
+;myHaltSys				= Std.HaltSysZone[myZone]
+
+;Sorting Belts
+Y[5].Y15 = X[5].X15
+Y[10].Y11 = X[5].X15
+Y[10].Y12 = X[5].X15
+Y[10].Y13 = X[5].X15
+Y[10].Y14 = X[5].X15
+
+LOOP n = 1 TO 5 DO	
+	IF I_BagApproach[n] THEN
+		O_CloseBrush[n] = TRUE
+	ENDIF
+	TON_OpenBrush[n].IN = NOT myHaltSys AND O_CloseBrush[n]
+	TON_OpenBrush[n].PT	= 300
+	TON_OpenBrush[n] FUB TON_10ms()	
+		
+	IF TON_OpenBrush[n].Q THEN
+		O_CloseBrush[n] = FALSE
+	ENDIF
+ENDLOOP
+
+TON_10ms(I_BagAtRollerRockerBeforePDS1 AND NOT O_OpenSep AND NOT I_BagAtBottom,200,SettledAtSep,SettledAtSepET)
+TON_10ms(O_OpenSep,200,CloseSep,CloseSepET)
+IF SettledAtSep THEN
+	O_OpenSep = TRUE
+ENDIF
+IF CloseSep THEN
+	O_OpenSep = FALSE
+ENDIF
+
+	
+;Outputs
+;Y[180].Y07		= O_CloseBrush[1]
+;Y[122].Y07		= O_CloseBrush[2]
+;Y[121].Y07		= O_CloseBrush[3]
+;Y[121].Y08		= O_CloseBrush[4]
+;Y[103].Y06		= O_CloseBrush[5]
+;Y[178].Y07      = O_OpenSep
+END_PROGRAM
+

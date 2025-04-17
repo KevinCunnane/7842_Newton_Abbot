@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<OpcUaSource FileVersion="3">
+  <DefaultView>
+    <ACL>
+      <ACE Role="Administrators" Write="True" />
+    </ACL>
+    <Module>
+      <GlobalVariables Name="Global PV">
+        <Variable Name="OpcUa" Enable="True">
+          <Variable Name="VC" Enable="True" EnableArrayElements="True" />
+        </Variable>
+        <Variable Name="OPCuA_Display" Enable="True" EnableArrayElements="True">
+          <Variable Name="OPCuA_Display[0]">
+            <Variable Name="Layout" EnableArrayElements="True" />
+          </Variable>
+          <Variable Name="OPCuA_Display[1]">
+            <Variable Name="Layout" EnableArrayElements="True">
+              <Variable Name="Layout[1]">
+                <Variable Name="data" EnableArrayElements="True" />
+              </Variable>
+            </Variable>
+          </Variable>
+                   <Variable Name="OPCuA_Display[1]">
+            <Variable Name="Layout" EnableArrayElements="True">
+              <Variable Name="Layout[1]">
+                <Variable Name="data" EnableArrayElements="True" />
+              </Variable>
+            </Variable>
+          </Variable>
+		            <Variable Name="OPCuA_Display[2]">
+            <Variable Name="Layout" EnableArrayElements="True">
+              <Variable Name="Layout[1]">
+                <Variable Name="data" EnableArrayElements="True" />
+              </Variable>
+            </Variable>
+          </Variable>
+		            <Variable Name="OPCuA_Display[3]">
+            <Variable Name="Layout" EnableArrayElements="True">
+              <Variable Name="Layout[1]">
+                <Variable Name="data" EnableArrayElements="True" />
+              </Variable>
+            </Variable>
+          </Variable>
+		            <Variable Name="OPCuA_Display[4]">
+            <Variable Name="Layout" EnableArrayElements="True">
+              <Variable Name="Layout[1]">
+                <Variable Name="data" EnableArrayElements="True" />
+              </Variable>
+            </Variable>
+          </Variable>
+		            <Variable Name="OPCuA_Display[5]">
+            <Variable Name="Layout" EnableArrayElements="True">
+              <Variable Name="Layout[1]">
+                <Variable Name="data" EnableArrayElements="True" />
+              </Variable>
+            </Variable>
+          </Variable>
+          <Variable Name="OPCuA_Display[6]">
+            <Variable Name="Layout" EnableArrayElements="True">
+              <Variable Name="Layout[1]">
+                <Variable Name="data" EnableArrayElements="True" />
+              </Variable>
+            </Variable>
+          </Variable>
+          </Variable>
+        </Variable>
+      </GlobalVariables>
+    </Module>
+  </DefaultView>
+</OpcUaSource>

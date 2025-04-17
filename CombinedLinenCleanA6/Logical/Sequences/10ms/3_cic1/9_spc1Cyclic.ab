@@ -1,0 +1,175 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;----------------------------------------------
+;Sequence 10 - SPC1 Pneumatic Conveyor 1 D[910]
+;----------------------------------------------
+
+;Inputs
+;Incline Conveyor
+;-----------------------------------------
+;Revision 1.00 09/01/2002 D.J. First Issue
+;-----------------------------------------
+
+I_PaddleinPosition		= X[5].X04
+I_BaginIncline			= X[5].X03
+//I_BagatBuffer			= X[5].X10
+
+O_RunMotor 				= FALSE
+O_OpenBufferStop		= FALSE
+
+Request.CP[5] 			= FALSE
+
+;Setup Sequence
+;-----------------------
+STEP = D[903]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 20
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+;Run Incline until paddle in position
+IF (STEP = 1) THEN
+	O_RunMotor = (NOT I_PaddleinPosition)
+	IF I_PaddleinPosition THEN
+		D[903] = 2
+	ENDIF
+ENDIF
+
+;Check romm in buffer
+TON_10ms(I_BagatBuffer,300,BagSettledBuffer,BagSettledBufferET)
+IF (STEP = 2) THEN
+//	IF (BagSettledBuffer AND (Bag[224].Cat = 0)) THEN
+		D[903] = 3
+//	ENDIF
+ENDIF
+
+;
+
+;Wait for bag in incline
+IF (STEP = 3) THEN
+Request.CP[5] = TRUE
+
+		IF (Bag[51].Cat>0) AND (Bag[36].Cat=0) THEN
+		//		Bag[36] = Bag[51]
+		//		Bag[51] = Bag[0]
+		ENDIF
+	IF I_BaginIncline THEN
+		D[903] = 4
+	ENDIF
+ENDIF
+
+;Let bag settle at base of incline
+TON_10ms((STEP = 4),1000,BagSettled,BagSettledET)
+IF (STEP = 4) THEN
+	IF BagSettled THEN
+		D[903] = 5
+	ENDIF
+ENDIF
+
+;Move Bag up incline
+TON_10ms((STEP = 5),200,BagNearTop,BagNearTopET)
+IF (STEP = 5) THEN
+	O_RunMotor = TRUE
+	IF BagNearTop THEN
+		D[903] = 6
+	ENDIF
+ENDIF
+
+;Wait for Ongoing Sequence to Enable
+;Run motor for 0.5 seconds
+IF (STEP <6) THEN
+	O_Select[1] = FALSE
+	O_Select[4] = FALSE
+	O_Select[2] = FALSE
+ENDIF
+
+TON_10ms((STEP = 6),50,RunOn,RunOnET)
+IF (STEP = 6) THEN
+	O_RunMotor 		= NOT RunOn
+	IF (Bag[37].Cat = 0) THEN
+		IF (Bag[36].Dst = 1) AND Line[1].Clear AND (Bag[77].Cat=0) THEN
+			C[1] = 0
+			IF (Bag[36].Cat>0)AND (Bag[37].Cat=0)THEN
+				Bag[37] = Bag[36]
+				Bag[36] = Bag[0]
+			ENDIF
+			O_Select[1] = TRUE
+			D[903]         = 7
+		ELSE IF (Bag[36].Dst = 4) AND Line[4].Clear AND (Bag[72].Cat=0) THEN 
+			C[4] = 0
+			IF (Bag[36].Cat>0)AND (Bag[37].Cat=0)THEN
+				Bag[37] = Bag[36]
+				Bag[36] = Bag[0]
+			ENDIF
+			O_Select[4] = TRUE
+			D[903]          = 7
+		ELSE IF ((Bag[36].Dst = 2) OR  (Bag[36].Dst = 3))AND Line[17].Clear AND (Bag[38].Cat=0) AND NOT Y[9].Y13  THEN
+			C[17] = 0
+			IF (Bag[36].Cat>0)AND (Bag[37].Cat=0)THEN
+				Bag[37] = Bag[36]
+				Bag[36] = Bag[0]
+			ENDIF
+			O_Select[2] = TRUE
+			D[903]         = 7
+	     ENDIF
+	ENDIF
+ENDIF
+
+;Run incline until bag at storage lines
+IF (STEP = 7) THEN
+	O_RunMotor 		= TRUE
+	IF (Bag[37].Cat>0)AND (Bag[72].Cat=0)THEN
+	//			Bag[72] = Bag[37]
+	//			Bag[37] = Bag[0]
+	ENDIF
+	IF O_Select[1]  THEN
+		IF Line[1].Full THEN
+			IF (Bag[37].Cat>0)AND (Bag[77].Cat=0)THEN
+				Bag[77] = Bag[37]
+				Bag[37] = Bag[0]
+				Bag[77].Dst = 0
+				D[903] = 1
+			ENDIF
+		ENDIF
+	ELSE IF O_Select[4]  THEN
+		IF Line[4].Full THEN
+			IF (Bag[37].Cat>0)AND (Bag[72].Cat=0)THEN
+				Bag[72] = Bag[37]
+				Bag[37] = Bag[0]
+				Bag[72].Dst = 0
+				D[903] = 1
+			ENDIF
+		ENDIF
+	ELSE IF O_Select[2]  THEN
+		IF Line[17].Full THEN
+			IF (Bag[37].Cat>0)AND (Bag[38].Cat=0)THEN
+				Bag[38] = Bag[37]
+				Bag[37] = Bag[0]
+				D[903] = 1
+			ENDIF
+		ENDIF
+	ENDIF
+	;Bag in transit arrives at the buffers
+	
+ENDIF
+
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+
+Y[9].Y09 = O_RunMotor
+Y[6].Y06 = O_Select[1]
+//Y[6].Y07 = O_Select[5]
+Y[6].Y03 = O_Select[1] OR O_Select[4]
+Y[6].Y04 = O_Select[2]
+Y[6].Y05 = O_Select[4]
+END_PROGRAM
+

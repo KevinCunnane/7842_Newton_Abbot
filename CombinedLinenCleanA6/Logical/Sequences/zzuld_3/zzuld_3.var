@@ -1,0 +1,73 @@
+VAR RETAIN
+	TestDischarger	:UINT;	
+	BufferLineNum	:ARRAY [0..19] OF UINT;	
+	SearchSpaces	:UINT;	
+	BagsRemaining	:UINT;	
+	StepsSearched	:UINT;	
+	PriorityLine	:UINT;	
+	Quantity	:UINT;	
+	ManualBags	:UINT;	
+	CurrentBag	:UINT;	
+	FindBest	:UINT;	
+	RecircSpaces	:UINT;	
+	ExpressBag	:UINT;	
+	CatValid	:BOOL;	
+	RecircSpacesRemain	:UINT;	
+	SpacesUsed	:UINT;	
+	LastDischarger	:UINT;	
+	DepthValid2	:BOOL;	
+	PLS	:BOOL;	
+	Discharger	:UINT;	
+	FoundBag	:ARRAY [0..4] OF UINT;	
+	ExpressLine	:UINT;	
+	n	:UINT;	
+	LineDepthAllowed	:ARRAY [0..49] OF USINT;	
+	DepthValid	:BOOL;	
+	BatchSize	:UINT;	
+	LineValid	:BOOL;	
+	RegOffset	:ARRAY [0..19] OF UINT;	
+	RecirculationMaxDepth	:UINT;	
+	EndDischarger	:UINT;	
+	StartDischarger	:UINT;	
+	MatchCat2Cus1	:BOOL;	
+	ProgQtyComplete	:UINT;	
+	DischargerSpaces	:UINT;	
+	MatchCat3Cus1	:BOOL;	
+	ManualLine	:UINT;	
+	DischargerReady	:BOOL;	
+	ProgramFinished	:BOOL;	
+	NoBagAvailable	:BOOL;	
+	CustomerMode	:UINT;	
+	MatchCat1Cus1	:BOOL;	
+	MixCategories	:BOOL;	
+	LinesSearched	:UINT;	
+	MixCustomers	:BOOL;	
+	SearchCus	:ARRAY [0..3] OF UINT;	
+	ScanCount	:UINT;	
+	SearchCat	:ARRAY [0..3] OF UINT;	
+	SearchLine	:UINT;	
+	CurrentLine	:UINT;	
+	Dest	:UINT;	
+	CurrentDepth	:UINT;	
+	StartLine	:UINT;	
+	SkipIncompleteStep	:BOOL;	
+	AutoRepeat	:BOOL;	
+	ProgramReset	:BOOL;	
+	x	:UINT;	
+	CusValid	:BOOL;	
+	UnusedStep	:BOOL;	
+	ManualLineRecirc	:UINT;	
+	ManualBagsRecirc	:UINT;	
+	EndLineSearch	:UINT;	
+	StartLineSearch	:UINT;	
+	UldStep	:UINT;	
+	ProgramStep	:UINT;	
+	ProgramRunning	:BOOL;	
+	FoundLine	:UINT;	
+END_VAR
+
+
+VAR
+	AutoRecirculation	:BOOL;	
+	UnloadingMaxDepth	:UINT;	
+END_VAR

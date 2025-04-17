@@ -1,0 +1,19 @@
+(********************************************************************
+ * COPYRIGHT -- HP
+ ********************************************************************
+ * Program: zzKanLink
+ * File: zzKanLinkInit.ab
+ * Author: treamsbottom
+ * Created: April 23, 2012
+ ********************************************************************
+ * Implementation of program zzKanLink
+ ********************************************************************)
+
+PROGRAM _INIT
+
+
+(* TODO : Add your code here *)
+
+
+END_PROGRAM
+

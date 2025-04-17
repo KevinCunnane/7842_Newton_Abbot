@@ -1,0 +1,153 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 18	;Sequence number
+myIO				= 104
+myIO2				= 124
+myBag				= 935	
+myRelLine[1]		= 72	
+myRelLine[2]		= 76	
+myRelLastBag[1]		= Line[myRelLine[1]].LastBag
+myRelLastBag[2]		= Line[myRelLine[2]].LastBag	
+	
+myZone	= 0
+	
+I_BagAtSep			= X[myIO2].X01
+I_BagInSep			= X[myIO2].X03
+		
+O_OpenSep			= FALSE	
+O_Select[1]			= FALSE
+O_Select[2]			= FALSE	
+	
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 0
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+;Setup Sequence
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+TON_10ms(I_BagInSep,75,SettledInSep,SettledInSepET)
+IF (STEP < 2) THEN
+	BagInSep = FALSE	
+ELSE IF SettledInSep THEN
+	BagInSep = TRUE
+ENDIF	
+	
+	
+myDest = Bag[myBag].Dst
+BagValid = (Bag[myBag].Cat > 0)
+LineValid[1] = (Line[myRelLine[1]].Clear AND NOT Line[myRelLine[1]].TripFault) ; Line clear checks bag data and long trip made for 3 secs. 
+LineValid[2] = (Line[myRelLine[2]].Clear AND NOT Line[myRelLine[2]].TripFault) 
+	
+TON_10ms(I_BagAtSep,100,SettledAtSep,SettledAtSepET)
+TON_10ms(ResetPoints,100,PointsReset,PointsResetET)
+IF (STEP = 1) THEN	
+	IF (myDest = 21) THEN	
+		mySelLine = 1
+	ELSE IF	(myDest > 21) AND (myDest < 24) THEN	
+		mySelLine = 2
+	ELSE
+		mySelLine = 0		
+	ENDIF
+	DestValid = (mySelLine > 0)
+	IF BagValid AND DestValid AND SettledAtSep AND NOT I_BagInSep AND NOT Std.HaltSysZone[myZone] THEN
+		IF (mySelLine = myPrevSelLine) AND DestValid THEN		
+			IF LineValid[mySelLine] THEN	
+				D[900 + mySeq] = (mySelLine + 1)
+			ENDIF
+		ELSE 
+			ResetPoints = TRUE
+			O_Select[mySelLine] = TRUE				
+			IF PointsReset AND LineValid[mySelLine] THEN	
+				D[900 + mySeq] = (mySelLine + 1)
+			ENDIF	
+		ENDIF
+	ENDIF		
+	IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF
+ELSE
+	ResetPoints = FALSE		
+ENDIF
+
+;Step 2 Release bag to PUP 1	
+IF (STEP = 2) THEN	
+	mySelLine = 1
+	myPrevSelLine = mySelLine
+	DestValid = (myDest = 21)
+	O_Select[mySelLine] = DestValid
+	O_OpenSep = DestValid AND BagValid AND LineValid[mySelLine] AND NOT BagInSep
+	IF Line[myRelLine[mySelLine]].Trip THEN	
+		Bag[myRelLastBag[mySelLine]] = Bag[myBag]
+		Bag[myBag] = Bag[0]	
+		D[900 + mySeq] = 1		
+	ENDIF		
+	IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF		
+ENDIF	
+	
+;Step 3 Release bag to PUP 2,3	
+IF (STEP = 3) THEN	
+	mySelLine = 2
+	myPrevSelLine = mySelLine
+	DestValid = ((myDest = 22) OR (myDest = 23))
+	O_Select[mySelLine] = DestValid
+	O_OpenSep = DestValid AND BagValid AND LineValid[mySelLine] AND NOT BagInSep
+	IF Line[myRelLine[mySelLine]].Trip THEN	
+		Bag[myRelLastBag[mySelLine]] = Bag[myBag]
+		Bag[myBag] = Bag[0]	
+		D[900 + mySeq] = 1		
+	ENDIF		
+	IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF		
+ENDIF		
+	
+
+;-----------------------------------
+;PLC Outputs - adjust to suit system
+;-----------------------------------
+
+Y[myIO].Y07 	= O_Select[2]
+Y[myIO].Y08 	= O_Select[1]
+Y[myIO2].Y05 	= O_OpenSep
+	
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+Alarm[mySeq].Zone 	= myZone
+END_PROGRAM
+

@@ -1,0 +1,20 @@
+PROGRAM _INIT
+	(* init program *)
+
+BITBag = 1
+
+;Transfer Belt Bags - Pair loop
+LOOP n = 32 TO 59 DO
+	BITDest[BITBag] = n
+	BITBag = BITBag + 1
+ENDLOOP
+
+;Bags in transit
+;LOOP n = 140 to 179 DO
+	;BITDest[BITBag] = n
+	;BITBag = BITBag + 1
+;ENDLOOP
+
+TotalTransitBags = (BITBag - 1)
+END_PROGRAM
+

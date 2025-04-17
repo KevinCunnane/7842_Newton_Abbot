@@ -1,0 +1,36 @@
+;-------------
+;Speed Reducer
+;-------------
+
+PROGRAM _INIT
+	
+END_PROGRAM
+PROGRAM _CYCLIC
+
+;Empty bag pressure relief CPR2
+TON_10ms((Line[13].Clear AND X[7].X07 AND NOT Y[7].Y07),500,PR3_LineClear,PR3_LineClearET)
+IF PR3_LineClear THEN
+	C[13] 	= 0
+	Y[7].Y07 	= TRUE
+ENDIF
+IF Line[13].Full THEN
+	Y[7].Y07 	= FALSE
+ENDIF
+
+;Full bag pressure relief CPR3 - Line 5
+TON_10ms((Line[6].Clear AND X[7].X09 AND NOT Y[7].Y09),500,PR4_LineClear,PR4_LineClearET)
+IF PR4_LineClear THEN
+	C[6] 	= 0
+	Y[7].Y09 	= TRUE
+ENDIF
+IF Line[6].Full THEN
+	IF (Bag[26].Cat>0) AND (Bag[66].Cat=0) THEN
+		;		Bag[66] = Bag[26]
+		;		Bag[26] = Bag[0]
+			ENDIF
+//	BAGMOVE2(Y[7].Y09,mem_adr_E,26,66,BagSpacing)
+;	Y[7].Y09 	= FALSE
+ENDIF
+
+END_PROGRAM
+

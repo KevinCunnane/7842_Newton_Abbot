@@ -1,0 +1,115 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 12	;Sequence number
+//myIO				= 345
+//myBu/fferBag			= 950	
+//myBa/g				= 987
+//myPup				= 1
+//myZone				= 0
+	
+I_BagAtBuffer		= X[myIO].X01
+I_BagInSep			= X[myIO].X02
+I_UnloadingPointOn	= X[myIO].X03
+I_ReleasePB			= X[myIO].X04	
+I_TrolleyReleased	= X[myIO].X08 ; Also Line full	
+	
+Enable.CDC[3]  = FALSE
+Enable.CIC[3]    = FALSE
+
+//PUP[myPup].WorkingLamp = FALSE
+O_SelectCIC3        = FALSE
+O_SelectCDC3       = FALSE
+	
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= myBag
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+
+
+	
+;Setup Sequence
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+;Step 1 Wiat for bag at buffer.
+TON_10ms(I_BagAtBuffer,75,SettledBuffer,SettledBufferET)
+IF (STEP = 1) THEN	
+	IF Line[9].Clear THEN
+		D[900 + mySeq] = 2
+	ENDIF
+	//	Alarm[mySeq].Name = almBagDataError	
+				
+ENDIF		
+	
+;Step 2 Release bag from Buffer	
+//TON_10ms(I_BagInSep,150,SettledInSep,SettledInSepET)	
+IF (STEP = 2) THEN	
+	IF Request.CDC[3] THEN
+		C[9] = 0
+		D[900 + mySeq] = 3
+	ELSE IF Request.CIC[3] THEN
+		C[9] = 0
+		D[900 + mySeq] = 4
+	ENDIF
+	//	Alarm[mySeq].Bag = myBufferBag
+	//	Alarm[mySeq].Name = almBagNotReleased	
+			
+ENDIF
+
+;Step 3 wait for pushbutton to request release of trolley	
+IF (STEP = 3) THEN	
+	O_SelectCDC3 = TRUE
+	Enable.CDC[3] = TRUE
+	IF Line[9].Trip THEN
+		D[900 + mySeq] = 1
+	ENDIF
+		Alarm[mySeq].Name = almBagNotArrived
+ENDIF
+	
+;STEP 4 Check for space in empty trolley buffer.	
+IF (STEP = 4) THEN	
+	O_SelectCIC3 = TRUE
+	Enable.CIC[3]  = TRUE
+	IF Line[9].Trip THEN
+		D[900 + mySeq] = 1
+	ENDIF
+		Alarm[mySeq].Name = almBagNotArrived
+ENDIF
+
+
+		
+;-----------------------------------
+;PLC Outputs - adjust to suit system
+;-----------------------------------
+
+Y[6].Y10 = O_SelectCIC3
+Y[6].Y09 = O_SelectCDC3
+	
+	
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+//Alarm[mySeq].Zone 	= myZone
+END_PROGRAM
+

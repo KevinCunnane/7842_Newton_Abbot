@@ -1,0 +1,28 @@
+VAR RETAIN
+	LASTSTEP : UINT;
+	PLS : BOOL;
+	STEP : UINT;
+END_VAR
+VAR
+	TimerAlarm : TON_10ms;
+	mySeq : UINT;
+	myIO : UINT;
+	I_ReleasePB : BOOL;
+	I_UnloadingPointOn : BOOL;
+	I_TrolleyReleased : BOOL;
+	I_BagAtBuffer : BOOL;
+	I_BagReleasedBuffer : BOOL;
+	myBag : UINT;
+	O_Lamp : BOOL;
+	O_OpenBuffer : BOOL;
+	O_Release : BOOL;
+	myPup : UINT;
+	SettledBuffer : BOOL;
+	SettledBufferET : UDINT;
+	myBufferBag : UINT;
+	BagReleased : BOOL;
+	myZone : INT;
+	I_BagInSep : BOOL;
+	SettledInSep : BOOL;
+	SettledInSepET : UDINT;
+END_VAR

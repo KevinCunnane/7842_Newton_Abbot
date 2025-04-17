@@ -1,0 +1,13 @@
+PROGRAM _INIT
+(* init program *)
+
+;Clear force registers
+
+D[303] = 0
+D[304] = 0
+D[305] = 0
+
+;Clear force disable
+memset(ADR(YForceDisable),0, SIZEOF(YForceDisable))
+END_PROGRAM
+

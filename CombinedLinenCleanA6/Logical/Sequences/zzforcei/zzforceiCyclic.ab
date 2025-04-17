@@ -1,0 +1,68 @@
+PROGRAM _CYCLIC
+(* cyclic program *)
+
+;---------------------------
+;Input forcing from Graphics
+;---------------------------
+
+;Version 1.00 14/09/2006 D.J. First Issue
+
+
+n = D[303]
+
+IF (n > Std.MaxIO) THEN
+	n = 0
+ENDIF
+
+XForce.X01 		= BIT_TST(D[304],0)
+XForce.X02 		= BIT_TST(D[304],1)
+XForce.X03 		= BIT_TST(D[304],2)
+XForce.X04 		= BIT_TST(D[304],3)
+XForce.X05 		= BIT_TST(D[304],4)
+XForce.X06 		= BIT_TST(D[304],5)
+XForce.X07 		= BIT_TST(D[304],6)
+XForce.X08 		= BIT_TST(D[304],7)
+XForce.X09 		= BIT_TST(D[304],8)
+XForce.X10 		= BIT_TST(D[304],9)
+XForce.X11 		= BIT_TST(D[304],10)
+XForce.X12 		= BIT_TST(D[304],11)
+XForce.X13 		= BIT_TST(D[304],12)
+XForce.X14 		= BIT_TST(D[304],13)
+XForce.X15 		= BIT_TST(D[304],14)
+XForce.X16 		= BIT_TST(D[304],15)
+
+XForceVal.X01 	= BIT_TST(D[305],0)
+XForceVal.X02 	= BIT_TST(D[305],1)
+XForceVal.X03 	= BIT_TST(D[305],2)
+XForceVal.X04 	= BIT_TST(D[305],3)
+XForceVal.X05 	= BIT_TST(D[305],4)
+XForceVal.X06 	= BIT_TST(D[305],5)
+XForceVal.X07 	= BIT_TST(D[305],6)
+XForceVal.X08 	= BIT_TST(D[305],7)
+XForceVal.X09 	= BIT_TST(D[305],8)
+XForceVal.X10 	= BIT_TST(D[305],9)
+XForceVal.X11 	= BIT_TST(D[305],10)
+XForceVal.X12 	= BIT_TST(D[305],11)
+XForceVal.X13 	= BIT_TST(D[305],12)
+XForceVal.X14 	= BIT_TST(D[305],13)
+XForceVal.X15 	= BIT_TST(D[305],14)
+XForceVal.X16 	= BIT_TST(D[305],15)
+
+X[n].X01 = (X[n].X01 AND NOT XForce.X01) OR (XForce.X01 AND XForceVal.X01)
+X[n].X02 = (X[n].X02 AND NOT XForce.X02) OR (XForce.X02 AND XForceVal.X02)
+X[n].X03 = (X[n].X03 AND NOT XForce.X03) OR (XForce.X03 AND XForceVal.X03)
+X[n].X04 = (X[n].X04 AND NOT XForce.X04) OR (XForce.X04 AND XForceVal.X04)
+X[n].X05 = (X[n].X05 AND NOT XForce.X05) OR (XForce.X05 AND XForceVal.X05)
+X[n].X06 = (X[n].X06 AND NOT XForce.X06) OR (XForce.X06 AND XForceVal.X06)
+X[n].X07 = (X[n].X07 AND NOT XForce.X07) OR (XForce.X07 AND XForceVal.X07)
+X[n].X08 = (X[n].X08 AND NOT XForce.X08) OR (XForce.X08 AND XForceVal.X08)
+X[n].X09 = (X[n].X09 AND NOT XForce.X09) OR (XForce.X09 AND XForceVal.X09)
+X[n].X10 = (X[n].X10 AND NOT XForce.X10) OR (XForce.X10 AND XForceVal.X10)
+X[n].X11 = (X[n].X11 AND NOT XForce.X11) OR (XForce.X11 AND XForceVal.X11)
+X[n].X12 = (X[n].X12 AND NOT XForce.X12) OR (XForce.X12 AND XForceVal.X12)
+X[n].X13 = (X[n].X13 AND NOT XForce.X13) OR (XForce.X13 AND XForceVal.X13)
+X[n].X14 = (X[n].X14 AND NOT XForce.X14) OR (XForce.X14 AND XForceVal.X14)
+X[n].X15 = (X[n].X15 AND NOT XForce.X15) OR (XForce.X15 AND XForceVal.X15)
+X[n].X16 = (X[n].X16 AND NOT XForce.X16) OR (XForce.X16 AND XForceVal.X16)
+END_PROGRAM
+

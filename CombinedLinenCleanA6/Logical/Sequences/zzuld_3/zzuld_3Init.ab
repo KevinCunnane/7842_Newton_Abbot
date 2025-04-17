@@ -1,0 +1,31 @@
+PROGRAM _INIT
+	;init program
+	;------------
+
+	;Constants
+	;---------
+
+	UnloadingMaxDepth 	= 7 ;Set with Batch Size and Scan Time in mind 8 = Standard
+
+	StartDischarger 	= 1
+	EndDischarger   	= 2
+
+	StartLineSearch 	= 1
+	EndLineSearch 		= 11
+
+	RegOffset[1]    	= 1000
+	RegOffset[2]    	= 1200
+	RegOffset[3]    	= 1400
+	RegOffset[4]    	= 1600
+	RegOffset[5]    	= 1800
+
+	;Enter Line Number for Discharger buffers - Recirc is after last Discharger
+	;Destination Code bag will be allocated
+	BufferLineNum[1]	= 12
+	BufferLineNum[2]	= 13
+	;BufferLineNum[3]	= 23
+	;BufferLineNum[4]	= 24
+
+	PriorityLine	= 0		;Always Search this line first then use the Uld[n].DischargerStartLine Set to 0 if not required
+END_PROGRAM
+

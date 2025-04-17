@@ -1,0 +1,7 @@
+VAR
+	OngoingStopped	:BOOL;	
+	OffgoingStopped	:BOOL;	
+	LoadingStopped	:BOOL;	
+	tmrForce	:TON_10ms;	
+	ForceEnable	:BOOL;	
+END_VAR

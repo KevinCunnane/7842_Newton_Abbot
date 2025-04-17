@@ -1,0 +1,207 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 17	;Sequence number
+myIO				= 103
+myBag				= 911	
+myICBufferBag[4]	= 907
+myICBufferBag[5]	= 908	
+
+myZone	= 1	
+	
+I_BagAtSep		= X[myIO].X01
+I_BagInSep		= X[myIO].X03
+I_BagArriveIC[4] = X[174].X03
+I_BagArriveIC[5] = X[175].X03
+	
+I_InclineBufferClear[4] = (NOT X[174].X02 AND NOT I_BagArriveIC[4] AND NOT Y[174].Y06)	
+I_InclineBufferClear[5] = (NOT X[175].X02 AND NOT I_BagArriveIC[5] AND NOT Y[175].Y06)	
+	
+O_OpenSep			= FALSE
+O_Select[4]			= FALSE	
+O_Select[5]			= FALSE	
+
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= myBag
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+;Setup Sequence
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+TON_10ms(I_BagInSep,75,SettledInSep,SettledInSepET)
+IF (STEP < 2) THEN
+	BagInSep = FALSE	
+ELSE IF SettledInSep THEN
+	BagInSep = TRUE
+ENDIF	
+	
+	
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+;step 1 Check destination of bag in buffer	
+myDest = Bag[myBag].Dst
+BagValid = (Bag[myBag].Cat > 0)
+
+	
+TON_10ms(I_BagAtSep,200,SettledAtSep,SettledAtSepET)
+TON_10ms(ResetPoints,200,PointsReset,PointsResetET)
+IF (STEP = 1) THEN	
+	IF (myDest > 20) AND (myDest < 24) THEN	
+		myIC = 4
+	ELSE IF	(myDest > 23) AND (myDest < 27) THEN	
+		myIC = 5
+	ELSE
+		myIC = 0		
+	ENDIF
+	DestValid = (myIC > 0)
+	IF BagValid AND DestValid AND SettledAtSep AND NOT I_BagInSep THEN
+		
+		IF (myIC = myPrevIC) AND DestValid THEN		
+			IF (myDest > 23) THEN
+				D[900 + mySeq]  = 4		
+			ELSE
+				D[900 + mySeq]  = 2
+			ENDIF		
+		ELSE 
+			ResetPoints = TRUE
+			IF (myDest > 23) THEN
+				O_Select[5] = TRUE
+				IF PointsReset THEN	
+					D[900 + mySeq]  = 4		
+				ENDIF
+			ELSE
+				O_Select[4] = TRUE
+				IF PointsReset THEN	
+					D[900 + mySeq]  = 2		
+				ENDIF
+			ENDIF	
+		ENDIF
+	ENDIF		
+	IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF
+ELSE
+	ResetPoints = FALSE		
+ENDIF
+
+;Step 2 Check for space at buffer PIC4
+IF (STEP = 2) THEN
+	myIC = 4
+	myPrevIC = myIC
+	DestValid = (myDest > 20) AND (myDest < 24)	
+	O_Select[myIC] = DestValid
+	ReleaseValid = DestValid AND BagValid AND SettledAtSep AND NOT Std.HaltSysZone[myZone]
+	InclineClear = ((Bag[myICBufferBag[myIC]].Cat = 0) AND I_InclineBufferClear[myIC])
+	IF ReleaseValid AND InclineClear THEN	
+		D[900 + mySeq] = 3
+	ENDIF		
+	IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF		
+ENDIF
+	
+;Step 3 Release bag to decline 4	
+IF (STEP = 3) THEN	
+	myIC = 4
+	myPrevIC = myIC
+	InclineClear = ((Bag[myICBufferBag[myIC]].Cat = 0) AND I_InclineBufferClear[myIC])
+	DestValid = (myDest > 20) AND (myDest < 24)	
+	O_Select[myIC] = DestValid
+	O_OpenSep = InclineClear AND DestValid AND BagValid AND NOT BagInSep
+	IF I_BagArriveIC[myIC] THEN	
+		Bag[myICBufferBag[myIC]] = Bag[myBag]
+		Bag[myBag] = Bag[0]	
+		D[900 + mySeq] = 1		
+	ENDIF		
+	IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF		
+ENDIF	
+
+;Step 4 Check for space at buffer PIC5
+IF (STEP = 4) THEN
+	myIC = 5
+	myPrevIC = myIC
+	DestValid = (myDest > 23) AND (myDest < 27)	
+	O_Select[myIC] = DestValid
+	ReleaseValid = DestValid AND BagValid AND SettledAtSep AND NOT Std.HaltSysZone[myZone]
+	InclineClear = ((Bag[myICBufferBag[myIC]].Cat = 0) AND I_InclineBufferClear[myIC])
+	IF ReleaseValid AND InclineClear THEN	
+		D[900 + mySeq] = 5
+	ENDIF		
+	IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF		
+ENDIF
+
+;Step 5 Release bag to decline 5	
+IF (STEP = 5) THEN	
+	myIC = 5
+	myPrevIC = myIC
+	InclineClear = ((Bag[myICBufferBag[myIC]].Cat = 0) AND I_InclineBufferClear[myIC])
+	DestValid = (myDest > 23) AND (myDest < 27)	
+	O_Select[myIC] = DestValid
+	O_OpenSep = InclineClear AND DestValid AND BagValid AND NOT BagInSep
+	IF I_BagArriveIC[myIC] THEN	
+		Bag[myICBufferBag[myIC]] = Bag[myBag]
+		Bag[myBag] = Bag[0]	
+		D[900 + mySeq] = 1		
+	ENDIF		
+	IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF		
+ENDIF			
+
+;-----------------------------------
+;PLC Outputs - adjust to suit system
+;-----------------------------------
+
+Y[myIO].Y05 = O_OpenSep
+Y[myIO].Y07 = O_Select[4]
+Y[myIO].Y08 = O_Select[5]		
+		
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+Alarm[mySeq].Zone 	= myZone
+END_PROGRAM
+

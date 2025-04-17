@@ -1,0 +1,94 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 23	;Sequence number
+
+Enable.CIC[1]       = FALSE
+	
+myZone	= 0
+	
+
+		
+Enable.CIC[8]		= FALSE	
+
+	
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 0
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+;Setup Sequence
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+;Reset Points
+TON_10ms((STEP = 1),250,Reset,ResetET)
+IF (STEP = 1) THEN
+	O_Reset = NOT Reset
+    D[52] = 0
+	IF Reset AND Line[14].Clear THEN
+		D[923] = 2
+	ENDIF
+;	Alarm[mySeq].Name 	= almSwitchFault
+ENDIF
+
+;Decide where to take bag from
+IF (STEP = 2) THEN
+	IF (D[915] = 11) THEN   ;Empty bag from CDC7
+		D[52]	= 3
+		C[14]	= 0
+		D[923]	= 3
+	ELSE IF (Request.CIC[8]) THEN   ;Empty bag from CIC8
+		D[52]	= 4
+		C[14]	= 0
+		D[923]	= 4
+	ENDIF
+ENDIF
+
+;Enable CDC7 to release bag
+IF (STEP = 3) THEN
+    ;Enable.CP5      = (D[49] = 3)
+    IF (D[915] = 11) THEN
+    	D[915] = 12
+    ENDIF
+	IF Line[14].Full THEN
+		D[923] = 1
+	ENDIF
+ENDIF
+
+
+;Enable CIC8 to release bag
+IF (STEP = 4) THEN
+    Enable.CIC[8] = (D[52] = 4)
+	IF Line[14].Full THEN
+		D[923] = 1
+	ENDIF
+ENDIF
+
+Y[2].Y09 = O_Reset
+
+	
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+//Alarm[mySeq].Zone 	= myZone
+END_PROGRAM
+

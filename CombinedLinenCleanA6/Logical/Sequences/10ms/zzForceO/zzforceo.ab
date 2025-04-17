@@ -1,0 +1,85 @@
+;----------------------------
+;Output forcing from Graphics
+;----------------------------
+
+;Version 1.00 02/09/2006 D.J. First Issue
+;Version 2.00 20/11/2009 D.J. Changed to 8 I/O inputs per card
+
+PROGRAM _INIT
+
+;Clear force registers
+
+D[380] = 0
+D[381] = 0
+D[382] = 0
+D[383] = 0
+D[384] = 0
+D[385] = 0
+D[386] = 0
+D[386] = 0
+D[387] = 0
+D[388] = 0
+D[389] = 0
+D[390] = 0
+D[391] = 0
+D[392] = 0
+D[393] = 0
+D[394] = 0
+D[395] = 0
+D[396] = 0
+D[396] = 0
+D[397] = 0
+D[398] = 0
+D[399] = 0
+
+;Clear force disable
+memset(ADR(YForceDisable),0, SIZEOF(YForceDisable))
+
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+LOOP Force = 1 TO 4 DO
+	
+	n = ((Force - 1) * 5)
+	
+	myForceCard 	= D[380 + n]
+	myForceState 	= D[383 + n]
+	myForceValue 	= D[384 + n]
+	
+	IF (myForceCard > Std.MaxIO) THEN
+		myForceCard = 0
+	ENDIF
+
+	YForce.Y01 		= BIT_TST(myForceState,0)
+	YForce.Y02 		= BIT_TST(myForceState,1)
+	YForce.Y03 		= BIT_TST(myForceState,2)
+	YForce.Y04 		= BIT_TST(myForceState,3)
+	YForce.Y05 		= BIT_TST(myForceState,4)
+	YForce.Y06 		= BIT_TST(myForceState,5)
+	YForce.Y07 		= BIT_TST(myForceState,6)
+	YForce.Y08 		= BIT_TST(myForceState,7)
+
+
+	YForceVal.Y01 	= BIT_TST(myForceValue,0)
+	YForceVal.Y02 	= BIT_TST(myForceValue,1)
+	YForceVal.Y03 	= BIT_TST(myForceValue,2)
+	YForceVal.Y04 	= BIT_TST(myForceValue,3)
+	YForceVal.Y05 	= BIT_TST(myForceValue,4)
+	YForceVal.Y06 	= BIT_TST(myForceValue,5)
+	YForceVal.Y07 	= BIT_TST(myForceValue,6)
+	YForceVal.Y08 	= BIT_TST(myForceValue,7)
+
+	Y[myForceCard].Y01 = (Y[myForceCard].Y01 AND NOT YForce.Y01) OR (YForce.Y01 AND YForceVal.Y01 AND NOT YForceDisable[myForceCard].Y01)
+	Y[myForceCard].Y02 = (Y[myForceCard].Y02 AND NOT YForce.Y02) OR (YForce.Y02 AND YForceVal.Y02 AND NOT YForceDisable[myForceCard].Y02)
+	Y[myForceCard].Y03 = (Y[myForceCard].Y03 AND NOT YForce.Y03) OR (YForce.Y03 AND YForceVal.Y03 AND NOT YForceDisable[myForceCard].Y03)
+	Y[myForceCard].Y04 = (Y[myForceCard].Y04 AND NOT YForce.Y04) OR (YForce.Y04 AND YForceVal.Y04 AND NOT YForceDisable[myForceCard].Y04)
+	Y[myForceCard].Y05 = (Y[myForceCard].Y05 AND NOT YForce.Y05) OR (YForce.Y05 AND YForceVal.Y05 AND NOT YForceDisable[myForceCard].Y05)
+	Y[myForceCard].Y06 = (Y[myForceCard].Y06 AND NOT YForce.Y06) OR (YForce.Y06 AND YForceVal.Y06 AND NOT YForceDisable[myForceCard].Y06)
+	Y[myForceCard].Y07 = (Y[myForceCard].Y07 AND NOT YForce.Y07) OR (YForce.Y07 AND YForceVal.Y07 AND NOT YForceDisable[myForceCard].Y07)
+	Y[myForceCard].Y08 = (Y[myForceCard].Y08 AND NOT YForce.Y08) OR (YForce.Y08 AND YForceVal.Y08 AND NOT YForceDisable[myForceCard].Y08)
+
+ENDLOOP
+
+END_PROGRAM
+

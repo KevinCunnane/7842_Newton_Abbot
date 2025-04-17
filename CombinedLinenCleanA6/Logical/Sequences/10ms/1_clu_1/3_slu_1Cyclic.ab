@@ -1,0 +1,180 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;--------------------------------
+;Sequence 3 - Loading Unit D[903]
+;--------------------------------
+
+;Inputs / Ouputs
+
+;Enable.TransferBelt[1]	= FALSE
+
+//I_BagAtBuffer			= X[3].X10
+I_BagFrontPast			= X[5].X13
+I_BagInLoadingUnit		= X[5].X12
+//I_BagOnCarriage         = X[5].X05
+
+//I_ChuteBlocked			= X[3].X14
+SwitchedOn			= (D[20] = 1)
+
+O_MoveCompressorUp		= FALSE
+O_MoveCompressorDn		= FALSE
+
+O_OpenBufferStop		= FALSE 
+O_SteadyCylinders		= FALSE 
+O_OpenStop	 			= FALSE 
+CAN[1].BagReady         = FALSE
+
+Enable.CVC[2]           = FALSE
+
+O_OpenBufferStop2		= FALSE
+
+Alarm[1].Name 		= 0
+Alarm[1].Bag		= 31
+Alarm[1].Beacon		= TRUE
+Alarm[1].Extra	 	= 0
+Alarm[1].Time		= 6000
+
+;Setup Sequence
+;--------------
+STEP = D[901]
+;Setup Pulse contact 
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+SwitchFault = ((STEP = 1) AND (I_BagFrontPast OR I_BagInLoadingUnit))
+;TON_10ms(((NOT PLS) AND (SwitchFault) OR (STEP = 3) OR (STEP = 11)),3000,Alarm[51],AlarmET[51])
+
+
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+;Check for no bag in loading unit
+TON_10ms((NOT I_BagFrontPast AND NOT I_BagInLoadingUnit),200,TripsClear,TripsClearET)
+IF (STEP = 1) THEN
+	IF (NOT CAN[1].UnloadFinished AND SwitchedOn AND TripsClear) THEN
+        D[901] = 2
+	ENDIF
+ENDIF
+
+
+;Enable CVC2 to Send Bag
+IF (STEP = 2) THEN
+	Enable.CVC[2] = TRUE
+	O_OpenStop	= TRUE
+	IF I_BagFrontPast THEN
+		D[901] = 3
+   	ENDIF
+ENDIF
+
+
+;Bag Settles at loading unit
+TON_10ms(I_BagInLoadingUnit,700,SettledAtStop,SettledAtStopET)
+IF (STEP = 3) THEN
+	Enable.CVC[2] = TRUE	;Must be on until bag is fully in the unit
+	IF SettledAtStop THEN
+		D[901] = 4
+	ENDIF
+	Alarm[1].Name = almBagNotArrived
+	Alarm[1].Time		= 2000
+ENDIF
+
+
+
+;Steady bag
+TON_10ms((STEP = 4),200,SteadysDown,SteadysDownET)
+IF (STEP = 4) THEN
+    IF SteadysDown THEN
+		D[901] = 5
+	ENDIF
+ENDIF
+
+
+;Steady cylinders on from steps 4 - 5
+O_SteadyCylinders = ((STEP >= 4) AND (STEP <= 5))
+
+;Move Steady Cylinders down
+IF (STEP <> 5) THEN
+	Cat 			= 0
+	Cus			= 0
+	kg			= 0
+ENDIF
+
+;Bag Ready to Driers
+IF (STEP = 5) THEN
+	IF PLS THEN
+		Bag[31].Cat = 0
+	ENDIF
+	CAN[1].BagReady = TRUE
+	IF CAN[1].UnloadFinished THEN
+		FinishedLoading = TRUE
+	ENDIF
+	IF (CAN[1].Category > 0) THEN
+		Cat 		= uint(CAN[1].Category)
+		Cus			= uint(CAN[1].Customer)
+		kg			= (CAN[1].Weight * 10)
+	ENDIF
+	IF FinishedLoading THEN
+		Bag[31].Cat = usint(Cat)
+		Bag[31].Cus	= Cus
+		Bag[31].Wgt	= kg
+		D[901] = 6
+	ENDIF
+ELSE
+	FinishedLoading = FALSE
+ENDIF
+
+
+
+;Allow steadys to go up
+TON_10ms((STEP = 6),200,SteadysUp,SteadysUpET)
+IF (STEP = 6) THEN
+    IF (SteadysUp  AND (Bag[31].Cat > 0))THEN
+		D[901] = 7
+	ENDIF
+ENDIF
+
+
+;Wait for Enable from CVC1
+IF (STEP = 7) THEN
+	IF Enable.CLU[1] THEN
+		D[901] = 8
+	ENDIF
+ENDIF
+
+
+;Release Bag
+IF (STEP = 8) THEN
+	O_OpenStop = TRUE
+	IF NOT Enable.CLU[1] THEN
+		D[901] = 1
+	ENDIF
+	Alarm[1].Name = almBagNotReleased
+	Alarm[1].Time		= 2000
+ENDIF
+
+
+
+
+
+
+
+;Alarms
+TimerAlarm.IN = NOT PLS AND (Alarm[1].Name > 0)
+TimerAlarm.PT = Alarm[1].Time
+TimerAlarm FUB TON_10ms()
+Alarm[1].On = TimerAlarm.Q
+Alarm[1].ET = TimerAlarm.ET
+;Outputs
+;-------
+
+//Y[3].Y10 = O_OpenBufferStop
+Y[5].Y12 = O_SteadyCylinders
+Y[5].Y13 = O_OpenStop
+;YM07 = O_OpenBufferStop2
+
+//Y[3].Y13 = O_MoveCompressorDn
+
+END_PROGRAM

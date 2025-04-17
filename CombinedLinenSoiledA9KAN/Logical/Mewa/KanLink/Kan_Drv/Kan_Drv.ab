@@ -1,0 +1,50 @@
+;--------------------------------------------
+;Sequence Kan_Drv
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+// Batch Transfer Handshake
+//Please enter the index of Kan Bag you want to transfer to the PT+ This was set up in BatchInfo.task
+LOOP n = 0 TO (Std.MaxKanLink) DO
+;LOOP n = 0 TO 1 DO
+	PT100[n].Resp.BatchData = Kan[n];	
+	
+	ValidCat = 	strcmp(ADR(CAN[n+1].Category), "")
+	IF (ValidCat <> 0)THEN
+			PT100[n].Resp.xHsDataValid = TRUE;	
+	ELSE
+		PT100[n].Resp.xHsDataValid = FALSE
+		PT100[n].Resp.xHsUnloading = FALSE
+	ENDIF		
+			
+	IF CAN[n+1].BagReady THEN
+		PT100[n].Resp.xHsReqForUnload = TRUE;
+	ELSE
+		PT100[n].Resp.xHsReqForUnload = FALSE;
+	ENDIF
+	
+	CAN[n+1].DropLoad 		= PT100[n].Req.xHreadyForLoad;
+	CAN[n+1].LoadDropped  	= PT100[n].Req.xHbatchReceived;
+	;CAN[n].Live				= Kanl
+			
+		IF CAN[n+1].DropLoad THEN
+		PT100[n].Resp.xHsUnloading = TRUE
+	ENDIF
+	
+	CAN[n+1].Live = IFhlKanLink.Server[n].out.xConnected	
+	;Status Feedback
+	IF Std.HaltSys THEN
+		PT100[n].Resp.wState = McState.Estop
+	ELSE IF (D[200] > 0) THEN ; alarm present	
+		PT100[n].Resp.wState = McState.Fault
+	ELSE	
+		PT100[n].Resp.wState = McState.OK
+	ENDIF		
+ENDLOOP
+END_PROGRAM
+

@@ -1,0 +1,56 @@
+(********************************************************************
+ * COPYRIGHT -- HP
+ ********************************************************************
+ * Program: zzKanLink
+ * File: zzKanLinkCyclic.ab
+ * Author: treamsbottom
+ * Created: April 23, 2012
+ ********************************************************************
+ * Implementation of program zzKanLink
+ ********************************************************************)
+
+PROGRAM _CYCLIC
+IF NOT init THEN
+	KanLink_Param[0].Adr = 12
+	KanLink_Param[0].Area = 3
+	KanLink_Param[1].Adr = 11
+	KanLink_Param[1].Area = 3
+	LOOP n = 0 TO (Std.MaxKanLink) DO
+	;LOOP n = 0 TO 2 DO
+	;Build strings to pass to variable names, only required in a loop as index number changes.		
+		itoa(n,ADR(sn))	; put n into string
+		strcpy(ADR(sReq),"PT100[");build string for variable name (request)
+		strcat(ADR(sReq),ADR(sn))	
+		strcat(ADR(sReq),"].Req")	
+		strcpy(ADR(sResp),"PT100[");;build string for variable name (response)
+		strcat(ADR(sResp),ADR(sn))	
+		strcat(ADR(sResp),"].Resp")		
+		
+		IFhlKanLink.Parameter.Server[n].Adr = KanLink_Param[n].Adr ; Populate these arrays .		
+		IFhlKanLink.Parameter.Server[n].Area = KanLink_Param[n].Area
+		IFhlKanLink.Parameter.Server[n].Cmd = 1000 ; cmd from the server are always even
+		IFhlKanLink.Parameter.Server[n].CmdOpt = 0		
+		IFhlKanLink.Parameter.Server[n].TimeOut = 1000 ;ms	
+		strcpy(ADR(IFhlKanLink.Parameter.Server[n].Name),"PT100") ; Diags Only
+		strcpy(ADR(IFhlKanLink.Parameter.Server[n].sReq),ADR(sReq));"zzKanLink:PT100[0].Req")
+		strcpy(ADR(IFhlKanLink.Parameter.Server[n].sResp),ADR(sResp));"zzKanLink:PT100[0].Resp")
+	ENDLOOP
+	
+	;Clean side- Only 1 client for talking to shuttle/driers can be put into a loop as the soiled.	
+;	IFhlKanLink.Parameter.Client[0].Adr = 15	
+;	IFhlKanLink.Parameter.Client[0].Area = 3
+;	IFhlKanLink.Parameter.Client[0].Cmd = 1000
+;	IFhlKanLink.Parameter.Client[0].CmdOpt = 0
+;	IFhlKanLink.Parameter.Client[0].CycleTime = 1000;ms
+;	strcpy(ADR(IFhlKanLink.Parameter.Client[0].Name),"PTResp")	
+;	strcpy(ADR(IFhlKanLink.Parameter.Client[0].sReq),"PTResp[0].Req")
+;	strcpy(ADR(IFhlKanLink.Parameter.Client[0].sResp),"PTResp[0].Resp")	
+
+	IFhlKanLink.in.xRestart = TRUE	
+	IFmnParam.Out.xParamOK = TRUE		
+	init = TRUE
+	PT100 ; Variable that writes to the PT+
+	PTResp ; Variable that reads from PT+ (Clean Side)		
+ENDIF		
+		
+END_PROGRAM

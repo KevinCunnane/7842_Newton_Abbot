@@ -1,0 +1,113 @@
+PROGRAM _INIT
+	(* init program *)
+
+CAN_enable = 1
+
+;BOX 1 Reset CAN data table READ and WRITE events
+EventRead1001 	= 0
+EventRead1011 	= 0
+EventWrite1021 	= 0
+EventWrite1101 	= 0
+EventWrite1111 	= 0
+
+;BOX 2 Reset CAN data table READ and WRITE events
+EventRead1002 	= 0
+EventRead1012 	= 0
+EventWrite1022 	= 0
+EventWrite1102 	= 0
+EventWrite1112 	= 0
+
+;BOX 3 Reset CAN data table READ and WRITE events
+EventRead1003 	= 0
+EventRead1013 	= 0
+EventWrite1023 	= 0
+EventWrite1103 	= 0
+EventWrite1113 	= 0
+
+;BOX 4 Reset CAN data table READ and WRITE events
+EventRead1004 	= 0
+EventRead1014 	= 0
+EventWrite1024 	= 0
+EventWrite1104 	= 0
+EventWrite1114 	= 0
+
+;BOX 5 Reset CAN data table READ and WRITE events
+EventRead1005 	= 0
+EventRead1015 	= 0
+EventWrite1025 	= 0
+EventWrite1105 	= 0
+EventWrite1115 	= 0
+
+;BOX 6 Reset CAN data table READ and WRITE events
+EventRead1006 	= 0
+EventRead1016 	= 0
+EventWrite1026 	= 0
+EventWrite1106 	= 0
+EventWrite1116 	= 0
+
+;BOX 7 Reset CAN data table READ and WRITE events
+EventRead1007 	= 0
+EventRead1017 	= 0
+EventWrite1027 	= 0
+EventWrite1107 	= 0
+EventWrite1117 	= 0
+
+;BOX 8 Reset CAN data table READ and WRITE events
+EventRead1008 	= 0
+EventRead1018 	= 0
+EventWrite1028 	= 0
+EventWrite1108 	= 0
+EventWrite1118 	= 0
+
+;BOX 9 Reset CAN data table READ and WRITE events
+EventRead1009 	= 0
+EventRead1019 	= 0
+EventWrite1029 	= 0
+EventWrite1109 	= 0
+EventWrite1119 	= 0
+
+strcpy(ADR(strName_can_tab), "can_stns")
+DOInfo.enable = TRUE
+DOInfo.pName  = ADR(strName_can_tab)
+DOInfo FUB DatObjInfo()
+
+wTabNum 				= WORD(DOInfo.len / 72)	;Define number of values
+
+CANopen_01.enable		= CAN_enable
+CANopen_01.baud_rate	= 25					;Define baud rate - 250 kbit/s
+CANopen_01.cob_anz		= wTabNum      			;Define number of link objects
+CANopen_01.error_adr	= ADR(error_var)		;Define address for error output
+CANopen_01.device		= ADR("SS1.IF1")	    ;Define number of device
+CANopen_01.info			= 0
+
+CANopen_01 FUB CANopen()						;Initiate CANopen
+
+IF CANopen_01.status = 0 THEN					;Check error level
+
+	IF (DOInfo.status = 0) THEN
+
+		CANdftab_01.enable			= TRUE
+		CANdftab_01.us_ident 		= CANopen_01.us_ident	;Set us_id
+		CANdftab_01.table_adr		= DOInfo.pDatObjMem		;Define address of data object
+		CANdftab_01.tab_num			= wTabNum
+
+		CANdftab_01 FUB CANdftab()    						;Initiate CANdftab
+
+		IF CANdftab_01.status = 0 THEN
+			WriteFrame1021.ControlSignals = BIT_SET(WriteFrame1021.ControlSignals,0);Set Live Signal
+			WriteFrame1022.ControlSignals = BIT_SET(WriteFrame1022.ControlSignals,0)
+			WriteFrame1023.ControlSignals = BIT_SET(WriteFrame1023.ControlSignals,0)
+			WriteFrame1024.ControlSignals = BIT_SET(WriteFrame1024.ControlSignals,0);Set Live Signal
+			WriteFrame1025.ControlSignals = BIT_SET(WriteFrame1025.ControlSignals,0)
+			WriteFrame1026.ControlSignals = BIT_SET(WriteFrame1026.ControlSignals,0)
+			WriteFrame1027.ControlSignals = BIT_SET(WriteFrame1027.ControlSignals,0);Set Live Signal
+			WriteFrame1028.ControlSignals = BIT_SET(WriteFrame1028.ControlSignals,0)
+			WriteFrame1029.ControlSignals = BIT_SET(WriteFrame1029.ControlSignals,0)
+			CANOK = TRUE
+		ENDIF
+
+	ENDIF
+
+ENDIF
+END_PROGRAM
+

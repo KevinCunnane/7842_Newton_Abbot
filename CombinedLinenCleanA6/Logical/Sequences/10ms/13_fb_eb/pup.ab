@@ -1,0 +1,241 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 13	;Sequence number
+
+	
+I_BagAtEmpty		= X[6].X12
+I_BagAtLine1		= X[6].X11
+I_BagAtLine2		= X[6].X13
+
+I_CDC1PB			= X[6].X15
+I_CDC1SelectLine1	= X[8].X08
+I_CDC1SelectLine4	= X[8].X09
+
+I_CDC4PB			= X[6].X16
+I_CDC4SelectLine1	= X[8].X05
+I_CDC4SelectLine4	= X[8].X06
+
+O_ResetPoints	= FALSE
+O_OpenEmpty		= FALSE
+O_OpenLine1		= FALSE
+O_OpenLine2		= FALSE
+O_SelectCDC1	= FALSE
+O_SelectCDC4	= FALSE
+O_JoinCDC4		= FALSE
+O_JoinCDC1		= FALSE
+
+	
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 1
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+
+	
+;Setup Sequence
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+TON_10ms((STEP = 1),300,PointsReset,PointsResetET)
+
+;Reset Points
+IF (STEP = 1) THEN
+//	D[45] = 0
+//	D[46] = 0
+	O_ResetPoints = TRUE
+	IF PointsReset THEN
+	D[913] = 2
+ 	ENDIF
+ENDIF
+
+
+
+
+TON_10ms(I_BagAtEmpty,300,SettledAtEmpty,SettledAtEmptyET)
+TON_10ms((I_BagAtLine1 AND (Bag[1].Cat  > 0)),300,SettledAtLine1 ,SettledAtCDC1ET)
+TON_10ms((I_BagAtLine2 AND (Bag[16].Cat > 0)),300,SettledAtLine2 ,SettledAtCDC4ET)
+IF (STEP = 2) THEN
+	IF (Alt > 2) THEN
+		Alt = 0
+	ENDIF
+	IF Request.CDC[4] AND NOT I_CDC4SelectLine1 AND NOT I_CDC4SelectLine4 THEN
+		AlternateBetweenLine1And4 = TRUE
+	ELSE
+		AlternateBetweenLine1And4 = FALSE
+	ENDIF
+
+	IF 	AlternateBetweenLine1And4 THEN
+		Alt = Alt + 1
+	ENDIF
+;	IF ((Bag[41].Cat= 0) AND Request.CIC[4] AND SettledAtLine1) THEN ;CDC1 Request For Bag From Line 1
+	;	D[913] = 3
+;	ELSE IF ((Bag[41].Cat= 0) AND Request.CDC[1] AND SettledAtLine2 AND I_CDC1PB AND I_CDC1SelectLine4) THEN ;CDC1 Request For Bag From Line 2
+		;D[913] = 4
+	 IF ((Bag[41].Cat = 0) AND Request.CDC[4] AND SettledAtLine1  AND (I_CDC4SelectLine1 OR AlternateBetweenLine1And4 AND (Alt = 1))) THEN ;CDC4 Request For Bag From Line 1
+		D[913]	= 3
+	ELSE IF ((Bag[41].Cat = 0) AND Request.CDC[4] AND SettledAtLine2  AND (I_CDC4SelectLine4 OR AlternateBetweenLine1And4 AND (Alt = 2))) THEN ;CDC4 Request For Bag From Line 2
+		D[913]	= 4
+	ELSE IF ((Bag[41].Cat = 0) AND Request.CIC[4] AND SettledAtEmpty AND NOT I_CDC4PB AND NOT I_CDC1PB AND NOT Request.CDC4Empty) THEN  ;No Full Bags To Send Or Empty Bags Needed
+		Bag[41].Cat = 99
+		D[913]	= 5
+	ENDIF
+ENDIF
+
+
+;Line 1 Bag To CDC1
+IF (STEP = 9) THEN
+	O_OpenLine1 	= TRUE
+	O_SelectCDC1	= TRUE
+	O_JoinCDC1		= TRUE
+	IF (Bag[1].Cat>0) AND (Bag[41].Cat=0) THEN
+				Bag[41].Cat = 99
+				Bag[1] = Bag[0]
+	ENDIF
+//	D[45]			= 1
+//	D[46]			= 1
+//	D[47] 			= 2
+			Alarm[mySeq].Name = almBagNotArrived
+	IF NOT Request.CDC[1] THEN
+		IF (Bag[41].Cat>0) AND (Bag[42].Cat=0) THEN
+				Bag[42] = Bag[41]
+				Bag[41] = Bag[0]
+			ENDIF
+		D[913] = 1
+	ENDIF
+ENDIF
+
+;Line 4 Bag To CDC1
+IF (STEP = 8) THEN
+	O_OpenLine2 	= TRUE
+	O_SelectCDC1	= TRUE
+	O_JoinCDC1		= TRUE
+	IF (Bag[16].Cat>0) AND (Bag[41].Cat=0) THEN
+				Bag[41] = Bag[16]
+				Bag[16] = Bag[0]
+			ENDIF
+	D[45]			= 4
+	D[46]			= 1
+	D[47]			= 1
+			Alarm[mySeq].Name = almBagNotArrived
+	IF NOT Request.CIC[4] THEN
+	//	BAGMOVE2(TRUE,mem_adr_E,41,42,BagSpacing)
+		IF (Bag[41].Cat>0) AND (Bag[42].Cat=0) THEN
+				Bag[42] = Bag[41]
+				Bag[41] = Bag[0]
+			ENDIF
+		D[913] = 1
+	ENDIF
+ENDIF
+
+;Line 1 Bag To CDC4
+IF (STEP = 3) THEN
+	O_OpenLine1 	= TRUE
+	O_SelectCDC4	= TRUE
+	;O_JoinCDC1		= TRUE
+		IF (Bag[1].Cat>0) AND (Bag[41].Cat=0) THEN
+				Bag[41] = Bag[1]
+				Bag[1] = Bag[0]
+			ENDIF
+			Alarm[mySeq].Name = almBagNotArrived
+	D[45]			= 1
+	D[46]			= 4
+//	E[204]			= 107			;Set dest to CDC1
+	IF NOT Request.CDC[4] THEN
+//		BAGMOVE2(TRUE,mem_adr_E,41,45,BagSpacing)
+		IF (Bag[41].Cat>0) AND (Bag[45].Cat=0) THEN
+				Bag[45] = Bag[41]
+				Bag[41] = Bag[0]
+			ENDIF
+		D[913] = 1
+	ENDIF
+ENDIF
+
+;Line 4 Bag To CDC4
+IF (STEP = 4) THEN
+	O_OpenLine2 	= TRUE
+	O_SelectCDC4	= TRUE
+	;O_JoinCDC1		= TRUE
+		IF (Bag[16].Cat>0) AND (Bag[41].Cat=0) THEN
+				Bag[41] = Bag[16]
+				Bag[16] = Bag[0]
+			ENDIF
+//	BAGMOVE2(TRUE,mem_adr_E,16,41,BagSpacing)
+//	D[45]			= 4
+//	D[46]			= 4
+//	E[204]			= 107			;Set dest to CDC1
+	IF NOT Request.CDC[4] THEN
+//		BAGMOVE2(TRUE,mem_adr_E,41,45,BagSpacing)
+		IF (Bag[41].Cat>0) AND (Bag[45].Cat=0) THEN
+				Bag[45] = Bag[41]
+				Bag[41] = Bag[0]
+			ENDIF
+		D[913] = 1
+	ENDIF
+ENDIF
+
+;Empty bags to CDC1
+IF (STEP = 5) THEN
+	O_OpenEmpty 	= TRUE
+	O_SelectCDC1	= TRUE
+	O_JoinCDC1		= TRUE
+//	D[45]			= 2
+//	D[46]			= 1
+//	D[47]			= 1
+//	E[200]			= Std.MaxCats 	;Set BIT to Empty
+			Alarm[mySeq].Name = almBagNotArrived
+	IF X[3].X01 THEN
+//		BAGMOVE2(TRUE,mem_adr_E,41,42,BagSpacing)
+		IF (Bag[41].Cat>0) AND (Bag[42].Cat=0) THEN
+				Bag[42] = Bag[41]
+				Bag[41] = Bag[0]
+			ENDIF
+		D[913] = 1
+	ENDIF
+ENDIF
+
+IF ((STEP = 0) OR (STEP = 1) OR (STEP = 2)) THEN
+	D[45] = 0
+	D[46] = 0
+	D[47] = 0
+ENDIF
+
+;-----------------------------------
+;PLC Outputs - adjust to suit system
+;-----------------------------------
+
+Y[6].Y12 = O_ResetPoints
+Y[6].Y16 = O_OpenEmpty
+Y[6].Y11 = O_OpenLine1
+Y[6].Y13 = O_OpenLine2
+Y[6].Y15 = O_SelectCDC1
+Y[6].Y14 = O_SelectCDC4
+;Y701 = O_JoinCDC4
+Y[7].Y02 = O_JoinCDC1
+
+	
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+//Alarm[mySeq].Zone 	= myZone
+END_PROGRAM
+

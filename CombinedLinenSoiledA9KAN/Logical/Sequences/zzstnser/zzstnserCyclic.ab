@@ -1,0 +1,88 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;Sorting Station Search Routine - No changes required!
+;-----------------------------------------
+;Revision 1.00 19/12/2005 First Issue D.J.
+;-----------------------------------------
+
+;Only one Bank / Loading VC can search in a given scan.
+
+Bank = Bank + 1
+IF (Bank > Std.MaxSearch) THEN
+	Bank = 1
+ENDIF
+
+;Used by other sequences that need to check for Line[x].SpaceBIT direct
+;eg. Loading VC will look for Enable.Search = 3
+Enable.Search = Bank
+
+IF (Bank <= Std.MaxStationBanks) THEN
+
+	IF (Ldg[Bank].Search = 1) THEN
+
+		Ldg[Bank].Found = 0
+		Ldg[Bank].Line  = 0
+
+		SearchFound = 0
+		SearchLine  = 0
+
+		Stn[0].QTime = 0
+
+
+		LOOP n = Ldg[Bank].StartStn TO Ldg[Bank].EndStn DO
+
+			IF ((Stn[n].QTime > 10) AND (Stn[n].QTime > Stn[0].QTime)) THEN
+
+				;Destination has been given to bag by operator check
+				LineSearchManual = Stn[n].DestManual
+
+				;1st 2nd 3rd and 4th Line choices
+				LineSearch[1]   = D[3000 + n]
+				LineSearch[2]   = D[3100 + n]
+				LineSearch[3]   = D[3200 + n]
+				LineSearch[4]   = D[3300 + n]
+
+				;Always Search for at least 1 space
+				IF (Stn[n].SpacesRequired = 0) THEN
+					Stn[n].SpacesRequired = 1
+				ENDIF
+
+				;When manual is selected then the 1st 2nd 3rd and 4th are not checked
+				IF (LineSearchManual > 0) THEN
+					IF (Line[LineSearchManual].SpaceBIT > 0) THEN
+						SearchFound  		= n
+						SearchLine   		= LineSearchManual
+						Stn[0].QTime 		= Stn[n].QTime
+						Ldg[Bank].Search   	= 2
+					ENDIF
+				ELSE
+					;Check line choice 1st to 4th in order if any valid then exit loop
+					LOOP Choice = 1 TO 4 DO
+						IF (LineSearch[Choice] > 0) AND (Line[LineSearch[Choice]].SpaceBIT >= Stn[n].SpacesRequired) THEN
+							SearchFound  		= n
+							SearchLine   		= LineSearch[Choice]
+							Stn[0].QTime 		= Stn[n].QTime
+							Ldg[Bank].Search   	= 2
+
+						ENDIF
+						EXITIF (SearchFound > 0)
+					ENDLOOP
+
+				ENDIF
+
+			ENDIF
+
+		ENDLOOP
+
+		IF (Ldg[Bank].Search = 2) THEN
+			Ldg[Bank].Found  = SearchFound
+			Ldg[Bank].Line   = SearchLine
+		ELSE
+			Ldg[Bank].Search = 0 ;Failed
+		ENDIF
+
+	ENDIF
+ENDIF
+END_PROGRAM
+

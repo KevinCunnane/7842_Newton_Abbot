@@ -1,0 +1,5 @@
+VAR
+	YForce	:CardOutputs;	
+	YForceVal	:CardOutputs;	
+	n	:UINT;	
+END_VAR

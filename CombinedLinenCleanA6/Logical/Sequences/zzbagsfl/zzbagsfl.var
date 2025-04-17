@@ -1,0 +1,10 @@
+VAR RETAIN
+	CurrentBag	:UINT;	
+	CurrentLine	:UINT;	
+	LineSp	:UINT;	
+END_VAR
+
+
+VAR
+	NextBag	:UINT;	
+END_VAR

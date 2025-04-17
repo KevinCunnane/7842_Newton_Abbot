@@ -1,0 +1,68 @@
+PROGRAM _CYCLIC
+(* cyclic program *)
+
+;System Status and Halting
+;-------------------------
+
+Std.StopSystem 				= (D[100] <> 0)
+
+Std.EStop 					= NOT X[1].X01
+Std.MotorOverload   		= NOT X[1].X02
+Std.SafetyOn				= X[1].X03
+Std.HaltSys					= NOT Std.SafetyOn ;OR Std.StopSystem)
+
+Std.MaxZones 				= 1
+Std.FireAlarm				= X[3].X01// ON when the fire alarm is healthy
+	
+Std.SafetyOnZone[0]		= Std.SafetyOn AND Std.FireAlarm
+Std.SafetyOnZone[1]		= X[1].X03 AND Std.FireAlarm; Gated area for PIC 3,4,5,11 & PP3
+Std.SafetyOnZone[2]		= FALSE; Area between belts on soiled pp12, PIC10
+Std.SafetyOnZone[3]		= FALSE ;Loading Area
+Std.SafetyOnZone[4]		= FALSE;Loading Area Gated + Upstairs storage
+	
+	
+	
+LOOP n = 0 TO Std.MaxZones DO		
+	Std.HaltSysZone[n]=  NOT Std.SafetyOnZone[n]
+ENDLOOP
+	
+	
+	
+	
+;Std.SafetyOnVC[30]			= TRUE
+;Std.HaltSysVC[30]			= NOT Std.SafetyOnVC[30]	
+;
+;Std.SafetyOnVC[2]			= TRUE
+;Std.HaltSysVC[2]			= NOT Std.SafetyOnVC[2]	
+	
+
+;set to TRUE if not required
+LoadingStopped 	= TRUE ;(Bag[220].Prg = 0)
+OngoingStopped 	= TRUE ;(Bag[224].Prg = 0)
+OffgoingStopped = TRUE ;(Bag[225].Prg = 0)
+
+;If no Bag In Transit and stop requested then set system to stopped D[100] = 2
+IF Std.StopSystem THEN
+	IF LoadingStopped AND OngoingStopped AND OffgoingStopped THEN
+		D[100] = 2
+	ENDIF
+ENDIF
+
+
+	
+	
+;Force I/O Enable - Max ? Minutes
+ForceEnable = FALSE
+
+tmrForce.IN = ForceEnable
+tmrForce.PT = 90000 ;6000 = 1 Minute
+tmrForce FUB TON_10ms()
+
+IF ForceEnable AND NOT tmrForce.Q THEN
+	D[319] = 1
+ELSE
+	D[319] = 0
+ENDIF
+
+END_PROGRAM
+

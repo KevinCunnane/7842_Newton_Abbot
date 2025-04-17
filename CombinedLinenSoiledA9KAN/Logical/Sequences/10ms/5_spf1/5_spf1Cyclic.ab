@@ -1,0 +1,237 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;----------------------------------------
+;Sequence 5 - SPF1 Offgoing Points D[905]
+;----------------------------------------
+;Inputs
+;------
+
+OffGoingEnable 		= ((D[15] > 0) AND NOT Std.HaltSys)
+
+;I_SDCBagAtBuffer[1] = X[6].X01 ;Use for single bag buffer
+;I_SDCBagAtBuffer[2] = FALSE ;X[6].X13 ;Use for single bag buffer
+
+;O_SDCBufferOpen[1]  = Y[6].Y01 ;Use for single bag buffer
+;O_SDCBufferOpen[2]  = FALSE ;Y[6].Y16 ;Use for single bag buffer
+
+I_BagAtStop[1]  = X[4].X12
+I_BagAtStop[2]  = X[4].X13
+I_BagAtStop[3]  = X[4].X14
+I_BagAtStop[4]  = X[4].X15
+I_BagAtStop[5]  = X[4].X16
+I_BagAtStop[6]  = X[5].X01
+I_BagAtStop[7]  = X[5].X02
+I_BagAtStop[8]  = X[5].X03
+I_BagAtStop[9]  = X[5].X04
+I_BagAtStop[10] = X[5].X05
+I_BagAtStop[11] = X[5].X06
+
+
+;I_BagReleased       = X[14].X03
+
+O_Reset 			= FALSE
+
+;Buffer line configuration
+;-------------------------
+MaxBuffers			= 2
+
+Alarm[5].Name 		= 0
+Alarm[5].Bag		= 226
+Alarm[5].Beacon		= TRUE
+Alarm[5].Extra	 	= 0
+Alarm[5].Time		= 3000
+
+;BufferClear[1] 		= ((D[21] > 0) AND (Bag[190].Cat = 0) AND (Line[21].SpaceBIT > 0) AND (Line[21].Clear))
+;BufferClear[2]		= ((D[22] > 0) AND (Bag[190].Cat = 0) AND (Line[22].Space > 0)AND (Line[22].Clear))
+
+Uld[1].SDCReady 	= ((D[16] = 1) AND Line[12].Clear AND NOT Y[3].Y01)
+Uld[2].SDCReady 	= ((D[17] = 1) AND Line[13].Clear)
+;Passed to unloading search
+;Uld[3].SDCReady		= FALSE
+;Uld[4].SDCReady 	= FALSE
+
+Alarm[5].Name 		= 0
+Alarm[5].Bag		= 190
+Alarm[5].Beacon		= TRUE
+Alarm[5].Extra		= 0
+Alarm[5].Time		= 3000
+
+
+;Setup Sequence
+;--------------
+STEP = D[905]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Sequence Steps
+;--------------
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+
+;Step 1 - Reset Points
+TON_10ms((STEP = 1),300,ResetPoints,ResetPointsET)
+IF (STEP = 1) THEN
+	O_Reset 	= NOT ResetPoints
+	FoundLine 	= 0
+	Destination = 0
+	IF (ResetPoints AND OffGoingEnable) THEN
+		D[905] = 2
+	ENDIF
+ENDIF
+
+;Bags on storage line timers
+R_TRIG(Std.Clock100ms,IncSettle)
+AlarmBagNotProx 	= FALSE
+AlarmBagNotProxLine = 0
+
+LOOP n = 1 TO Std.MaxLines DO
+
+	LineSettle[n]  = (I_BagAtStop[n] AND (Bag[Line[n].FirstBag].Cat > 0))
+	IF IncSettle AND LineSettle[n] AND (BagSettledTime[n] < $FFFF) THEN
+		BagSettledTime[n] = BagSettledTime[n] + 1
+	ELSE IF NOT LineSettle[n] THEN
+		BagSettledTime[n] = 0
+		;If Bag has destiantion and not at stop then alarm
+		IF (STEP = 2) AND (Bag[Line[n].FirstBag].Dst > 0) THEN
+			Alarm[5].Name	= almBagNotAtProx
+			Alarm[5].Bag	= Line[n].FirstBag
+			Alarm[5].Extra 	= n
+		ENDIF
+	ENDIF
+
+ENDLOOP
+
+;Buffer trip not correct alarms
+LOOP n = 1 TO MaxBuffers DO
+	IF (STEP = 2) AND BufferClear[n] AND NOT Uld[n].SDCReady THEN
+		Alarm[5].Name 	= almSwitchFault
+		Alarm[5].Bag	= BufferBag[n]
+	ENDIF
+ENDLOOP
+
+;Search for the bag with a valid destination that has been waiting the longest
+IF STEP = 2 THEN
+
+	FoundLine 	= 0
+	Destination = 0
+	BestTime 	= 0
+	SettleTime = 30 ;3 seconds
+
+	LOOP n = 1 TO Std.MaxLines DO
+
+		IF (BagSettledTime[n] > SettleTime) THEN
+			SearchDest = Bag[Line[n].FirstBag].Dst
+
+			SDC1_Valid  = ((SearchDest = 12) AND Uld[1].SDCReady)
+			SDC2_Valid 	= ((SearchDest = 13) AND Uld[2].SDCReady)
+			;SDC3_Valid 	= ((SearchDest = 13) AND Uld[3].SDCReady)
+			;SDC4_Valid 	= ((SearchDest = 14) AND Uld[4].SDCReady)
+
+			IF (SDC1_Valid OR SDC2_Valid OR SDC3_Valid OR SDC4_Valid) THEN
+				FoundLine 	= n
+				Destination = SearchDest
+				BestTime 	= BagSettledTime[n]
+			ENDIF
+		ENDIF
+
+	ENDLOOP
+
+	IF ((FoundLine > 0) AND OffGoingEnable AND (Bag[226].Cat = 0) AND Line[Destination].Clear AND (Bag[226].Cat = 0) AND NOT I_BagReleased) THEN
+		C[Destination]  = 0
+		D[905] = 3
+	ENDIF
+
+ENDIF
+
+
+;Step 3 - Select Line / Open Stop, Until Bag at correct destination
+;Clear Line Selections
+LOOP n = 1 TO Std.MaxLines DO
+	LineSelect[n] = FALSE
+ENDLOOP
+
+IF (STEP = 3) THEN
+
+	;Show bag in transit
+	IF (Bag[226].Cat = 0) AND (Bag[Line[FoundLine].FirstBag].Cat > 0)THEN
+		Bag[226] 						= Bag[Line[FoundLine].FirstBag]
+		Bag[Line[FoundLine].FirstBag] 	= Bag[0]
+	ENDIF
+
+	IF PLS THEN
+			;C[13] = 0
+		ENDIF
+
+	;Select Line - Wait for bag to arrive
+	LineSelect[FoundLine] = TRUE
+
+	;Select Route
+	;IF (I_BagReleased  AND (Bag[Line[13].LastBag].Cat = 0)) THEN
+		 ;Unloading Program
+	IF (Destination = 12) AND Line[Destination].Trip THEN
+		Uld[1].DischargerStartLine = FoundLine
+		Bag[227] = Bag[226]
+		Bag[226] = Bag[0]
+		D[905] 					= 1
+	ELSE IF (Destination = 13) AND Line[Destination].Trip THEN
+		Uld[2].DischargerStartLine = FoundLine
+		Bag[230] = Bag[226]
+		Bag[226] = Bag[0]
+		D[905] 					= 1
+	ENDIF
+
+	Alarm[5].Name	= almBagNotReleased
+
+ENDIF
+
+;move transit bag to buffer
+;IF (Bag[190].Cat > 0) AND Line[13].Trip AND (Bag[193].Cat = 0) AND NOT PLS THEN
+;	Bag[193] = Bag[190]
+;	Bag[190] = Bag[0]
+;ENDIF
+
+
+
+
+
+
+
+;Alarms
+TimerAlarm.IN = NOT PLS AND (Alarm[5].Name > 0)
+TimerAlarm.PT = Alarm[5].Time
+TimerAlarm FUB TON_10ms()
+Alarm[5].On = TimerAlarm.Q
+Alarm[5].ET = TimerAlarm.ET
+
+;Outputs
+;-------
+Y[5].Y07 = Reset
+Y[4].Y12 = LineSelect[1]
+Y[4].Y13 = LineSelect[2]
+Y[4].Y14 = LineSelect[3]
+Y[4].Y15 = LineSelect[4]
+Y[4].Y16 = LineSelect[5]
+Y[5].Y01 = LineSelect[6]
+Y[5].Y02 = LineSelect[7]
+Y[5].Y03 = LineSelect[8]
+Y[5].Y04 = LineSelect[9]
+Y[5].Y05 = LineSelect[10]
+Y[5].Y06 = LineSelect[11]
+;Y000 = LineSelect[12]
+;Y000 = LineSelect[13]
+;Y000 = LineSelect[14]
+
+Y[5].Y09 = (D[36] = 1)
+Y[5].Y08 = (D[36] = 2)
+
+;Buffer line selection
+;Y[4].Y15 = (Destination = 11)
+;Y[4].Y16 = (Destination = 12)
+;Y[40].Y07 = (Destination = 22)
+;Y[40].Y08 = (Destination = 21)
+END_PROGRAM
+

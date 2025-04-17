@@ -1,0 +1,17 @@
+(********************************************************************
+ * COPYRIGHT -- HP
+ ********************************************************************
+ * Program: zzKanLink
+ * File: zzKanLink.var
+ * Author: treamsbottom
+ * Created: April 23, 2012
+ ********************************************************************
+ * Local variables of program zzKanLink
+ ********************************************************************)
+VAR
+	init : BOOL;
+	n : UINT;
+	sReq : STRING[80];
+	sn : STRING[2];
+	sResp : STRING[80];
+END_VAR

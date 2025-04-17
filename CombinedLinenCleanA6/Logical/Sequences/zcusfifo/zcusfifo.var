@@ -1,0 +1,6 @@
+VAR RETAIN
+	OngoingCus	:UINT;	
+	EditCus	:UINT;	
+	n	:UINT;	
+	x	:UINT;	
+END_VAR

@@ -1,0 +1,13 @@
+PROGRAM _INIT
+	(* init program *)
+
+;Memory Address Pointers
+
+;Note - pC was mem_adr_C in old programs
+pC			= ADR(C)
+pD			= ADR(D)
+pBag		= ADR(Bag)
+
+Zero 		= 0
+END_PROGRAM
+

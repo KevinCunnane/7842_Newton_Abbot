@@ -1,0 +1,125 @@
+PROGRAM _CYCLIC
+  	(* cyclic program *)
+
+;-----------------------------------------
+;Sequence 11 - Offgoing Bag Stacker D[911]
+;-----------------------------------------
+
+;Inputs
+I_LevelA				= X[6].X10
+I_LevelB				= X[6].X11
+I_RockSepA				= X[6].X08
+I_RockSepB				= X[6].X09
+I_OutLineA				= X[6].X12
+I_AtRotary				= X[6].X13
+
+;O_SelectLineA			= FALSE
+;O_SelectLineB			= FALSE
+O_RotatePoint			= FALSE
+O_OpenRockSep			= FALSE
+O_OpenLineAStop			= FALSE
+O_OpenLineBStop			= FALSE
+O_LevelCylinder			= FALSE
+O_OpenRotaryPoint		= FALSE
+
+;Setup Sequence
+;-----------------------
+STEP = D[911]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND ((STEP = 3) OR (STEP = 7) OR (STEP = 8) OR (STEP = 9))),3000,Alarm[11],AlarmET[11])
+
+;Select Line 'A'
+TON_10ms((STEP = 1) AND ((NOT I_LevelA) AND (NOT I_LevelB)),100,SelectA,SelectAET)
+IF (STEP = 1) THEN
+	;O_SelectLineA = TRUE
+	IF SelectA THEN
+		D[911] = 2
+	ENDIF
+ENDIF
+
+;Open seperators wait for leveller to be ready
+TON_10ms(((STEP = 2) AND I_RockSepA AND I_RockSepB),200,RockerReady,RockerReadyET)
+IF (STEP = 2) THEN
+	O_OpenRockSep = (STEP = 2)
+	IF RockerReady THEN
+		D[911] = 3
+	ENDIF
+ENDIF
+
+;Wait for bag to be in leveller position
+TON_10ms((I_LevelA AND I_LevelB),400,LevellerFull,LevellerFullET)
+IF (STEP = 3) THEN
+	IF LevellerFull THEN
+		D[911] = 4
+	ENDIF
+ENDIF
+
+;Move bag leveller down
+TON_10ms((STEP = 4),500,LevellerDown,LevellerDownET)
+IF (STEP = 4) THEN
+	O_LevelCylinder = TRUE
+	IF LevellerDown THEN
+		D[911] = 5
+	ENDIF
+ENDIF
+
+;Allow bag leveller to retract
+TON_10ms((STEP = 5),500,LevellerUp,LevellerUpET)
+IF (STEP = 5) THEN
+	IF LevellerUp THEN
+		D[911] = 6
+	ENDIF
+ENDIF
+
+;Check romm in buffer
+IF (STEP = 6) THEN
+	IF (Line[16].Clear AND NOT Y[3].Y16) THEN
+		D[911] = 7
+	ENDIF
+ENDIF
+
+;Open stop on line 'A'
+IF (STEP = 7) THEN
+	O_OpenLineAStop = TRUE
+	IF PLS THEN
+		C[16] = 0
+	ENDIF
+	IF I_OutLineA THEN
+		D[911] = 8
+	ENDIF
+ENDIF
+
+;Open stop on line 'B'until bag in rotary point
+TON_10ms(I_AtRotary,300,SettledInRotary,SettledInRotaryET)
+IF (STEP = 8) THEN
+	O_OpenLineBStop = TRUE
+	IF SettledInRotary THEN
+		D[911] = 9
+	ENDIF
+ENDIF
+
+;Select bag stop and wait for bag out of leveller
+TON_10ms((STEP = 9),300,PointRotated,PointRotatedET)
+IF (STEP = 9) THEN
+	O_OpenLineBStop 	= TRUE
+	O_RotatePoint 		= TRUE
+	O_OpenRotaryPoint 	= PointRotated
+	IF Line[16].Full THEN
+		D[911] = 1
+	ENDIF
+ENDIF
+
+;Y000 = O_SelectLineA
+;Y000 = O_SelectLineB
+Y[6].Y12 = NOT O_RotatePoint
+Y[6].Y13 = O_OpenRotaryPoint
+Y[6].Y10 = O_OpenRockSep
+Y[6].Y08 = O_OpenLineAStop
+Y[6].Y09 = O_OpenLineBStop
+Y[6].Y11 = O_LevelCylinder
+END_PROGRAM
+

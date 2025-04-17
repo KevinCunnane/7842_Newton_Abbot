@@ -1,0 +1,47 @@
+VAR RETAIN
+	LASTSTEP : UINT;
+	PLS : BOOL;
+	STEP : UINT;
+END_VAR
+VAR
+	TimerAlarm : TON_10ms;
+	mySeq : UINT;
+	myIO : UINT;
+	I_BagAtSep : ARRAY[0..3] OF BOOL;
+	I_ReleasedSep : ARRAY[0..3] OF BOOL;
+	O_SelectLine : ARRAY[0..3] OF BOOL;
+	O_SelectDest : ARRAY[0..3] OF BOOL;
+	TON_Settled : ARRAY[0..3] OF TON_10ms;
+	n : UINT;
+	myBag : UINT;
+	myBuffBag : ARRAY[0..3] OF UINT;
+	LineValid : ARRAY[0..4] OF BOOL;
+	myRelLine : ARRAY[0..2] OF UINT;
+END_VAR
+VAR RETAIN
+	CurrentDest : UINT;
+	CurrentLine : UINT;
+END_VAR
+VAR
+	myDestBag : UINT;
+	LineBatchCount : ARRAY[0..3] OF UINT;
+	MaxBatchSize : UINT;
+	ResetRequired : BOOL;
+	ResetPoints : BOOL;
+	ResetPointsET : UDINT;
+	PrevDest : UINT;
+	PrevLine : UINT;
+	O_OpenSep : ARRAY[0..3] OF BOOL;
+	Released : BOOL;
+	myDestLine : UINT;
+	ReleaseValid : BOOL;
+	ClearCounts : BOOL;
+	LineSearchCount : UINT;
+	DestSearchCount : UINT;
+	ScanUpdate : BOOL;
+	ScanUpdateET : UDINT;
+	myZone : INT;
+	TON_0penStop : ARRAY[0..3] OF TON_10ms;
+	x : INT;
+	TON_SettledInSep : ARRAY[0..3] OF TON_10ms;
+END_VAR

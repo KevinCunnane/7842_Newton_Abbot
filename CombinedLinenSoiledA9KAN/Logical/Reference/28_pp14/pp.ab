@@ -1,0 +1,118 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 28	;Sequence number
+myIO				= 114
+myZone				= 3
+	
+I_BagAtSep			= X[myIO].X01
+I_LineFull[1]		= X[myIO].X03
+I_LineFull[2]		= X[myIO].X04	
+I_BufferLineEmpty[1] = 	(NOT X[184].X03 AND NOT Y[184].Y06) 
+I_BufferLineEmpty[2] = 	(NOT X[185].X03 AND NOT Y[185].Y06) 
+	
+TrolleyBatchSize	= 3	
+	
+O_OpenSep			= FALSE	
+O_Select[1]			= FALSE	
+O_Select[2]			= FALSE	
+	
+	
+	
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 10000 + mySeq
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000	
+IF OpenStopTime = 0 THEN
+	OpenStopTime 		= 100	
+ENDIF	
+
+;Setup Sequence
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+	
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+;Step 1 Decide where to send trolley
+TON_10ms(I_BagAtSep,250,SettledAtSep,SettledAtSepET)
+TON_10ms(I_BufferLineEmpty[1],200,BufferEmpty[1],BufferEmptyET[1])
+TON_10ms(I_BufferLineEmpty[2],200,BufferEmpty[2],BufferEmptyET[2])
+TON_10ms((STEP = 1),200,ResetPoints,ResetPointsET)
+IF (STEP = 1) THEN
+	BagsArrived = FALSE
+	IF (SettledAtSep AND NOT Std.HaltSysZone[myZone]) THEN 	
+		IF (myLine < 2) THEN
+			INC myLine
+		ELSE
+			myLine = 1
+		ENDIF		
+
+		IF NOT I_LineFull[myLine]  THEN 
+			D[900 +  mySeq] = (myLine + 1)		
+		ENDIF		
+	ENDIF
+ENDIF		
+	
+TON_10ms((STEP = 2) OR (STEP = 3),OpenStopTime,OpenStop,OpenStopET) 
+TON_10ms(BagsArrived,OpenStopTime + 100,BagsReleased,BagsReleasedET)	
+;Step 2 Select Line 1
+IF (STEP = 2) THEN 	
+	myLine = 1
+	OpenStopTime = 100
+	O_Select[myLine] = TRUE	
+	O_OpenSep = NOT OpenStop
+	IF I_LineFull[myLine] THEN	
+		BagsArrived = TRUE
+	ENDIF	
+	IF BagsReleased THEN
+		D[900 + mySeq] = 1
+	ENDIF		
+	Alarm[mySeq].Name = almBagNotReleased		
+ENDIF		
+
+;Step 3 Select Line 2
+IF (STEP = 3) THEN 	
+	myLine = 2
+	OpenStopTime = 200
+	O_Select[myLine] = TRUE	
+	O_OpenSep = NOT OpenStop
+	IF I_LineFull[myLine] THEN	
+		BagsArrived = TRUE
+	ENDIF	
+	IF BagsReleased THEN
+		D[900 + mySeq] = 1
+	ENDIF		
+	Alarm[mySeq].Name = almBagNotReleased		
+ENDIF				
+	
+;-----------------------------------
+;PLC Outputs - adjust to suit system
+;-----------------------------------
+
+Y[myIO].Y05 = O_OpenSep
+Y[myIO].Y07 = O_Select[1]
+Y[myIO].Y08 = O_Select[2]	
+	
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+Alarm[mySeq].Zone 	= myZone
+END_PROGRAM
+

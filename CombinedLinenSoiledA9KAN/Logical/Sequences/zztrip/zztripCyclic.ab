@@ -1,0 +1,68 @@
+PROGRAM _CYCLIC
+(* cyclic program *)
+
+;--------------------------------------------------------------------------
+;Primary trolley counting trips - ensure the main program can see the input
+;--------------------------------------------------------------------------
+
+
+CountTrip[1]  = X[4].X01 ;Bag on line 1
+CountTrip[2]  = X[4].X02 ;            2
+CountTrip[3]  = X[4].X03 ;            3
+CountTrip[4]  = X[4].X04 ;            4
+CountTrip[5]  = X[4].X05 ;Bag out sdc1
+CountTrip[6]  = X[4].X06 ;            6
+CountTrip[7]  = X[4].X07 ;            7
+CountTrip[8]  = X[4].X08 ;            8
+CountTrip[9]  = X[4].X09 ;            9
+CountTrip[10] = X[4].X10 ;           10
+CountTrip[11] = X[4].X11 ;           11
+CountTrip[12] = X[3].X03 ;           12
+CountTrip[13] = X[3].X07 ;           13
+;CountTrip[14] = X[4].X14 ;           14
+CountTrip[15] = X[5].X09
+CountTrip[16] = X[5].X16 ;SVC1 Buffer full
+;CountTrip[17] = X[4].X01 ;Bag on buffer line A
+;CountTrip[18] = X[6].X13 ;Bag out of svc2
+;CountTrip[19] = X[7].X03 ;Sdc4 Bag Out
+;CountTrip[20] = X[6].X12 ;Sdc3 Bag Out
+;CountTrip[21] = X[6].X16 ;Sdc1 buffer line full
+;CountTrip[22] = X[6].X15 ;Sdc2 buffer line full
+;CountTrip[23] = X[9].X16 ;Sdc3 buffer line full
+;CountTrip[24] = X[9].X14 ;Sdc4 buffer line full
+;CountTrip[25] = X[9].X12 ;Sdc5 buffer line full
+;CountTrip[26] = X[7].X07 ;Sdc5 Bag Out
+;CountTrip[27] = X[6].X05 ;Bag out of sdc1
+;CountTrip[28] = X[6].X08 ;Bag out of sdc2
+;CountTrip[29] = X[7].X08 ;Sbc1 Buffer line full
+;CountTrip[30] = X[3].X11 ;Sic1 buffer line full
+;CountTrip[31] = X[7].X13 ;Bag out of svc3
+;CountTrip[32] = X[10].X06 ;Bag out offgoing bag stacker
+;CountTrip[33] = X[8].X06 ; Bag out of loading unit
+;CountTrip[34] = X[4].X16
+;CountTrip[35] = X[7].X16 ;Sbc1 Bag out
+;CountTrip[36] = X[3].X12 ;Bag on transit line B
+
+
+LOOP n = 1 TO 22 DO
+
+	TripPLS[n].CLK = CountTrip[n]
+	TripPLS[n] FUB R_TRIG()
+
+	IF TripPLS[n].Q AND Timer[n].Q AND (C[n] < 2) THEN
+		C[n] = C[n] + 1
+	ENDIF
+
+	Timer[n].IN = NOT CountTrip[n]
+	Timer[n].PT = 10 ;100 = 1second
+	Timer[n] FUB TON_10ms()
+
+	Line[n].Full 	= (C[n] = 1)
+	Line[n].Clear 	= ((C[n] >= 2) AND Timer[n].Q)
+
+	Line[n].Trip	= (((CountOld[n] <> C[n]) AND (C[n] <> 0)) OR CountTrip[n]) ;Use for Bag Arrived at destination
+	CountOld[n] 	= C[n]
+
+ENDLOOP
+END_PROGRAM
+

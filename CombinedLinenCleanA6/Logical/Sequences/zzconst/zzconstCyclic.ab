@@ -1,0 +1,10 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+;-----------------------------------------------------
+;Revision A 01/05/2001 D.J. First Issue
+;-----------------------------------------------------
+;Code In Init Subroutine
+
+Std.EnableOverUnderRelease = FALSE ;X6C 	;Override KeySwitch - See Stn_Q
+END_PROGRAM
+

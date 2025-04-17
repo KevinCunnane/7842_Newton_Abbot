@@ -1,0 +1,125 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;--------------------------------------------
+;Sequence 8 - SVC1 Vertical conveyor 1 D[908]
+;--------------------------------------------
+
+
+;Inputs
+I_OpenBag				= X[2].X12
+
+I_DischBagOpened		= (D[909] = 7)
+
+mySeq                   = 27
+O_BagReady				= FALSE
+O_OpenCatch				= FALSE
+O_OpenBag				= FALSE
+O_CloseBag				= FALSE
+
+Enable.CDC4Open		    = FALSE
+
+;Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 58
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+;Setup Sequence
+;-----------------------
+STEP = D[927]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND ((STEP = 2) OR (STEP = 3) OR (STEP = 6))),3000,Alarm[12],AlarmET[12])
+
+;Step 1 - Check signals
+IF (STEP = 1) THEN
+	IF (NOT I_OpenBag) THEN
+		D[927] = 2
+	ENDIF
+ENDIF
+
+;Step 2 - Enable discharger to open
+TON_10ms(I_DischBagOpened,600,TopBagOpen,TopBagOpenET)
+IF (STEP = 2) THEN
+	Enable.CDC4Open = I_OpenBag
+	O_BagReady = (D[909] = 5)
+	IF I_OpenBag THEN
+		OpenCatch = TRUE
+	ENDIF
+	O_OpenCatch = OpenCatch
+	IF TopBagOpen THEN
+		D[927] 		= 3
+	ENDIF
+	ELSE
+	OpenCatch = FALSE
+ENDIF
+
+;Step 3 - Bag being loaded
+IF (STEP = 3) THEN
+		O_BagReady = Std.Clock500ms
+		O_OpenCatch = TRUE
+		IF I_OpenBag THEN
+			BagClear = TRUE
+		ENDIF
+		IF BagClear AND NOT I_OpenBag THEN
+			D[927] = 4
+		ENDIF
+	ELSE
+	BagClear = FALSE
+ENDIF
+
+;Step 4 - Bag full wait for operator to open
+IF (STEP = 4) THEN
+	O_BagReady = TRUE
+	;O_OpenCatch = TRUE
+	IF I_OpenBag THEN
+		D[927] = 5
+	ENDIF
+ENDIF
+
+;Step 5 - Open bag
+TON_10ms((STEP = 5),600,MinOpen,MinOpenET)
+IF (STEP = 5) THEN
+	O_OpenBag 	= TRUE
+	O_OpenCatch = TRUE
+	IF  MinOpen THEN
+		D[927] = 6
+	ENDIF
+ENDIF
+
+;Step 6 - Open bag wait for operator to confirm empty
+IF (STEP = 6) THEN
+	O_BagReady 	= Std.Clock500ms
+	O_OpenBag 	= TRUE
+	O_OpenCatch = TRUE
+	IF I_OpenBag THEN
+		D[927] = 7
+	ENDIF
+ENDIF
+
+;Step 7 - Close bag
+TON_10ms((STEP = 7),500,CloserDown,CloserDownET)
+IF (STEP = 7) THEN
+	O_OpenCatch = TRUE
+	IF CloserDown THEN
+		D[927] = 1
+	ENDIF
+ENDIF
+
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+
+;Outputs
+Y[2].Y07	= O_BagReady
+Y[2].Y05	= O_OpenCatch
+Y[2].Y06 	= O_OpenBag
+
+END_PROGRAM
+

@@ -1,0 +1,67 @@
+VAR RETAIN
+	STEP : UINT;
+END_VAR
+VAR
+	PLS : BOOL;
+END_VAR
+VAR RETAIN
+	LASTSTEP : UINT;
+END_VAR
+VAR
+	LevellerDownET : TIME;
+	O_LevelCylinder : BOOL;
+	O_SelectLineB : BOOL;
+	O_SelectLineA : BOOL;
+	I_OutLineB : BOOL;
+	LevellerDown : BOOL;
+	LevellerUp : BOOL;
+	LevellerUpET : TIME;
+	I_TiltB : BOOL; (* SPR1 Trolley past stop *)
+	I_OutLineA : BOOL;
+	O_OpenRockSep : BOOL;
+	O_OpenLineAStop : BOOL;
+	O_OpenLineBStop : BOOL;
+	I_RockSepA : BOOL;
+	I_RockSepB : BOOL;
+	I_TiltA : BOOL; (* SBS1 ON Bag on stacker *)
+	O_LevelCylinderUP : BOOL;
+	PRLineClearET : ARRAY[0..4] OF TIME;
+	SettledLevel : BOOL;
+	SettledLevelET : TIME;
+	SettledInSepsET : TIME;
+	SettledInSeps : BOOL;
+	LevelClearET : TIME;
+	LevelClear : BOOL;
+	TimerAlarm : TON_10ms;
+	I_LevelA : BOOL;
+	I_LevelB : BOOL;
+	I_AtRotary : BOOL;
+	O_RotatePoint : BOOL;
+	O_OpenRotaryPoint : BOOL;
+	AlarmET : UDINT;
+	SelectA : BOOL;
+	SelectAET : UDINT;
+	RockerReady : BOOL;
+	RockerReadyET : UDINT;
+	LevellerFull : BOOL;
+	LevellerFullET : UDINT;
+	SettledInRotary : BOOL;
+	SettledInRotaryET : UDINT;
+	PointRotated : BOOL;
+	PointRotatedET : UDINT;
+	I_PaddleinPosition : BOOL;
+	I_BaginIncline : BOOL;
+	I_BagOut : BOOL;
+	O_RunMotor : BOOL;
+	O_Reset : BOOL;
+	Reset : BOOL;
+	ResetET : UDINT;
+	BagSettled : BOOL;
+	BagSettledET : UDINT;
+	BagInIncline : BOOL;
+	NearTop : BOOL;
+	NearTopET : UDINT;
+	RanOn : BOOL;
+	RanOnET : UDINT;
+	MySeq : INT;
+END_VAR

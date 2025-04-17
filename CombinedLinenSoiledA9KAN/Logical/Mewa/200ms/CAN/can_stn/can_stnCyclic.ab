@@ -1,0 +1,499 @@
+PROGRAM _CYCLIC
+;----------------------------------------
+;Version 1.00 08/02/2005 D.J. First Issue
+;----------------------------------------
+
+;The Category, Customer and values from TrackView database are only written every 20 seconds
+;unless the database has changed D[65] from TrackView
+TimeNow  = clock_ms()
+TimeDiff = UINT(TimeNow - TimeLastWrite)
+IF (TimeDiff >= 20000) THEN
+	WriteEvent 		= TRUE
+	TimeLastWrite 	= TimeNow
+ELSE IF D[65] <> DatabaseChanged THEN
+	WriteEvent 		= TRUE
+	TimeLastWrite 	= TimeNow
+	DatabaseChanged = D[65]
+ENDIF
+
+IF CANOK THEN
+
+	;----------------
+	;Set Write values
+	;----------------
+
+	;Suction Box 1
+	IF Box[1].BagReady THEN
+		WriteFrame1021.ControlSignals = BIT_SET(WriteFrame1021.ControlSignals, 1)
+	ELSE
+		WriteFrame1021.ControlSignals = BIT_CLR(WriteFrame1021.ControlSignals, 1)
+	ENDIF
+
+	WriteFrame1101.SP1			= Box[1].SP1
+	WriteFrame1101.SP2			= Box[1].SP2
+	WriteFrame1101.SP3			= Box[1].SP3
+	WriteFrame1101.Category 	= UINT(Box[1].Category)
+
+	WriteFrame1111.Customer 	= Box[1].Customer
+	WriteFrame1111.Destination 	= USINT(Box[1].Destination)
+
+	EventWrite1021 = TRUE
+	EventWrite1101 = WriteEvent
+	EventWrite1111 = WriteEvent
+	;Suction Box 1
+
+
+	;Suction Box 2
+	IF Box[2].BagReady THEN
+		WriteFrame1022.ControlSignals = BIT_SET(WriteFrame1022.ControlSignals, 1)
+	ELSE
+		WriteFrame1022.ControlSignals = BIT_CLR(WriteFrame1022.ControlSignals, 1)
+	ENDIF
+
+	WriteFrame1102.SP1			= Box[2].SP1
+	WriteFrame1102.SP2			= Box[2].SP2
+	WriteFrame1102.SP3			= Box[2].SP3
+	WriteFrame1102.Category 	= UINT(Box[2].Category)
+
+	WriteFrame1112.Customer 	= Box[2].Customer
+	WriteFrame1112.Destination 	= USINT(Box[2].Destination)
+
+	EventWrite1022 = TRUE
+	EventWrite1102 = WriteEvent
+	EventWrite1112 = WriteEvent
+	;Suction Box 2
+
+
+	;Suction Box 3
+	IF Box[3].BagReady THEN
+		WriteFrame1023.ControlSignals = BIT_SET(WriteFrame1023.ControlSignals, 1)
+	ELSE
+		WriteFrame1023.ControlSignals = BIT_CLR(WriteFrame1023.ControlSignals, 1)
+	ENDIF
+
+	WriteFrame1103.SP1			= Box[3].SP1
+	WriteFrame1103.SP2			= Box[3].SP2
+	WriteFrame1103.SP3			= Box[3].SP3
+	WriteFrame1103.Category 	= UINT(Box[3].Category)
+
+	WriteFrame1113.Customer 	= Box[3].Customer
+	WriteFrame1113.Destination 	= USINT(Box[3].Destination)
+
+	EventWrite1023 = TRUE
+	EventWrite1103 = WriteEvent
+	EventWrite1113 = WriteEvent
+	;Suction Box 3
+
+	;Suction Box 4
+	IF Box[4].BagReady THEN
+		WriteFrame1024.ControlSignals = BIT_SET(WriteFrame1024.ControlSignals, 1)
+	ELSE
+		WriteFrame1024.ControlSignals = BIT_CLR(WriteFrame1024.ControlSignals, 1)
+	ENDIF
+
+	WriteFrame1104.SP1			= Box[4].SP1
+	WriteFrame1104.SP2			= Box[4].SP2
+	WriteFrame1104.SP3			= Box[4].SP3
+	WriteFrame1104.Category 	= UINT(Box[4].Category)
+
+	WriteFrame1114.Customer 	= Box[4].Customer
+	WriteFrame1114.Destination 	= USINT(Box[4].Destination)
+
+	EventWrite1024 = TRUE
+	EventWrite1104 = WriteEvent
+	EventWrite1114 = WriteEvent
+	;Suction Box 4
+
+	;Suction Box 5
+	IF Box[5].BagReady THEN
+		WriteFrame1025.ControlSignals = BIT_SET(WriteFrame1025.ControlSignals, 1)
+	ELSE
+		WriteFrame1025.ControlSignals = BIT_CLR(WriteFrame1025.ControlSignals, 1)
+	ENDIF
+
+	WriteFrame1105.SP1			= Box[5].SP1
+	WriteFrame1105.SP2			= Box[5].SP2
+	WriteFrame1105.SP3			= Box[5].SP3
+	WriteFrame1105.Category 	= UINT(Box[5].Category)
+
+	WriteFrame1115.Customer 	= Box[5].Customer
+	WriteFrame1115.Destination 	= USINT(Box[5].Destination)
+
+	EventWrite1025 = TRUE
+	EventWrite1105 = WriteEvent
+	EventWrite1115 = WriteEvent
+	;Suction Box 5
+
+	;Suction Box 6
+	IF Box[6].BagReady THEN
+		WriteFrame1026.ControlSignals = BIT_SET(WriteFrame1026.ControlSignals, 1)
+	ELSE
+		WriteFrame1026.ControlSignals = BIT_CLR(WriteFrame1026.ControlSignals, 1)
+	ENDIF
+
+	WriteFrame1106.SP1			= Box[6].SP1
+	WriteFrame1106.SP2			= Box[6].SP2
+	WriteFrame1106.SP3			= Box[6].SP3
+	WriteFrame1106.Category 	= UINT(Box[6].Category)
+
+	WriteFrame1116.Customer 	= Box[6].Customer
+	WriteFrame1116.Destination 	= USINT(Box[6].Destination)
+
+	EventWrite1026 = TRUE
+	EventWrite1106 = WriteEvent
+	EventWrite1116 = WriteEvent
+	;Suction Box 6
+
+	;Suction Box 7
+	IF Box[7].BagReady THEN
+		WriteFrame1027.ControlSignals = BIT_SET(WriteFrame1027.ControlSignals, 1)
+	ELSE
+		WriteFrame1027.ControlSignals = BIT_CLR(WriteFrame1027.ControlSignals, 1)
+	ENDIF
+
+	WriteFrame1107.SP1			= Box[7].SP1
+	WriteFrame1107.SP2			= Box[7].SP2
+	WriteFrame1107.SP3			= Box[7].SP3
+	WriteFrame1107.Category 	= UINT(Box[7].Category)
+
+	WriteFrame1117.Customer 	= Box[7].Customer
+	WriteFrame1117.Destination 	= USINT(Box[7].Destination)
+
+	EventWrite1027 = TRUE
+	EventWrite1107 = WriteEvent
+	EventWrite1117 = WriteEvent
+	;Suction Box 7
+
+	;Suction Box 8
+	IF Box[8].BagReady THEN
+		WriteFrame1028.ControlSignals = BIT_SET(WriteFrame1028.ControlSignals, 1)
+	ELSE
+		WriteFrame1028.ControlSignals = BIT_CLR(WriteFrame1028.ControlSignals, 1)
+	ENDIF
+
+	WriteFrame1108.SP1			= Box[8].SP1
+	WriteFrame1108.SP2			= Box[8].SP2
+	WriteFrame1108.SP3			= Box[8].SP3
+	WriteFrame1108.Category 	= UINT(Box[8].Category)
+
+	WriteFrame1118.Customer 	= Box[8].Customer
+	WriteFrame1118.Destination 	= USINT(Box[8].Destination)
+
+	EventWrite1028 = TRUE
+	EventWrite1108 = WriteEvent
+	EventWrite1118 = WriteEvent
+	;Suction Box 8
+
+	;Suction Box 9
+	IF Box[9].BagReady THEN
+		WriteFrame1029.ControlSignals = BIT_SET(WriteFrame1029.ControlSignals, 1)
+	ELSE
+		WriteFrame1029.ControlSignals = BIT_CLR(WriteFrame1029.ControlSignals, 1)
+	ENDIF
+
+	WriteFrame1109.SP1			= Box[9].SP1
+	WriteFrame1109.SP2			= Box[9].SP2
+	WriteFrame1109.SP3			= Box[9].SP3
+	WriteFrame1109.Category 	= UINT(Box[9].Category)
+
+	WriteFrame1119.Customer 	= Box[9].Customer
+	WriteFrame1119.Destination 	= USINT(Box[9].Destination)
+
+	EventWrite1029 = TRUE
+	EventWrite1109 = WriteEvent
+	EventWrite1119 = WriteEvent
+	;Suction Box 9
+
+	;-----------------
+	;Service CAN table
+	;-----------------
+
+	IF CANdftab_01.status=0 THEN						(*check error level*)
+		CANrwtab_01.enable		= 1
+		CANrwtab_01.tab_ident	= CANdftab_01.tab_ident (*define tab_id*)
+		CANrwtab_01 FUB CANrwtab()						(*initiate CANrwtab*)
+		LastError = CANrwtab_01.status
+	ENDIF
+
+	;----------------------------------
+	;Check for incomming data from CBW1
+	;----------------------------------
+
+
+	;Box 1
+	IF EventRead1001 THEN
+		EventRead1001 = FALSE
+		Box1Cus = UINT(ReadFrame1001.Customer)
+	ENDIF
+
+	IF EventRead1011 THEN
+
+		EventRead1011 = FALSE
+
+		Box[1].Live 		= BIT_TST(ReadFrame1011.ControlSignals,0)
+		Box[1].LoadFinished = BIT_TST(ReadFrame1011.ControlSignals,1)
+
+		Box[1].Weight		= ReadFrame1011.Weight
+		IF (Box1Cus > 0) THEN
+			Bag[201].Cus = Box1Cus
+		ENDIF
+		IF Box[1].Live THEN
+			Box[1].LiveTime = 50	;5 seconds
+		ENDIF
+
+	ENDIF
+
+;	IF EDGEPOS (Box[1].LoadFinished = 0) THEN
+;		Bag[201].Cus = Box1Cus
+;	ENDIF
+;
+;	IF (Bag[201].Cus = 0) THEN
+;		Bag[201].Cus = Box1Cus
+;	ENDIF
+
+
+	;Box 2
+	IF EventRead1002 THEN
+		EventRead1002 = FALSE
+		Box2Cus = UINT(ReadFrame1002.Customer)
+	ENDIF
+
+	IF EventRead1012 THEN
+
+		EventRead1012 = FALSE
+
+		Box[2].Live 		= BIT_TST(ReadFrame1012.ControlSignals,0)
+		Box[2].LoadFinished = BIT_TST(ReadFrame1012.ControlSignals,1)
+
+		Box[2].Weight		= ReadFrame1012.Weight
+		IF (Box2Cus > 0) THEN
+			Bag[202].Cus = Box2Cus
+		ENDIF	
+		IF Box[2].Live THEN
+			Box[2].LiveTime = 50	;5 seconds
+		ENDIF
+
+	ENDIF
+
+;	IF EDGEPOS (Box[2].LoadFinished = 0) THEN
+;		Bag[202].Cus = Box2Cus
+;	ENDIF
+;
+;	IF (Bag[202].Cus = 0) THEN
+;		Bag[202].Cus = Box2Cus
+;	ENDIF
+
+	;Box 3
+	IF EventRead1003 THEN
+		EventRead1003 = FALSE
+		Box3Cus = UINT(ReadFrame1003.Customer)
+	ENDIF
+
+	IF EventRead1013 THEN
+
+		EventRead1013 = FALSE
+
+		Box[3].Live 		= BIT_TST(ReadFrame1013.ControlSignals,0)
+		Box[3].LoadFinished = BIT_TST(ReadFrame1013.ControlSignals,1)
+
+		Box[3].Weight		= ReadFrame1013.Weight
+		IF (Box3Cus > 0) THEN
+				Bag[203].Cus = Box3Cus
+		ENDIF		
+		IF Box[3].Live THEN
+			Box[3].LiveTime = 50	;5 seconds
+		ENDIF
+
+	ENDIF
+
+;	IF EDGEPOS (Box[3].LoadFinished = 0) THEN
+;		Bag[203].Cus = Box3Cus
+;	ENDIF
+;
+;	IF (Bag[203].Cus = 0) THEN
+;		Bag[203].Cus = Box3Cus
+;	ENDIF
+
+	;Box 4
+	IF EventRead1004 THEN
+		EventRead1004 = FALSE
+		Box4Cus = UINT(ReadFrame1004.Customer)
+	ENDIF
+
+	IF EventRead1014 THEN
+
+		EventRead1014 = FALSE
+
+		Box[4].Live 		= BIT_TST(ReadFrame1014.ControlSignals,0)
+		Box[4].LoadFinished = BIT_TST(ReadFrame1014.ControlSignals,1)
+
+		Box[4].Weight		= ReadFrame1014.Weight
+		IF (Box4Cus > 0) THEN
+			Bag[204].Cus = Box4Cus
+		ENDIF
+		IF Box[4].Live THEN
+			Box[4].LiveTime = 50	;5 seconds
+		ENDIF
+
+	ENDIF
+
+;	IF EDGEPOS (Box[4].LoadFinished = 0) THEN
+;		Bag[204].Cus = Box4Cus
+;	ENDIF
+;
+;	IF (Bag[204].Cus = 0) THEN
+;		Bag[204].Cus = Box4Cus
+;	ENDIF
+
+	;Box 5
+	IF EventRead1005 THEN
+		EventRead1005 = FALSE
+		Box5Cus = UINT(ReadFrame1005.Customer)
+	ENDIF
+
+	IF EventRead1015 THEN
+
+		EventRead1015 = FALSE
+
+		Box[5].Live 		= BIT_TST(ReadFrame1015.ControlSignals,0)
+		Box[5].LoadFinished = BIT_TST(ReadFrame1015.ControlSignals,1)
+
+			Box[5].Weight		= ReadFrame1015.Weight
+		IF (Box5Cus > 0) THEN
+			Bag[205].Cus = Box5Cus
+		ENDIF
+		IF Box[5].Live THEN
+			Box[5].LiveTime = 50	;5 seconds
+		ENDIF
+
+	ENDIF
+
+;	IF EDGEPOS (Box[5].LoadFinished = 0) THEN
+;		Bag[205].Cus = Box5Cus
+;	ENDIF
+;
+;	IF (Bag[205].Cus = 0) THEN
+;		Bag[205].Cus = Box5Cus
+;	ENDIF
+
+
+	;Box 6
+	IF EventRead1006 THEN
+		EventRead1006 = FALSE
+		Box6Cus = UINT(ReadFrame1006.Customer)
+	ENDIF
+
+	IF EventRead1016 THEN
+
+		EventRead1016 = FALSE
+
+		Box[6].Live 		= BIT_TST(ReadFrame1016.ControlSignals,0)
+		Box[6].LoadFinished = BIT_TST(ReadFrame1016.ControlSignals,1)
+
+		Box[6].Weight		= ReadFrame1016.Weight
+		IF (Box6Cus > 0) THEN
+			Bag[206].Cus = Box6Cus
+		ENDIF
+		IF Box[6].Live THEN
+			Box[6].LiveTime = 50	;5 seconds
+		ENDIF
+
+	ENDIF
+
+;	IF EDGEPOS (Box[6].LoadFinished = 0) THEN
+;		Bag[206].Cus = Box6Cus
+;	ENDIF
+;
+;	IF (Bag[206].Cus = 0) THEN
+;		Bag[206].Cus = Box6Cus
+;	ENDIF
+
+	;Box 7
+	IF EventRead1007 THEN
+		EventRead1007 = FALSE
+		Dummy = ReadFrame1007.Customer
+	ENDIF
+
+	IF EventRead1017 THEN
+
+		EventRead1017 = FALSE
+
+		Box[7].Live 		= BIT_TST(ReadFrame1017.ControlSignals,0)
+		Box[7].LoadFinished = BIT_TST(ReadFrame1017.ControlSignals,1)
+
+		Box[7].Weight		= ReadFrame1017.Weight
+			IF (ReadFrame1007.Customer > 0) THEN
+				Bag[207].Cus = ReadFrame1007.Customer
+			ENDIF
+		IF Box[7].Live THEN
+			Box[7].LiveTime = 50	;5 seconds
+		ENDIF
+
+	ENDIF
+
+	;Box 8
+	IF EventRead1008 THEN
+		EventRead1008 = FALSE
+		Dummy = ReadFrame1008.Customer
+	ENDIF
+
+	IF EventRead1018 THEN
+
+		EventRead1018 = FALSE
+
+		Box[8].Live 		= BIT_TST(ReadFrame1018.ControlSignals,0)
+		Box[8].LoadFinished = BIT_TST(ReadFrame1018.ControlSignals,1)
+
+		Box[8].Weight		= ReadFrame1018.Weight
+			IF (ReadFrame1008.Customer > 0) THEN
+				Bag[208].Cus = ReadFrame1008.Customer
+			ENDIF
+		IF Box[8].Live THEN
+			Box[8].LiveTime = 50	;5 seconds
+		ENDIF
+
+	ENDIF
+
+	;Box 9
+	IF EventRead1009 THEN
+		EventRead1009 = FALSE
+		Dummy = ReadFrame1009.Customer
+	ENDIF
+
+	IF EventRead1019 THEN
+
+		EventRead1019 = FALSE
+
+		Box[9].Live 		= BIT_TST(ReadFrame1019.ControlSignals,0)
+		Box[9].LoadFinished = BIT_TST(ReadFrame1019.ControlSignals,1)
+			Box[9].ReadyToLoad = BIT_TST(ReadFrame1019.ControlSignals,2)
+			Box[9].Weight		= ReadFrame1019.Weight
+			IF (ReadFrame1009.Customer > 0) THEN
+				Bag[209].Cus = ReadFrame1009.Customer
+			ENDIF
+		IF Box[9].Live THEN
+			Box[9].LiveTime = 50	;5 seconds
+		ENDIF
+
+	ENDIF
+
+	;-------------------
+	;CAN Live / Presence
+	;-------------------
+
+	LOOP n = 1 TO 9 DO
+
+		IF (Box[n].LiveTime > 0) THEN
+			Box[n].LiveTime = (Box[n].LiveTime - 1)
+		ENDIF
+
+		Box[n].Live = (Box[n].LiveTime <> 0)
+
+	ENDLOOP
+
+ENDIF
+
+;Reset Write Event - 20 seconds or Event
+WriteEvent = FALSE
+END_PROGRAM
+

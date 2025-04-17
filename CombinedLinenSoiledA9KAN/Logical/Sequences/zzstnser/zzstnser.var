@@ -1,0 +1,13 @@
+VAR RETAIN
+	SearchFound	:UINT;	
+	n	:UINT;	
+	LineSearchManual	:UINT;	
+	SearchLine	:UINT;	
+END_VAR
+
+
+VAR
+	Bank	:UINT;	
+	LineSearch	:ARRAY [0..4] OF UINT;	
+	Choice	:UINT;	
+END_VAR

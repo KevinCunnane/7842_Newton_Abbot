@@ -1,0 +1,24 @@
+VAR RETAIN
+	I_CancelAlarm : BOOL;
+END_VAR
+VAR
+	BuildD220 : UINT;
+	AlmNumber : UINT;
+	n : UINT;
+	AlarmCount : UINT;
+	CancelBeacon : BOOL;
+	I_MotorOverload : BOOL;
+	UnloadingAlarm : BOOL;
+	I_InverterFault : BOOL;
+	BeaconInList : BOOL;
+	ConstKeep : UINT;
+	I_SystemStopped : BOOL;
+	AlarmOutput : ARRAY[0..9] OF BOOL;
+	tmrAlmOutput : ARRAY[0..9] OF TON_10ms;
+	I_SafetyHighLevel : BOOL;
+	I_Safetyloading : BOOL;
+	I_SafetyVC : ARRAY[0..2] OF BOOL;
+	x : INT;
+	AlarmZoneActive : ARRAY[0..99] OF BOOL;
+	myZone : UINT;
+END_VAR

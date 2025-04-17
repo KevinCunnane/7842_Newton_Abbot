@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="Package" Description="200ms Tasks">200ms</Object>
+    <Object Type="Package" Description="KanLink Setup tasks">KanLink</Object>
+    <Object Type="Package" Description="Standard-Packages">KGFramework</Object>
+    <Object Type="Package" Description="Benutzereinstellungen">KGFrameworkShare</Object>
+  </Objects>
+</Package>

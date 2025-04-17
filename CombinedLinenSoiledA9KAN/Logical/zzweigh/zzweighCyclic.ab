@@ -1,0 +1,90 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;---------------------------------------------------------------------------------------------
+;Revision 1.00 01/05/2001 D.J. First Issue
+;Revision 2.00 23/10/2002 D.J. WeightUnits changed to DINT (problem when raw values over 32767
+;Revision 3.00 22/08/2006 D.J. Changed for AI261
+;---------------------------------------------------------------------------------------------
+
+;------------------------------------------------------------
+;WeighStation Calibration and Weight Calculation - With AI261
+;------------------------------------------------------------
+UseAI2744 = TRUE
+;divide by 1000 should give around 50 parts per kg and keep raw value within UINT
+;Add 32000 to value to ensure always positive
+LOOP n = 1 TO Std.MaxWeighstations DO
+	;To view a particular stn then set tstRaw to the required stn
+	IF tstRaw > 0 THEN
+		myRaw = tstRaw ;AI261Raw[tstRaw]
+	ELSE
+		myRaw = AI2744Raw[n]//????????????????????????????????????????????????
+	ENDIF
+	;Ensure raw value is within + 24bit if out of range + 32bit
+	IF (myRaw = $7FFFFFFF) THEN
+		myRaw = $FFFFFF
+	ENDIF
+	;Ensure raw value is within - 24bit if out of range - 32bit
+	IF (myRaw = $80000001) THEN
+		myRaw = $FF000001
+	ENDIF
+	;Convert raw to UINT the 3 least significant digits are removed
+	IF UseAI2744 THEN
+		myStnRaw = UINT((myRaw / 100) + 32000)
+	ELSE
+		myStnRaw = UINT((myRaw / 1000) + 32000)
+	ENDIF
+
+ENDLOOP
+
+LOOP n = 1 TO Std.MaxWeighstations DO
+
+	StnLow 		= D[3400 + n]
+	StnHigh 	= D[3500 + n]
+	StnTestWgt 	= D[3600 + n]
+
+	;Calibrate Low - From TrackView
+	IF (D[995] = n) AND (D[996] = 11) THEN
+		NewLow = StnRaw[n]
+		IF (NewLow > 0) AND (NewLow < $FFFF) THEN
+			D[3400 + n] = NewLow
+		ENDIF
+		D[996] = 0 ;Cancel the Cal-Low
+	ENDIF
+	;Calibrate High - From TrackView
+	IF (D[995] = n) AND (D[996] = 12) AND (D[997] > 0) THEN
+		NewHigh = StnRaw[n]
+		IF (NewHigh > 0) AND (NewHigh < $FFFF) AND (NewHigh > StnLow) THEN
+			D[3500 + n] = NewHigh
+			D[3600 + n] = D[997]		;Test-Weight
+		ENDIF
+		D[996] = 0 ;Cancel the Cal-High
+	ENDIF
+
+	;Weigh Calculation - Multiply up to give accurate results
+	HighLow = StnHigh - StnLow
+	HighLow = HighLow * 1000
+	;Avoid "Divide By Zero"
+	IF (StnTestWgt > 0) THEN
+		WeightUnits = DINT(HighLow / StnTestWgt)
+		RawLow = INT(StnRaw[n] - StnLow)
+		RawLow = RawLow * 1000
+		IF (WeightUnits > 0) THEN ;AND (RawLow > 0) THEN
+			Stn[n].Weight = INT(RawLow / WeightUnits)
+		ELSE
+			Stn[n].Weight = 0
+		ENDIF
+	ELSE
+		Stn[n].Weight = 999
+	ENDIF
+
+ENDLOOP
+
+IF test THEN
+Stn[1].Weight = w1
+Stn[2].Weight = w2
+Stn[3].Weight = w3
+Stn[4].Weight = w4
+ENDIF
+END_PROGRAM
+

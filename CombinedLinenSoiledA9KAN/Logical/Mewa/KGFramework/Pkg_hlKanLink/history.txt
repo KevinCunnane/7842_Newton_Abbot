@@ -1,0 +1,22 @@
+21.02.12 sta 0.93
+Client kann mit state gesteuert werden
+
+8.2.12 sta 0.92
+Fehler bei Server-Key behoben
+2.2.12 sta
+Zum einrichten eines Server und Client KLLib_CfgServer und KLLib_CfgClient integriert. 
+Konf sowohl über Parameter und mit den Funktionen möglich
+
+
+30.1.12 sta
+interface  umbenannt
+MaxServerConn und MaxClientCon in userlib
+
+todo:
+"OneShot" Client-Statevariable
+Überprüfung Längen der Commandos
+Logger wieder inbetriebnehmen
+
+
+
+Startversion 0.900

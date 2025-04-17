@@ -1,0 +1,93 @@
+;--------------------------------------------
+;Sequence BatchInfo
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+	;Please enter Bag number to to send via KannLink Batch info (1002)
+	BagNum[0]	= 55
+	BagNum[1]	= 60
+	BagNum[2]	= 0
+	BagNum[3]	= 0
+	BagNum[4]	= 0
+	BagNum[5]	= 0
+
+
+	LOOP n = 0 TO Std.MaxKanLink DO
+		IF Bag[BagNum[n]].Cat > 0 THEN
+			GetTimeStamp.enable = 1
+			GetTimeStamp FUB DTGetTime()
+			Kan[n].dtTimeStamp = GetTimeStamp.DT1
+			
+			;Make a string out of CAT and CUS
+			length := itoa(Bag[BagNum[n]].Cat,ADR(myCategoryString));
+			length := itoa(Bag[BagNum[n]].Cus,ADR(myCustomerString));
+			;strcpy(ADR(myCategoryString),ADR(Bag[BagNum[n]].Cat)) 
+			;strcpy(ADR(myCustomerString),ADR(Bag[BagNum[n]].Cus))
+						
+			;copy Bag Data to KanLink Bag data type
+			Kan[n].bCntCustomers = 1
+			Kan[n].sCategory = myCategoryString
+			Kan[n].wTotalWeight = Bag[BagNum[n]].Wgt ;Summaray weight of all Part Customers in the Bag, normally 1
+			;Frist Customer in the Bag, allowed for multible Customers in future		
+			Kan[n].PartBatch[0].sCustomNo = myCustomerString
+			Kan[n].PartBatch[0].wCustomWeight = Bag[BagNum[n]].Wgt
+		ELSE
+			strcpy(ADR(myCategoryString),ADR(""));
+			strcpy(ADR(myCustomerString),ADR(""));
+			Kan[n].bCntCustomers = 0
+			Kan[n].sCategory = myCategoryString
+			Kan[n].wTotalWeight = 0 ;Summaray weight of all Part Customers in the Bag, normally 1
+			;Frist Customer in the Bag, allowed for multible Customers in future		
+			Kan[n].PartBatch[0].sCustomNo = myCustomerString
+			Kan[n].PartBatch[0].wCustomWeight = 0
+		ENDIF
+		Batch[n] = Kan[n] ; Populate array for PT+ PVI
+	ENDLOOP
+;	
+;	//Batch info for all Batches	
+;	Bel_1_BI.Resp.BatchData[0] = Kan[0];
+;	Bel_1_BI.Resp.BatchData[1] = Kan[0];
+;	Bel_1_BI.Resp.BatchData[2] = Kan[0];
+;	Bel_1_BI.Resp.BatchData[3] = Kan[0];
+;	Bel_1_BI.Resp.BatchData[4] = Kan[0];
+;	Bel_1_BI.Resp.BatchData[5] = Kan[0];
+;	
+;		
+;	IF (Bel_1_BI.Req.wCntPositions >= 0) THEN
+;		n = Bel_1_BI.Req.wCntPositions;
+;		Bel_1_BI.Resp.wCntPositions =  Bel_1_BI.Req.wCntPositions;
+;		IF (n = 0) OR (n >= 1) THEN
+;			Bel_1_BI.Resp.wNoOfPositions[0] = Bel_1_BI.Req.wNoOfPosition[0];
+;			Bel_1_BI.Resp.BatchData[0] = Kan[Bel_1_BI.Req.wNoOfPosition[0]];	
+;		ENDIF
+;		IF (n = 0) OR (n >= 2) THEN
+;			Bel_1_BI.Resp.wNoOfPositions[1] = Bel_1_BI.Req.wNoOfPosition[1];
+;			Bel_1_BI.Resp.BatchData[1] = Kan[Bel_1_BI.Req.wNoOfPosition[1]];
+;		ENDIF
+;		IF (n = 0) OR (n >= 3) THEN
+;			Bel_1_BI.Resp.wNoOfPositions[2] = Bel_1_BI.Req.wNoOfPosition[2];
+;			Bel_1_BI.Resp.BatchData[2] = Kan[Bel_1_BI.Req.wNoOfPosition[2]];
+;		ENDIF	
+;		IF (n = 0) OR (n >= 4) THEN
+;			Bel_1_BI.Resp.wNoOfPositions[3] = Bel_1_BI.Req.wNoOfPosition[3];
+;			Bel_1_BI.Resp.BatchData[3] = Kan[Bel_1_BI.Req.wNoOfPosition[3]];
+;		ENDIF
+;		IF (n = 0) OR (n >= 5) THEN
+;			Bel_1_BI.Resp.wNoOfPositions[4] = Bel_1_BI.Req.wNoOfPosition[4];
+;			Bel_1_BI.Resp.BatchData[4] = Kan[Bel_1_BI.Req.wNoOfPosition[4]];
+;		ENDIF
+;		IF (n = 0) OR (n = 6) THEN
+;			Bel_1_BI.Resp.wNoOfPositions[5] = Bel_1_BI.Req.wNoOfPosition[5];
+;			Bel_1_BI.Resp.BatchData[5] = Kan[Bel_1_BI.Req.wNoOfPosition[5]];
+;		ENDIF
+;	ENDIF
+;
+;	
+;	
+END_PROGRAM
+

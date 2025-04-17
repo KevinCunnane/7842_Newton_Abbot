@@ -1,0 +1,125 @@
+PROGRAM _INIT
+	(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;Sequence 1- Primary Bag remover 1 D[900 + mySeq]
+
+;-----------------------------------------
+;Revision 1.00 12/11/2002 D.J. First Issue
+;-----------------------------------------
+mySeq   = 15
+myIO	= 251	
+myPbr	= 1	
+myZone	= 0
+	
+I_BagAtSeparator	= X[myIO].X01
+I_BagAtRemover		= X[myIO].X02
+I_BagReleased		= X[myIO].X03
+
+
+
+O_OpenSeparator		= FALSE
+O_Locate			= FALSE
+O_OpenStop			= FALSE
+
+;Setup Sequence
+;-----------------------
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 0
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+;Sequence
+IF (STEP = 0) THEN
+;Disabled
+ENDIF	
+
+;Wait for bag at separator
+IF (STEP = 1) THEN
+	O_OpenSeparator = TRUE	
+	IF I_BagAtRemover THEN
+		D[900 + mySeq] = 3
+	ELSE IF I_BagAtSeparator THEN
+		D[900 + mySeq] = 2
+	ENDIF
+ENDIF
+
+;Open separator
+;Was 3 seconds
+TON_10ms((STEP = 2),50,SeparatorOpened,SeparatorOpenedET)
+IF (STEP = 2) THEN
+	;O_OpenSeparator = TRUE
+	IF SeparatorOpened THEN
+		D[900 + mySeq] = 3
+	ENDIF
+ENDIF
+
+;Wait for bag at remover
+;Was 3.5 Seconds
+TON_10ms(I_BagAtRemover,200,SettledAtRemover,SettledAtRemoverET)
+TON_10ms((STEP = 3),2000,Step3TimedOut,Step3TimedOutET)
+IF (STEP = 3) THEN
+	;O_OpenSeparator = TRUE
+	IF SettledAtRemover THEN;AND NOT I_BagReleased) THEN
+		D[900 + mySeq] = 4
+	ELSE IF Step3TimedOut THEN; AND NOT I_BagReleased) THEN
+		D[900 + mySeq] = 1
+	ENDIF
+ENDIF
+
+;Allow bag to settle
+;Was 4 seconds
+TON_10ms((STEP = 4),200,Settled,SettledET)
+IF (STEP = 4) THEN
+	IF (CAN[1].OkToRelease[myPbr] AND Settled AND NOT I_BagReleased) THEN ;(Settled OR I_BagReleased)) THEN
+		D[900 + mySeq] = 5
+	ENDIF
+ENDIF
+
+;Locate hook
+;Was 5 seconds
+TON_10ms((STEP = 5),300,Located,LocatedET)
+IF (STEP = 5) THEN
+	O_Locate = TRUE
+	IF Located OR I_BagReleased THEN
+		D[900 + mySeq] = 6
+	ENDIF
+ENDIF
+
+;Strip bag
+TON_10ms((STEP = 6),1000,Step6TimedOut,Step6TimedOutET)
+TON_10ms((STEP = 6),200,RemoveLocate,RemoveLocateET)
+IF (STEP = 6) THEN
+	O_Locate 	= NOT RemoveLocate
+	O_OpenStop 	= TRUE
+	IF I_BagReleased THEN
+		D[900 + mySeq] = 1
+	ELSE IF Step6TimedOut THEN
+		D[900 + mySeq] = 4
+	ENDIF
+ENDIF
+
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+Alarm[mySeq].Zone 	= myZone
+
+
+Y[myIO].Y04 = O_OpenSeparator
+Y[myIO].Y06 = O_Locate
+Y[myIO].Y05 = O_OpenStop
+END_PROGRAM
+

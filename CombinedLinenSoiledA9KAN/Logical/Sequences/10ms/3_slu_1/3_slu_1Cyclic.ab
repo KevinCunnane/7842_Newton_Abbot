@@ -1,0 +1,195 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;Sequence 3 - Loading Unit D[903]
+
+;Loading Unit
+;--------------------------------------------------------
+;Revision 1.00 09/01/2002 D.J. First Issue
+;Revision 2.00 15/05/2002 D.J. Added Compression Cylinder
+;--------------------------------------------------------
+
+;I_BagAtBuffer			= X712
+I_BagSLU1Trip			= X[5].X13
+I_BaginLoadingUnit		= X[5].X12
+;I_BagOutSLU1			= X714
+
+I_CompressorAtTop		= X[7].X05
+I_CompressorAtMid		= X[7].X06
+I_CompressorAtBot		= X[7].X07
+I_ChuteBlocked			= X[7].X08
+
+O_SteadyCylinders		= FALSE
+O_OpenStop	 			= FALSE
+O_OpenBuffer 			= FALSE
+O_BagSupport			= FALSE
+O_Compression			= FALSE
+
+Enable.SVC2				= FALSE
+Alarm[3].Name 		= 0
+Alarm[3].Bag		= 220
+Alarm[3].Beacon		= TRUE
+Alarm[3].Extra	 	= 0
+Alarm[3].Time		= 3000
+
+;Setup Sequence
+;-----------------------
+STEP = D[903]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND ((STEP = 3) OR (STEP = 8) OR (STEP = 13))),3000,Alarm[3],AlarmET[3])
+
+;Skipped - Normally Wait for Empty bag at buffer
+TON_10ms((NOT I_BagSLU1Trip AND NOT I_BaginLoadingUnit),200,TripsClear,TripsClearET)
+IF (STEP = 1) THEN
+	IF TripsClear THEN
+		D[903] = 2
+	ENDIF
+ENDIF
+
+;Open stops let bag in Loading Unit
+IF (STEP = 2) THEN
+	O_OpenStop = TRUE
+	IF I_BagSLU1Trip THEN ;bag past stop
+		D[903] = 3
+	ENDIF
+ENDIF
+
+Enable.SVC2 = ((STEP = 2) OR (STEP = 3)) ;Bag must be fully in loading unit before SVC2 can go back up hence STEP = 3
+
+;Wait for bag to settle
+TON_10ms(I_BaginLoadingUnit,700,EBagSettled,EBagSettledET)
+IF (STEP = 3) THEN
+	IF EBagSettled THEN
+		D[903] = 4
+	ENDIF
+ENDIF
+
+;Move Steady Cylinders down
+TON_10ms((STEP = 4),300,SCylindersDown,SCylindersDownET)
+IF (STEP = 4) THEN
+	O_SteadyCylinders 	= TRUE
+	O_BagSupport		= TRUE
+	IF SCylindersDown THEN
+		D[903] = 5
+	ENDIF
+ENDIF
+
+
+;Wait for bag to be loaded
+IF (STEP = 5) THEN
+	O_SteadyCylinders 	= TRUE
+	O_BagSupport		= TRUE
+	IF I_CompressorAtTop THEN
+		Enable.TransferBelt = TRUE
+	ENDIF
+	IF (Bag[220].Cat > 0) THEN
+		IF I_ChuteBlocked THEN
+			D[903] = 10				;If the Chute is blocked then go to service routine
+		ELSE
+			D[903] = 6				;Chute is clear
+		ENDIF
+	ENDIF
+ELSE
+	Enable.TransferBelt = FALSE
+ENDIF
+
+;Allow Steady Cylinders to move up
+TON_10ms((STEP = 6),300,BagSupportDown,BagSupportDownET)
+IF (STEP = 6) THEN
+	IF BagSupportDown THEN
+		D[903] = 7
+	ENDIF
+ENDIF
+
+;Check svc1 is ready for a bag - If chute is blocked then goto step 10
+IF (STEP = 7) THEN
+	IF Enable.SLU1 THEN
+		D[903] = 8
+	ENDIF
+ENDIF
+
+;Open stop - unitl bag out
+IF (STEP = 8) THEN
+	 IF (Bag[220].Cat>0)AND(Bag[221].Cat=0) THEN
+						Bag[221] = Bag[220]
+						Bag[220] = Bag[0]
+		ENDIF                               ;BAGMOVE2(PLS,mem_adr_E,220,221,BagSpacing)
+	O_OpenStop = TRUE
+	IF NOT Enable.SLU1 THEN
+		D[903] = 1
+	ENDIF
+ENDIF
+
+;Compression Cylinder Service routine
+;------------------------------------
+TON_10ms((STEP = 10),300,SupportDown,SupportDownET)
+IF (STEP = 10) THEN
+	O_SteadyCylinders 	= TRUE
+	IF SupportDown THEN
+		IF NOT I_ChuteBlocked THEN
+			D[903] 	= 7	;Chute is clear - goto allow steadys to go up
+		ELSE
+			D[903] 	= 11 ;Try unblocking chute
+			Tries 	= 0
+		ENDIF
+	ENDIF
+ENDIF
+
+;Compress Linen
+TON_10ms((STEP = 11),2000,TimedOut,TimedOutET)
+IF (STEP = 11) THEN
+	O_SteadyCylinders 	= TRUE
+	O_Compression 		= TRUE
+	IF (I_CompressorAtBot OR TimedOut) THEN
+		D[903] = 12
+	ENDIF
+ENDIF
+
+;Allow compression to go back up
+IF (STEP = 12) THEN
+	O_SteadyCylinders 	= TRUE
+	IF (I_CompressorAtMid OR I_CompressorAtTop) THEN
+		IF NOT I_ChuteBlocked THEN
+			D[903] 	= 7 	;Chute is clear - goto allow steadys to go up
+		ELSE IF (Tries < 5) THEN
+			D[903] 	= 11	;Re-try
+			Tries	= (Tries + 1)
+		ELSE
+			D[903]	= 13	;Tried 5 times wait for chute to be cleared
+		ENDIF
+	ENDIF
+ENDIF
+
+;Compression cylinder failed wait for manual clear
+IF (STEP = 13) THEN
+	O_SteadyCylinders 	= TRUE
+	IF (I_CompressorAtMid OR I_CompressorAtTop) THEN
+		;IF NOT I_ChuteBlocked THEN
+			D[903] 	= 7 	;Chute is clear - goto allow steadys to go up
+		;ENDIF
+	ENDIF
+ENDIF
+
+;Alarms
+TimerAlarm.IN = NOT PLS AND (Alarm[3].Name > 0) //AND (AlarmOld = Alarm[3].Name)
+TimerAlarm.PT = Alarm[3].Time
+TimerAlarm FUB TON_10ms()
+Alarm[3].On = TimerAlarm.Q
+Alarm[3].ET = TimerAlarm.ET
+
+//AlarmOld = Alarm[4].Name ;Need to ensure alarm changes as may be multiple alarms on step
+
+;Outputs
+;-------
+
+Y[5].Y13 = O_OpenStop
+;Y711 = O_OpenBuffer
+Y[5].Y12 = O_SteadyCylinders
+Y[7].Y02 = O_BagSupport
+Y[7].Y03 = O_Compression
+END_PROGRAM
+

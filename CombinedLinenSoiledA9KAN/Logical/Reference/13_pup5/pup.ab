@@ -1,0 +1,117 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 13	;Sequence number
+myIO				= 349	
+myBag				= 998
+myPup				= 5
+myZone	= 0
+	
+I_UnloadingPointOn	= X[myIO].X03
+I_ReleasePB			= X[myIO].X04	
+I_TrolleyReleased	= X[myIO].X08 ; Also Line full	
+	
+;O_Lamp				= FALSE
+PUP[myPup].WorkingLamp = FALSE
+O_OpenBuffer		= FALSE	
+O_Release			= FALSE	
+Request.UP[myPup]	= FALSE
+	
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= myBag
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+PUP[myPup].Enabled = (D[mySeq] > 0) AND I_UnloadingPointOn 	
+
+IF PUP[myPup].Enabled THEN
+	PUP[myPup].WorkingLamp = TRUE ; Lamp will display the Unloading point is turned on and flash when off but bags still in transit
+ELSE IF (UnloadingBuffer[myPup].CountBIT > 0) THEN
+	PUP[myPup].WorkingLamp = Std.Clock1s
+ENDIF		
+O_Lamp = PUP[myPup].WorkingLamp
+
+	
+;Setup Sequence
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+;Step 1 Request a bag from PP
+IF (STEP = 1) THEN	
+	PUPValid = (PUP[myPup].Enabled AND (Bag[myBag].Cat = 0) AND NOT Std.HaltSysZone[myZone])
+	Request.UP[myPup] = PUPValid
+	IF (Bag[myBag].Cat > 0) AND NOT I_ReleasePB THEN	
+		D[900 + mySeq] = 2		
+	ENDIF			
+ENDIF		
+
+;Step 2 wait for pushbutton to request release of trolley	
+IF (STEP = 2) THEN	
+	IF I_ReleasePB AND (ReportUnloading[myPup].Cat = 0) THEN
+		ReportUnloading[myPup].Prg = Bag[myBag].Prg 		;Program
+		ReportUnloading[myPup].Cat = Bag[myBag].Cat		;Category
+		ReportUnloading[myPup].Cus = Bag[myBag].Cus		;Customer
+		ReportUnloading[myPup].Wgt = Bag[myBag].Wgt		;Weight
+		ReportUnloading[myPup].Cnt = 0					;Count
+		ReportUnloading[myPup].Stn = 0					;Station
+		ReportUnloading[myPup].Mcn = myPup				;Machine
+		ReportUnloading[myPup].Mis = Bag[myBag].Mis		;Batch ID
+
+		Bag[myBag].Cat = Std.MaxCats
+		Bag[myBag].Prg = Std.MaxProg
+		Bag[myBag].Cus = Std.MaxCust	
+		D[900 + mySeq] = 3	
+	ELSE IF (ReportUnloading[myPup].Cat > 0) THEN
+		Alarm[mySeq].Name = almGeneralSequence
+	ENDIF
+ENDIF	
+
+;STEP 3 Check for space in empty trolley buffer.	
+IF (STEP = 3) THEN	
+	IF NOT I_TrolleyReleased AND NOT Std.HaltSysZone[myZone] THEN		
+		D[900 + mySeq] = 4
+	ENDIF	
+ENDIF		
+
+;STEP 4 Release trolley	
+IF (STEP = 4) THEN	
+	O_Release = TRUE	
+	IF 	I_TrolleyReleased THEN
+		Bag[myBag] = Bag[0]
+		D[900 + mySeq] = 1	
+	ENDIF	
+	Alarm[mySeq].Name = almBagNotReleased	
+ENDIF
+		
+;-----------------------------------
+;PLC Outputs - adjust to suit system
+;-----------------------------------
+
+Y[myIO].Y06 = O_Release
+Y[myIO].Y07 = O_Lamp	
+	
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+Alarm[mySeq].Zone 	= myZone
+END_PROGRAM
+

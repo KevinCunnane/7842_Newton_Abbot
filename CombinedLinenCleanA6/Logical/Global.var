@@ -1,0 +1,58 @@
+VAR RETAIN
+	Alarm : ARRAY[0..109] OF Alm;
+	AlarmBagNotProxLine : UINT;
+	Bag : ARRAY[0..999] OF BagType;
+	C : ARRAY[0..99] OF UINT;
+	D : ARRAY[0..5999] OF UINT;
+	Enable : Enable_Vars;
+	Ldg : ARRAY[0..4] OF Loading_Vars;
+	Line : ARRAY[0..99] OF Line_Vars;
+	ReportBuffer : ARRAY[0..199] OF Reports;
+	ReportLoading : ARRAY[0..50] OF Reports;
+	ReportUnloading : ARRAY[0..10] OF Reports;
+	Request : Enable_Vars;
+	Std : Std_Vars;
+	Stn : ARRAY[0..50] OF Stn_Vars;
+	TCScan : ARRAY[0..8] OF ScanTime;
+	Test : Test_Vars;
+	Uld : ARRAY[0..20] OF Uld_Vars;
+END_VAR
+VAR CONSTANT
+	almBagDataError : UINT := 20;
+	almBagNotArrived : UINT := 6;
+	almBagNotAtProx : UINT := 16;
+	almBagNotReleased : UINT := 9;
+	almBagNotSettled : UINT := 7;
+	almEmergencyStop : UINT := 1;
+	almGeneralSequence : UINT := 15;
+	almInverterFault : UINT := 18;
+	almLoadNotDropped : UINT := 10;
+	almMotorOverload : UINT := 2;
+	almNoAlarm : UINT := 0;
+	almSwitchFault : UINT := 5;
+	almUldNoBag : UINT := 4;
+	almUldProgFinished : UINT := 3;
+END_VAR
+VAR
+	AI354RAW_1 : INT; (* ±10 V, resolution 12 bit *)
+	AI354RAW_2 : INT; (* ±10 V, resolution 12 bit *)
+	AI354RAW_3 : INT; (* ±10 V, resolution 12 bit *)
+	AI354RAW_4 : INT; (* ±10 V, resolution 12 bit *)
+	I_EStop : BOOL;
+	Indication : ARRAY[0..79] OF BOOL;
+	SSS2Raw : DINT;
+	SSS2Weight : UINT;
+	SSS3Raw : DINT;
+	SSS3Weight : UINT;
+	SSS4Raw : DINT;
+	SSS4Weight : UINT;
+	StnPrev : ARRAY[0..50] OF BagType;
+	TimerAlarm : TON_10ms;
+	X : ARRAY[0..39] OF CardInputs;
+	Y : ARRAY[0..39] OF CardOutputs;
+	YForceDisable : ARRAY[0..39] OF CardOutputs;
+	Zero : UINT := 0;
+	pBag : UDINT;
+	pC : UDINT;
+	pD : UDINT;
+END_VAR

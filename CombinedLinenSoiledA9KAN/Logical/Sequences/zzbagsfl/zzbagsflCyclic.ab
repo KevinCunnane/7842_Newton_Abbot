@@ -1,0 +1,55 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;-----------------------------------------------------------
+;Revision 1.00 19/12/2005 D.J. First Issue - Using BAG array
+;-----------------------------------------------------------
+
+Std.BagsWithDestinations 	= FALSE
+Std.CustomerFound	 		= FALSE
+
+LOOP CurrentLine = 1 to Std.MaxLinesBuffers DO
+
+	LineSp = 0
+
+	LOOP CurrentBag = Line[CurrentLine].FirstBag  TO Line[CurrentLine].LastBag DO
+
+		EXITIF Line[CurrentLine].FirstBag = 0
+
+		NextBag = (CurrentBag + 1)
+
+		IF ((CurrentBag < Line[CurrentLine].LastBag) AND ((Bag[CurrentBag].Cat = 0) AND (Bag[NextBag].Cat > 0))) THEN
+
+			;Copy Next Bag to Current
+			Bag[CurrentBag]	= Bag[NextBag]
+			Bag[NextBag] 	= Bag[0]
+
+		ENDIF
+
+		IF ((Bag[CurrentBag].Dst > 0) AND (CurrentLine <= Std.MaxLines)) THEN
+			Std.BagsWithDestinations = TRUE
+		ENDIF
+
+		;Add the line spaces up
+		IF Bag[CurrentBag].Cat = 0 THEN
+			LineSp = (LineSp + 1)
+		ENDIF
+
+		;For Customer FIFO table
+		;-----------------------
+		;Customer at front of FIFO in Storage
+		IF ((Bag[CurrentBag].Cus = D[401]) AND (D[401] > 0) AND (CurrentLine <= Std.MaxLines)) THEN
+			Std.CustomerFound	 	= TRUE
+		ENDIF
+
+	ENDLOOP
+	;Save the number of spaces on the current line
+	Line[CurrentLine].Space = LineSp
+
+ENDLOOP
+
+
+
+
+END_PROGRAM
+

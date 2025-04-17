@@ -1,0 +1,242 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 19	;Sequence number
+myIO				= 105
+myBag				= 958	
+
+myZone	= 0	
+
+myOutBag[1]			= 988	
+myOutBag[2]			= 989	
+myRelDest[1]		= 22	;Destination in Bag for PUP 2
+myRelDest[2]		= 23
+
+myPUP[1]			= (myRelDest[1] - 20)
+myPUP[2]			= (myRelDest[2] - 20)
+
+I_BagAtSep			= X[myIO].X01
+I_BagInSep			= X[myIO].X03
+I_BagArrive[1]		= X[myIO].X02
+I_BagArrive[2]		= X[myIO].X04	
+
+AutoDestChange 		= (D[mySeq] > 0)
+	
+O_OpenSep			= FALSE
+O_Select[1]			= FALSE	
+O_Select[2]			= FALSE	
+
+
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= myBag
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+
+;Setup Sequence
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+TON_10ms(I_BagInSep,75,SettledInSep,SettledInSepET)
+IF (STEP < 2) THEN
+	BagInSep = FALSE	
+ELSE IF SettledInSep THEN
+	BagInSep = TRUE
+ENDIF	
+
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+;step 1 Check destination of bag in buffer	
+myDest = Bag[myBag].Dst
+BagValid = (Bag[myBag].Cat > 0)
+PUPClear[1] = (Bag[myOutBag[1]].Cat = 0)
+PUPClear[2] = (Bag[myOutBag[2]].Cat = 0)	
+
+TON_10ms(I_BagAtSep,75,SettledAtSep,SettledAtSepET)
+TON_10ms(ResetPoints,100,PointsReset,PointsResetET)
+IF (STEP = 1) THEN	
+	IF (myDest = myRelDest[1]) THEN	
+		mySelLine = 1
+	ELSE IF	(myDest = myRelDest[2]) THEN	
+		mySelLine = 2
+	ELSE
+		mySelLine = 0		
+	ENDIF
+	DestValid = (mySelLine > 0)
+	IF BagValid AND DestValid AND SettledAtSep AND NOT I_BagInSep THEN
+		IF (mySelLine = myPrevSelLine) AND DestValid THEN		
+			IF (myDest = myRelDest[1]) AND PUPClear[1] THEN
+				D[900 + mySeq]  = 2		
+			ELSE IF (myDest = myRelDest[2]) THEN
+				D[900 + mySeq]  = 4
+			ENDIF		
+		ELSE 
+			ResetPoints = TRUE
+			IF (myDest= myRelDest[1]) THEN
+				O_Select[1] = TRUE
+				IF PointsReset THEN	
+					D[900 + mySeq]  = 2		
+				ENDIF
+			ELSE IF (myDest= myRelDest[2]) THEN
+				O_Select[2] = TRUE
+				IF PointsReset THEN	
+					D[900 + mySeq]  = 4		
+				ENDIF
+			ENDIF	
+		ENDIF
+	ENDIF		
+	IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Time = 0		
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF
+ELSE
+	ResetPoints = FALSE		
+ENDIF
+
+;Step 2 Wait for enable from PUP
+IF (STEP = 2) THEN
+	mySelLine = 1
+	myPrevSelLine = mySelLine
+	IF AutoDestChange AND Request.UP[myPUP[2]] AND PUPClear[2] AND NOT PUP[myPUP[mySelLine]].Enabled  THEN ; If the selected PUP is turned Off - Automatically route the bags to the other Discharger...	
+		Bag[myBag].Dst	= myRelDest[2]		
+		GOTO ExitSeq
+	ENDIF	
+	DestValid = (myDest = myRelDest[mySelLine])
+	O_Select[mySelLine] = DestValid AND PUPClear[mySelLine]
+	IF NOT DestValid THEN ; Destination has been changed..
+		D[900 + mySeq] = 1 	
+	ELSE IF (Request.UP[myPUP[mySelLine]] AND PUPClear[mySelLine] AND DestValid AND BagValid AND SettledAtSep AND NOT I_BagArrive[mySelLine] AND NOT Std.HaltSysZone[myZone]) THEN	
+		D[900 + mySeq] = 3
+	ENDIF		
+	IF Request.IC[mySelLine] AND NOT PUPClear[mySelLine] THEN
+		Alarm[mySeq].Bag = myOutBag[mySelLine]
+		Alarm[mySeq].Name = almBagDataError	
+	ELSE IF I_BagArrive[mySelLine] THEN 
+		Alarm[mySeq].Name = almSwitchFault	
+	ELSE IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT Std.HaltSysZone[myZone] THEN
+	;	Alarm[mySeq].Name = almBagNotReleased	
+	ENDIF		
+ENDIF
+
+;Step 3 Release bag to PUP	
+IF (STEP = 3) THEN	
+	mySelLine = 1
+	myPrevSelLine = mySelLine
+	DestValid = (myDest = myRelDest[mySelLine])
+	O_Select[mySelLine] = DestValid
+	IF (Request.UP[myPUP[mySelLine]] AND DestValid AND BagValid AND PUPClear[mySelLine] AND NOT I_BagArrive[mySelLine]) THEN	
+		ReleaseValid = TRUE
+	ENDIF
+	O_OpenSep = ReleaseValid AND NOT BagInSep
+	IF I_BagArrive[mySelLine] AND PUPClear[mySelLine] AND BagValid THEN	
+		Bag[myOutBag[mySelLine]] = Bag[myBag]
+		Bag[myBag] = Bag[0]	
+		D[900 + mySeq] = 1		
+	ENDIF		
+	IF NOT PUPClear[mySelLine] THEN
+		Alarm[mySeq].Bag = myOutBag[mySelLine]
+		Alarm[mySeq].Name = almBagDataError	
+	ELSE IF NOT BagValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF
+ELSE	
+	ReleaseValid = FALSE	
+ENDIF	
+
+;Step 4 Wait for enable from PUP
+IF (STEP = 4) THEN
+	mySelLine = 2
+	myPrevSelLine = mySelLine
+	IF AutoDestChange AND Request.UP[myPUP[1]] AND PUPClear[1] AND NOT PUP[myPUP[mySelLine]].Enabled THEN ; If the selected PUP is turned Off - Automatically route the bags to the other Discharger...	
+		Bag[myBag].Dst	= myRelDest[1]		
+		GOTO ExitSeq
+	ENDIF
+	DestValid = (myDest = myRelDest[mySelLine])
+	O_Select[mySelLine] = DestValid AND PUPClear[mySelLine]
+	IF NOT DestValid THEN ; Destination has been changed..
+		D[900 + mySeq] = 1 	
+	ELSE IF (Request.UP[myPUP[mySelLine]] AND PUPClear[mySelLine] AND DestValid AND BagValid AND SettledAtSep AND NOT I_BagArrive[mySelLine] AND NOT Std.HaltSysZone[myZone]) THEN	
+		D[900 + mySeq] = 5
+	ENDIF		
+	IF Request.IC[mySelLine] AND NOT PUPClear[mySelLine] THEN
+		Alarm[mySeq].Bag = myOutBag[mySelLine]
+		Alarm[mySeq].Name = almBagDataError	
+	ELSE IF I_BagArrive[mySelLine] THEN 
+		Alarm[mySeq].Name = almSwitchFault	
+	ELSE IF NOT BagValid	AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT Std.HaltSysZone[myZone] THEN
+	;	Alarm[mySeq].Name = almBagNotReleased	
+	ENDIF		
+ENDIF
+
+;Step 5 Release bag to PUP	
+IF (STEP = 5) THEN	
+	mySelLine = 2
+	myPrevSelLine = mySelLine
+	DestValid = (myDest = myRelDest[mySelLine])
+	O_Select[mySelLine] = DestValid
+	O_OpenSep = (Request.UP[myPUP[mySelLine]] AND DestValid AND BagValid AND PUPClear[mySelLine] AND NOT BagInSep AND NOT I_BagArrive[mySelLine])
+	IF I_BagArrive[mySelLine] AND PUPClear[mySelLine] AND BagValid THEN	
+		Bag[myOutBag[mySelLine]] = Bag[myBag]
+		Bag[myBag] = Bag[0]	
+		D[900 + mySeq] = 1		
+	ENDIF		
+	IF NOT PUPClear[mySelLine] THEN
+		Alarm[mySeq].Bag = myOutBag[mySelLine]
+		Alarm[mySeq].Name = almBagDataError	
+	ELSE IF NOT BagValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almBagDataError
+	ELSE IF BagValid AND NOT SettledAtSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ELSE IF NOT DestValid AND SettledAtSep THEN
+		Alarm[mySeq].Name = almDestinationNotValid			
+	ENDIF		
+ENDIF	
+;-----------------------------------
+;PLC Outputs - adjust to suit system
+;-----------------------------------
+
+ExitSeq:	
+	
+Y[myIO].Y05 = O_OpenSep
+Y[myIO].Y07 = O_Select[2]
+Y[myIO].Y08 = O_Select[1]		
+	
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+Alarm[mySeq].Zone 	= myZone
+END_PROGRAM
+

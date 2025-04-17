@@ -1,0 +1,6 @@
+VAR
+	OutputCard	:BIT_ENCODE;	
+	CurrentCard	:UINT;	
+	InputCard	:BIT_ENCODE;	
+	n	:UINT;	
+END_VAR

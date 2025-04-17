@@ -1,0 +1,150 @@
+PROGRAM _CYCLIC
+  	(* cyclic program *)
+
+;-----------------------------------------
+;Sequence 11 - Offgoing Bag Stacker D[911]
+;-----------------------------------------
+
+;Inputs
+I_PaddleinPosition	= X[2].X07
+I_BaginIncline		= X[2].X06
+I_BagOut            = X[2].X08
+
+MySeq                   = 26
+O_RunMotor 			= FALSE
+O_Reset             = FALSE
+Request.CIC[8] = FALSE
+Enable.CDC[5]   = FALSE
+Enable.CDC[6]   = FALSE
+
+
+;O_SelectLineA			= FALSE
+;O_SelectLineB			= FALSE
+O_RotatePoint			= FALSE
+O_OpenRockSep			= FALSE
+O_OpenLineAStop			= FALSE
+O_OpenLineBStop			= FALSE
+O_LevelCylinder			= FALSE
+O_OpenRotaryPoint		= FALSE
+
+Alarm[MySeq].Name 			= 0 ;Clear sequence alarm name
+Alarm[MySeq].Bag 			= 0
+Alarm[MySeq].Beacon			= TRUE
+Alarm[MySeq].Extra			= 0
+Alarm[MySeq].Time			= 3000
+
+;Setup Sequence
+;-----------------------
+STEP = D[926]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND ((STEP = 3) OR (STEP = 7) OR (STEP = 8) OR (STEP = 9))),3000,Alarm[11],AlarmET[11])
+
+;Select Line 'A'
+TON_10ms(((STEP = 1)),200,Reset,ResetET)
+IF (STEP = 1) THEN
+	O_RunMotor = (NOT I_PaddleinPosition)
+	O_Reset = TRUE
+    
+	IF I_PaddleinPosition AND Reset THEN
+		D[926] = 2
+	ENDIF
+	Alarm[MySeq].Name 			= almSwitchFault
+ENDIF
+
+
+;Check incline clear
+IF (STEP = 2) THEN
+	IF NOT (I_BaginIncline) THEN
+		D[926] = 3
+	ENDIF
+ENDIF
+
+;Check request release from CIC7 - CDC5 - CDC6
+IF (STEP = 3) THEN
+	IF (Request.CIC[7]) THEN ;Request release from CIC7
+		D[51] = 1
+		IF (D[51] > 0) THEN
+			D[926] = 4
+		ENDIF
+	ELSE IF (Request.CDC[6]) THEN ;Request release from CDC5
+        D[51] = 2
+		IF (D[51] > 0) THEN
+			D[926] = 4
+		ENDIF
+	ELSE IF (Request.CDC[5]) THEN ;Request release from CDC6
+        D[51] = 3
+		IF (D[51] > 0) THEN
+			D[926] = 4
+		ENDIF
+	ENDIF
+ENDIF
+
+
+;Let bag settle at base of incline
+TON_10ms((STEP = 4) AND I_BaginIncline,400,BagSettled,BagSettledET)
+IF (STEP = 4) THEN
+	IF I_BaginIncline THEN
+		BagInIncline = TRUE
+	ENDIF
+	Enable.CIC[7] = (D[51] = 1)
+    Enable.CDC[6] = (D[51] = 2)
+    Enable.CDC[5] = (D[51] = 3)
+	IF (BagSettled) THEN
+		D[51]        = 0
+		D[926] = 5
+	ENDIF
+	Alarm[MySeq].Name 			= almSwitchFault
+	ELSE
+	BagInIncline = FALSE
+	
+ENDIF
+
+;Move bag up incline to save time
+TON_10ms((STEP = 5),500,NearTop,NearTopET)
+IF (STEP = 5) THEN
+	O_RunMotor = TRUE
+	IF ((NearTop) AND NOT (Enable.CIC[1])) THEN
+		D[926] = 6
+	ENDIF
+ENDIF
+
+;Check Destination Of Bag
+TON_10ms((STEP = 6),30,RanOn,RanOnET)
+IF (STEP = 6) THEN
+	O_RunMotor = NOT RanOn
+	  Request.CIC[8] = TRUE
+	IF (Enable.CIC[8]) THEN
+		D[926]  = 7
+	ENDIF
+ENDIF
+
+;Run incline conveyor until bag at destination
+IF (STEP = 7) THEN
+	O_RunMotor = TRUE
+	IF (I_BagOut) THEN
+		D[926] = 1
+	ENDIF
+	Alarm[MySeq].Name 			= almSwitchFault
+ENDIF
+
+;Alarms
+TimerAlarm.IN 	= NOT PLS AND (Alarm[MySeq].Name > 0)
+TimerAlarm.PT 	= Alarm[MySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[MySeq].On 	= TimerAlarm.Q
+Alarm[MySeq].ET 	= TimerAlarm.ET
+
+
+
+;Y000 = O_SelectLineA
+;Y000 = O_SelectLineB
+Y[2].Y16 = O_RunMotor
+
+Y[8].Y15 = O_Reset
+
+END_PROGRAM
+

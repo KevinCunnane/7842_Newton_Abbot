@@ -1,0 +1,43 @@
+PROGRAM _CYCLIC
+(* cyclic program *)
+
+;System Status and Halting
+;-------------------------
+
+Std.StopSystem 				= (D[100] <> 0)
+
+Std.EStop 					= NOT X[2].X15
+Std.MotorOverload   		= X[2].X15 AND NOT X[2].X16
+Std.SafetyOn				= X[2].X14
+Std.HaltSys 				= NOT Std.SafetyOn ;OR Std.StopSystem)
+
+
+;Indication[79]     	 		= Std.EStop ;EStop picture on graphics
+
+;set to TRUE if not required
+LoadingStopped 	= TRUE ;(Bag[220].Cat = 0)
+OngoingStopped 	= TRUE ;(Bag[224].Cat = 0)
+OffgoingStopped = TRUE ;(Bag[225].Cat = 0)
+
+;If no Bag In Transit and stop requested then set system to stopped D[100] = 2
+IF Std.StopSystem THEN
+	IF LoadingStopped AND OngoingStopped AND OffgoingStopped THEN
+		D[100] = 2
+	ENDIF
+ENDIF
+
+;Force I/O Enable - Max ? Minutes
+ForceEnable = X[8].X16
+
+tmrForce.IN = ForceEnable
+tmrForce.PT = 90000 ;6000 = 1 Minute
+tmrForce FUB TON_10ms()
+
+IF ForceEnable AND NOT tmrForce.Q THEN
+	D[309] = 1
+ELSE
+	D[309] = 0
+ENDIF
+
+END_PROGRAM
+

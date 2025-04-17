@@ -1,0 +1,22 @@
+VAR RETAIN
+	n : UINT;
+	WeightUnits : DINT;
+	StnHigh : UINT;
+	StnLow : UINT;
+	StnTestWgt : UINT;
+	HighLow : UDINT;
+	RawLow : DINT;
+	StnRaw : ARRAY[0..99] OF UINT;
+	NewLow : UINT;
+	NewHigh : UINT;
+END_VAR
+VAR
+	tstRaw : DINT;
+	myRaw : DINT;
+	myStnRaw : UINT;
+	test : BOOL;
+	w1 : UINT;
+	w2 : UINT;
+	w3 : UINT;
+	w4 : UINT;
+END_VAR

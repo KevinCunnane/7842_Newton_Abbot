@@ -1,0 +1,228 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;--------------------------------------------
+;Sequence 8 - SVC1 Vertical conveyor 1 D[908]
+;--------------------------------------------
+
+;--------------------------------------------
+;Sequence 52 - CVC1 Vertical conveyor 1 D[952]
+;--------------------------------------------
+
+;Inputs
+I_CarrAtTop				= X[4].X09
+I_CarrAtBottom			= X[4].X10
+
+I_BagOnCarr				= X[4].X11
+I_BagReleased			= X[2].X11
+
+
+Enable.CLU[1]       = FALSE
+O_OpenEmptyBufferStop	= FALSE
+O_MoveCarrUp			= FALSE 
+O_MoveCarrDown			= FALSE 
+O_OpenCarrStop			= FALSE 
+O_Point1_4                  = FALSE
+ O_CarriageSteadys    = FALSE       
+O_Point5            = FALSE
+
+//Enable.LU[1]			= FALSE
+
+Alarm[2].Name 				= 0
+Alarm[2].Bag				= 32
+Alarm[2].Beacon				= TRUE
+Alarm[2].Extra				= 0
+Alarm[2].Time			  	= 5000
+
+;Setup Sequence
+STEP = D[902]
+;Setup Pulse contact 
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND (STEP <> 2) AND (STEP <> 6)AND (STEP <> 10)AND (STEP <> 11)AND (STEP <> 14) AND (STEP <> 16)),3000,Alarm[52],AlarmET[52])
+
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+;Move bag from LU to Carriage
+IF (STEP = 1) THEN
+	Enable.CLU[1] = (I_CarrAtBottom AND NOT I_BagOnCarr)
+	IF I_BagOnCarr THEN
+		IF (Bag[31].Cat>0) AND (Bag[32].Cat = 0) THEN
+			Bag[32] = Bag[31]
+			Bag[31] = Bag[0]
+		ENDIF
+		D[902] = 2
+	ENDIF
+ENDIF
+
+;skip
+IF (STEP = 2) THEN
+  		D[902] = 3
+ ENDIF
+
+;settle on carriage 
+TON_10ms((STEP = 3) AND (I_BagOnCarr),300,SettledOnCarr,SettledOnCarrET)
+IF (STEP = 3) THEN
+	 IF  SettledOnCarr THEN
+        D[902] = 4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         	
+ 	ENDIF
+	Alarm[2].Time	= 1500
+	Alarm[2].Name 	= almBagNotArrived
+ENDIF
+
+
+;bag settles on carriage
+//TON_10ms((I_BagOnCarr),300,SettledOnCarr,SettledOnCarrET)
+IF (STEP = 4) THEN
+ 	O_MoveCarrUp = (NOT I_CarrAtTop)
+	IF I_CarrAtTop THEN
+ 		D[902] = 5
+	ENDIF
+	;Alarm[2].Time	= 1500
+	;Alarm[2].Name 	= almBagNotSettled
+ ENDIF	
+	
+
+;move carriage down to empty out
+IF (STEP = 5) THEN
+	IF Line[18].Clear AND (Bag[33].Cat=0) AND (Bag[54].Cat=0) AND NOT I_BagReleased THEN
+			C[18]   = 0
+			D[902] = 6
+	ENDIF
+	IF I_BagReleased THEN
+			Alarm[2].Time = 20
+			Alarm[2].Name = almSwitchFault
+	ELSE
+		Alarm[2].Name 	= almGeneralSequence
+	ENDIF
+ENDIF
+
+;check buffer clear
+TON_10ms((STEP = 6),100,StopDelay,StopDelayET)
+IF (STEP = 6) THEN
+	IF PLS THEN
+		C[18] = 0
+	ENDIF
+	O_OpenCarrStop = (I_CarrAtTop AND StopDelay)
+		IF (Bag[32].Cat>0) AND (Bag[33].Cat = 0) THEN
+			Bag[33] = Bag[32]
+			Bag[32] = Bag[0]
+		ENDIF
+		IF I_BagReleased THEN
+			D[902] = 7
+		ENDIF
+	Alarm[2].Name = almBagNotReleased
+	Alarm[2].Time		= 1000
+	Alarm[2].Bag				= 33
+ENDIF
+//ENDIF
+
+;open carriage stop
+IF (STEP = 7) THEN
+	O_MoveCarrDown = (NOT I_CarrAtBottom)
+	;D[43]          = 2
+	IF I_CarrAtBottom THEN
+		D[902] = 1
+	ENDIF
+;	Alarm[2].Name 	= almBagNotArrived
+	
+;	Alarm[2].Time	= 1500
+	
+ENDIF
+
+;IF ((Bag[33].Dst >= 3) AND (Bag[33].Dst <=10) AND Line[18].Full) THEN
+	IF ((Bag[33].Cat>0) AND (Bag[54].Cat = 0) AND Line[18].Full) THEN
+			Bag[54] = Bag[33]
+			Bag[33] = Bag[0]
+		ENDIF
+;ENDIF
+
+
+
+
+
+
+
+;Inverter Speed Selections
+;-------------------------
+;High Speed Used For Up		= 50Hz
+;Medium Speed Used For Down	= 50Hz
+
+TON_10ms(O_MoveCarrUp  ,1505,HighSpeedUp,HighSpeedUpET) 	;Expected 16.94 seconds @ 591mm/sec
+TON_10ms(O_MoveCarrDown,1440,HighSpeedDn,HighSpeedDnET) 	;Expected 16.94 seconds @ 591mm/sec
+
+IF PLS THEN
+	IF MoveDownStep AND I_CarrAtTop THEN
+		HighSpeedTime = 1440
+	ELSE IF MoveUpStep AND I_CarrAtBottom THEN
+		HighSpeedTime = 1505
+	ELSE
+		HighSpeedTime = 0
+	ENDIF
+ENDIF
+IF STEP = 4 THEN
+	Y[8].Y01 = (NOT HighSpeedUp)
+	Y[8].Y02 = FALSE
+ELSE IF (STEP = 7) THEN
+	Y[8].Y01 = FALSE
+	Y[8].Y02 = (NOT HighSpeedDn)
+ELSE
+	Y[8].Y01 = FALSE
+	Y[8].Y02 = FALSE
+ENDIF
+
+;TONHighSpeed.IN = (MoveDownStep OR MoveUpStep)
+;TONHighSpeed.PT = HighSpeedTime
+;TONHighSpeed FUB TON_10ms()
+;HighSpeedDone 	= TONHighSpeed.Q
+;HighSpeedDoneET = TONHighSpeed.ET
+
+;Carriage Steady Cylinders
+TON_10ms((O_MoveCarrDown OR O_MoveCarrUp),50,SteadysIn,SteadysInET)
+O_CarriageSteadys = (NOT O_MoveCarrUp AND NOT O_MoveCarrDown )
+
+;Alarms
+TimerAlarm.IN = NOT PLS AND (Alarm[2].Name > 0)
+TimerAlarm.PT = Alarm[2].Time
+TimerAlarm FUB TON_10ms()
+Alarm[2].On = TimerAlarm.Q
+Alarm[2].ET = TimerAlarm.ET
+
+;PLC Outputs
+;-----------
+Y[9].Y01 = (O_MoveCarrUp AND SteadysIn)
+Y[9].Y02 = (O_MoveCarrDown AND SteadysIn)
+Y[9].Y03 = (Y[9].Y01 OR Y[9].Y02)
+Y[9].Y04 = O_OpenCarrStop
+Y[9].Y16 = O_CarriageSteadys
+
+
+
+;Y[9].Y16 = O_CarriageSteadys
+
+;Inverter Parameters
+;2	Min Freq			20Hz
+;4	High Speed			50Hz 
+;5	Medium Speed		50Hz
+;7  Acceleration Time	1sec
+;8  Deceleration Time	1sec
+;9  Electronic O/L		5.00A
+;10	DC Injection freq	7Hz
+;11 DC Injection Time	1sec
+;12	DC Brake Voltage	14%
+;13	Starting freq		20Hz
+;30	Regenerative fun	1
+;42	Output freq detect	0.5Hz
+;70	Brake duty			5%
+;79 Operation mode		3
+;80 Motor capicity 		1.5Kw
+;83	Rated motor voltage	400v
+;84	Rated motor freq	50Hz
+
+END_PROGRAM
+

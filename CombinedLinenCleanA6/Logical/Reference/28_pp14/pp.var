@@ -1,0 +1,35 @@
+VAR RETAIN
+	LASTSTEP : UINT;
+	PLS : BOOL;
+	STEP : UINT;
+END_VAR
+VAR
+	TimerAlarm : TON_10ms;
+	mySeq : UINT;
+	myIO : UINT;
+	I_BagAtBuffer : BOOL;
+	I_BagAtSep : BOOL;
+	I_LineFull : ARRAY[0..2] OF BOOL;
+	O_OpenSep : BOOL;
+	O_Select : ARRAY[0..2] OF BOOL;
+	n : UINT;
+	TrolleyCount : ARRAY[0..2] OF UINT;
+	SettledAtSep : BOOL;
+	SettledAtSepET : UDINT;
+	Reset : BOOL;
+	ResetPoints : BOOL;
+	ResetPointsET : UDINT;
+	myLine : UINT;
+	TrolleyBatchSize : UINT;
+	myPrevLine : UINT;
+	I_BufferLineEmpty : ARRAY[0..2] OF BOOL;
+	BufferEmpty : ARRAY[0..2] OF BOOL;
+	BufferEmptyET : ARRAY[0..2] OF UDINT;
+	myZone : INT;
+	BagsArrived : BOOL;
+	OpenStopTime : UDINT;
+	OpenStop : BOOL;
+	OpenStopET : UDINT;
+	BagsReleased : BOOL;
+	BagsReleasedET : UDINT;
+END_VAR

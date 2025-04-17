@@ -1,0 +1,137 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;--------------------------------------------
+;Sequence 8 - SVC1 Vertical conveyor 1 D[908]
+;--------------------------------------------
+
+
+;Inputs
+I_CarriageAtTop			= X[3].X13
+I_CarriageAtBottom		= X[3].X14
+I_BagOnCarriage			= X[3].X15
+I_BagAtBuffer			= X[3].X16
+
+O_MoveUp 				= FALSE
+O_MoveDown 				= FALSE
+O_OpenStop 				= FALSE
+O_OpenBufferStop		= FALSE
+
+;Setup Sequence
+;-----------------------
+STEP = D[912]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+IF (STEP = 7) AND I_BagOnCarriage THEN
+	D[912]  = 97
+ENDIF
+;Alarm
+;TON_10ms(((NOT PLS) AND ((STEP = 2) OR (STEP = 3) OR (STEP = 6))),3000,Alarm[12],AlarmET[12])
+
+;Wait for Empty bag to be ready
+TON_10ms(I_BagAtBuffer,300,EBagReady,EBagReadyET)
+IF (STEP = 1) THEN
+	IF EBagReady THEN
+		D[912] = 2
+	ENDIF
+ENDIF
+
+;Wait for bag on carriage
+IF (STEP = 2) THEN
+	O_OpenBufferStop = (I_CarriageAtTop AND (NOT I_BagOnCarriage))
+	IF I_BagOnCarriage THEN
+		D[912] = 3
+	ENDIF
+ENDIF
+
+;Wait for bag to settle on carriage
+TON_10ms(((STEP = 3) AND I_BagOnCarriage),300,BagSettled,BagSettledET)
+IF (STEP = 3) THEN
+	IF BagSettled THEN
+		D[912] = 4
+	ENDIF
+ENDIF
+
+;Move Carriage down to bottom
+IF (STEP = 4) THEN
+	O_MoveDown = (NOT I_CarriageAtBottom)
+	IF I_CarriageAtBottom THEN
+		D[912] = 5
+	ENDIF
+ENDIF
+
+;Check if space available
+;TON_10ms(((NOT Y711) AND (NOT X712)),200,SpaceEmpty,SpaceEmptyET)
+IF (STEP = 5) THEN
+	IF Enable.SVC2 THEN
+		D[912] = 6
+	ENDIF
+ENDIF
+
+;Open stop, let bag in buffer
+IF (STEP = 6) THEN
+	O_OpenStop = I_CarriageAtBottom
+	;IF PLS THEN
+	;	C[20] = 0
+	;ENDIF
+	IF NOT Enable.SVC2 THEN
+		D[912] = 7
+	ENDIF
+ENDIF
+
+;Move Carriage up to top
+IF (STEP = 7) THEN
+	O_MoveUp = (NOT I_CarriageAtTop)
+	IF I_CarriageAtTop THEN
+		D[912] = 1
+	ENDIF
+ENDIF
+
+;Inverter Speed Selections
+;-------------------------
+;High Speed Used For Up		= 60Hz
+;Medium Speed Used For Down	= 60Hz
+
+TON_10ms(O_MoveUp  ,920,HighSpeedUp,HighSpeedUpET) 	;Expected 16.94 seconds @ 591mm/sec
+TON_10ms(O_MoveDown,900,HighSpeedDn,HighSpeedDnET) 		;Expected 16.94 seconds @ 591mm/sec
+IF (STEP = 4) THEN
+	Y[9].Y03 = (NOT HighSpeedDn) 							;High Speed
+	Y[9].Y04 = FALSE										;Medium Speed
+ELSE IF (STEP = 7) THEN
+	Y[9].Y03 = FALSE										;High Speed
+	Y[9].Y04 = (NOT HighSpeedUp)							;Medium Speed
+ELSE
+	Y[9].Y03 = FALSE
+	Y[9].Y04 = FALSE
+ENDIF
+
+;Outputs
+;-------
+Y[10].Y05 = O_MoveUp
+Y[10].Y06 = O_MoveDown
+Y[10].Y07 = (O_MoveUp OR O_MoveDown)
+Y[10].Y08 = O_OpenStop
+Y[3].Y16 = O_OpenBufferStop
+
+;Inverter Parameters
+;2	Min Freq			20Hz
+;4	High Speed			60Hz
+;5	Medium Speed		60Hz
+;7  Acceleration Time	0.5sec
+;8  Deceleration Time	0.5sec
+;9  Electronic O/L		5.00A
+;10	DC Injection freq	7Hz
+;11 DC Injection Time	1sec
+;12	DC Brake Voltage	14%
+;13	Starting freq		20Hz
+;30	Regenerative fun	1
+;42	Output freq detect	0.5Hz
+;70	Brake duty			5%
+;79 Operation mode		3
+;80 Motor capicity 		1.5Kw
+;83	Rated motor voltage	400v
+;84	Rated motor freq	50Hz
+END_PROGRAM
+

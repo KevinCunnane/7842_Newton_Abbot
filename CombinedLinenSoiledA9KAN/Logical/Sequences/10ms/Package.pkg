@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="Program" Language="IEC" Description="*Search for ongoing lines using SLAC looking at last bag in transit">zzPrimSearch</Object>
+    <Object Type="Program" Language="IEC">zzStnSer</Object>
+    <Object Type="Program" Language="IEC" Description="Counting frames inputs &amp; Piece Weights">zzCount</Object>
+    <Object Type="Program" Language="IEC" Description="* Station mixing Customer and Categories">zzStnMix</Object>
+    <Object Type="Program" Language="IEC" Description="* System status">zzStatus</Object>
+    <Object Type="Program" Language="IEC" Description="* Honeycombe Stations 1 - 16 - GREEN LAMPS">1_stnsa</Object>
+    <Object Type="Program" Language="IEC" Description="* STB1 Transfer Belt 1">2_belt1</Object>
+    <Object Type="Program" Language="IEC" Description="* Loading unit SLU1">3_slu_1</Object>
+    <Object Type="Program" Language="IEC" Description="* Soiled Low  Ongoing Transfer Lines 1 - 6">4_spn1</Object>
+    <Object Type="Program" Language="IEC" Description="* Soiled Offgoing Transfer Lines 1 - 10">5_spf1</Object>
+    <Object Type="Program" Language="IEC" Description="* SDC1 Machine 1 BCD/CAN">6_sdc1</Object>
+    <Object Type="Program" Language="IEC" Description="* SDC1 Machine 1 BCD/CAN">7_sdc2</Object>
+    <Object Type="Program" Language="IEC" Description="* SVC1 Inverter VC">8_svc1</Object>
+    <Object Type="Program" Language="IEC" Description="* SPC1 Empty bags up">9_sic1</Object>
+    <Object Type="Program" Language="IEC" Description="* SBSN1 Bagstacker Ongoing ">10_bson</Object>
+    <Object Type="Program" Language="IEC" Description="* SBSF1 Bagstacker Offgoing">11_bsoff</Object>
+    <Object Type="Program" Language="IEC" Description="* SVC2 2-level - Inverter">12_svc2</Object>
+    <Object Type="Program" Language="IEC" Description="Weight ">zzAI2744</Object>
+    <Object Type="Program" Language="IEC" Description="*Speed Reducers">ssr_sortbelt</Object>
+    <Object Type="Program" Language="IEC" Description="* Indication pictures on graphics">zzIndi</Object>
+    <Object Type="Program" Language="IEC" Description="* TCP IP Communications For Driver V5.0 and above">zzTCPIP</Object>
+    <Object Type="Program" Language="IEC" Description="* PLC Output forcing from graphics">zzForceO</Object>
+    <Object Type="Program" Language="IEC" Description="* PLC Inputs and Outputs to Graphics">zzIO</Object>
+    <Object Type="Program" Language="IEC" Description="* PLC Status to Graphics">zzOk</Object>
+  </Objects>
+</Package>

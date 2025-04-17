@@ -1,0 +1,52 @@
+VAR
+	I_CarrAtTop : BOOL;
+	I_CarrAtBottom : BOOL;
+END_VAR
+VAR RETAIN
+	STEP : UINT;
+END_VAR
+VAR
+	PLS : BOOL;
+END_VAR
+VAR RETAIN
+	LASTSTEP : UINT;
+END_VAR
+VAR
+	O_MoveCarrUp : BOOL;
+	O_OpenCarrStop : BOOL;
+	O_MoveCarrDown : BOOL;
+	I_BagOnCarr : BOOL;
+	Speed1 : BOOL;
+	MoveDownToBot : BOOL;
+	Speed2 : BOOL;
+	O_SelectSP1 : BOOL;
+	MoveUpToFullOut : BOOL;
+	I_BagReleased : BOOL;
+	TimerAlarm : TON_10ms;
+	I_CarrAtEBagOut : BOOL;
+	O_SelectPoint : BOOL;
+	O_OpenFullBuffer : BOOL;
+	HighSpeedDone : BOOL;
+	HighSpeedTime : UDINT;
+	TONHighSpeed : TON_10ms;
+	MoveDownEBagIn : BOOL;
+	HighSpeedDoneET : TIME;
+	SettledAtBuffer : BOOL;
+	SettledAtBufferET : TIME;
+	I_CarriageAtTop : BOOL;
+	I_CarriageAtBottom : BOOL;
+	I_BagOnCarriage : BOOL;
+	I_BagAtBuffer : BOOL;
+	O_MoveUp : BOOL;
+	O_MoveDown : BOOL;
+	O_OpenStop : BOOL;
+	O_OpenBufferStop : BOOL;
+	EBagReady : BOOL;
+	EBagReadyET : UDINT;
+	BagSettled : BOOL;
+	BagSettledET : UDINT;
+	HighSpeedUp : BOOL;
+	HighSpeedUpET : UDINT;
+	HighSpeedDn : BOOL;
+	HighSpeedDnET : UDINT;
+END_VAR

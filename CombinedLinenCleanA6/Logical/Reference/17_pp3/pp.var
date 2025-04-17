@@ -1,0 +1,50 @@
+VAR
+	BagValid : BOOL;
+	DestValid : BOOL;
+	I_BagAtSep : BOOL;
+	I_BagReleased : BOOL;
+END_VAR
+VAR RETAIN
+	LASTSTEP : UINT;
+END_VAR
+VAR
+	myBag : UINT;
+	myDest : USINT;
+	myIC : USINT;
+	myIO : UINT;
+	mySeq : UINT;
+	O_OpenSep : BOOL;
+	O_Select : ARRAY[0..9] OF BOOL;
+END_VAR
+VAR RETAIN
+	PLS : BOOL;
+END_VAR
+VAR
+	PointsReset : BOOL;
+	PointsResetET : UDINT;
+END_VAR
+VAR RETAIN
+	myPrevIC : USINT;
+END_VAR
+VAR
+	ResetPoints : BOOL;
+	SettledAtSep : BOOL;
+	SettledAtSepET : UDINT;
+END_VAR
+VAR RETAIN
+	STEP : UINT;
+END_VAR
+VAR
+	TimerAlarm : TON_10ms;
+	BagReleased : BOOL;
+	myZone : INT;
+	myICBufferBag : ARRAY[0..5] OF UINT;
+	I_InclineBufferClear : ARRAY[0..5] OF BOOL;
+	ReleaseValid : BOOL;
+	InclineClear : BOOL;
+	I_BagInSep : BOOL;
+	BagInSep : BOOL;
+	SettledInSep : BOOL;
+	SettledInSepET : UDINT;
+	I_BagArriveIC : ARRAY[0..5] OF BOOL;
+END_VAR

@@ -1,0 +1,145 @@
+PROGRAM _CYCLIC
+(* cyclic program *)
+
+;----------------------------------------
+;Sequence 14 - Ongoing Bag Stacker D[910]
+;----------------------------------------
+
+;Inputs
+I_BagatBuffer       = X[2].X10
+
+O_Reset = FALSE
+O_OpenBuffer = FALSE
+O_SelectLine13_1 = FALSE
+O_SelectLine14_1 = FALSE
+O_SelectLine15_1 = FALSE
+O_SelectLine16_1 = FALSE
+O_SelectLine16_2 = FALSE
+
+mySeq				= 25	;Sequence number
+
+
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 54
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+;Setup Sequence
+;-----------------------
+STEP = D[925]
+
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND ((STEP = 3) OR (STEP = 4) OR (STEP = 8))),6000,Alarm[10],AlarmET[10])
+
+IF (STEP = 0) THEN
+	;Do Nothing
+ENDIF
+
+;Reset Points
+TON_10ms((STEP = 1),250,Reset,ResetET)
+IF (STEP = 1) THEN
+	O_Reset = TRUE
+
+    Destination = 0
+	IF Reset THEN
+		D[925] = 2
+	ENDIF
+ENDIF
+
+;Wait for bag at buffer stop
+TON_10ms(I_BagatBuffer,300,BagSettledBuffer,BagSettledBufferET)
+IF (STEP = 2) THEN
+	;Allocate Destination to Bag
+	IF (Bag[54].Dst > 0) AND (Bag[54].Cat > 0) THEN
+		Destination = Bag[54].Dst
+	ENDIF
+	IF (Bag[54].Dst = 0)AND (Bag[54].Cat > 0) THEN
+		IF (Line[D[3000+Bag[54].Cat]].SpaceBIT>0) AND (D[D[3000+Bag[54].Cat] +10] > 0)    THEN
+			Bag[54].Dst = USINT(D[3000+Bag[54].Cat])
+		ELSE IF (Line[D[3100+Bag[54].Cat]].SpaceBIT>0) AND (D[D[3100+Bag[54].Cat] +10] > 0)THEN
+			Bag[54].Dst = USINT(D[3100+Bag[54].Cat])
+		ENDIF
+	ENDIF
+		IF ((BagSettledBuffer) AND (Bag[54].Cat > 0) AND (Bag[54].Dst > 0))THEN
+			
+			D[925] = 3
+		ENDIF
+	//ENDIF
+ENDIF
+
+
+;Enable requesting discharger to send a bag
+IF (STEP = 3) THEN
+	IF (Bag[54].Dst = 7) THEN
+		IF ((Bag[66].Cat = 0) AND (Line[7].Clear)) THEN
+            C[7] 	= 0
+            
+			D[925] 	= 4
+		ENDIF
+	ELSE IF ((Bag[54].Dst > 0) AND (Bag[54].Dst <= 8) AND (Bag[54].Dst <> 7)) THEN
+		IF ((Bag[52].Cat = 0) AND (Line[16].Clear)) THEN
+            C[16] 	= 0
+            D[40]	= 1
+			D[925] 	= 5
+		ENDIF
+	ENDIF
+ENDIF
+
+
+;Send bag to CDC7 Line
+IF (STEP = 4) THEN
+	//IF (D[40] = 2) THEN
+		O_OpenBuffer = TRUE
+        O_SelectLine16_2 = TRUE
+		IF (Line[7].Full) THEN
+			IF (Bag[54].Cat>0) AND (Bag[66].Cat=0) THEN
+				Bag[66] = Bag[54]
+				Bag[54] = Bag[0]
+				Bag[66].Dst = 0
+			ENDIF
+        // E[329] = 0	;Clear Dest
+		//	BAGMOVE2(TRUE,mem_adr_E,54,66,BagSpacing)
+         Line[7].SpaceBIT = (Line[7].SpaceBIT - 1)
+		D[925] = 1
+		ENDIF
+	Alarm[mySeq].Name = almBagNotReleased
+ENDIF
+
+
+;Send bag to CP13 Line
+IF (STEP = 5) THEN
+	//IF (D[40] = 1) THEN
+		O_OpenBuffer = TRUE
+		IF (Line[16].Full) THEN
+		//	BAGMOVE2(TRUE,mem_adr_E,54,52,BagSpacing)
+			IF (Bag[54].Cat>0) AND (Bag[52].Cat=0) THEN
+				Bag[52] = Bag[54]
+				Bag[54] = Bag[0]
+			ENDIF
+		D[925] = 1
+		ENDIF
+	Alarm[mySeq].Name =  almBagNotReleased
+ENDIF
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+
+
+
+
+
+Y[7].Y11 = O_Reset
+
+Y[2].Y10 = O_OpenBuffer
+Y[7].Y10 = O_SelectLine16_2
+
+
+END_PROGRAM
+

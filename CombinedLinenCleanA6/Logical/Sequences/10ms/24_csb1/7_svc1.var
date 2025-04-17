@@ -1,0 +1,63 @@
+VAR RETAIN
+	STEP : UINT;
+END_VAR
+VAR
+	PLS : BOOL;
+END_VAR
+VAR RETAIN
+	LASTSTEP : UINT;
+END_VAR
+VAR
+	I_CarrAtTop : BOOL;
+	I_BagOnCarr : BOOL;
+	I_CarrAtBottom : BOOL;
+	O_OpenCarrStop : BOOL;
+	O_MoveCarrDown : BOOL;
+	O_MoveCarrUp : BOOL;
+	BagSettled : BOOL;
+	O_OpenBufferStop : BOOL;
+	BagAtBuffer : BOOL;
+	MoveUpToFullOut : BOOL;
+	MoveDownToBot : BOOL;
+	Status : UINT;
+	HighSpeedDoneET : TIME;
+	I_BagBagReleased : BOOL;
+	TONHighSpeed : TON_10ms;
+	TimerAlarm : TON_10ms;
+	HighSpeedTime : UINT;
+	HighSpeedDone : BOOL;
+	BagAtBufferET : TIME;
+	I_BagAtBufferStop : BOOL;
+	MoveDownEBagIn : BOOL;
+	DDDDDD : BOOL;
+	BagSettledET : TIME;
+	I_CarriageAtTop : BOOL;
+	I_CarriageAtBottom : BOOL;
+	I_BagOnCarriage : BOOL;
+	I_BagReleased : BOOL;
+	O_MoveUp : BOOL;
+	O_MoveDown : BOOL;
+	O_OpenStop : BOOL;
+	SettledOnCarriage : BOOL;
+	SettledOnCarriageET : UDINT;
+	E : BOOL;
+	HighSpeedUp : BOOL;
+	HighSpeedUpET : UDINT;
+	HighSpeedDn : BOOL;
+	HighSpeedDnET : UDINT;
+	I_OpenBag : BOOL;
+	I_DischBagOpened : BOOL;
+	O_BagReady : BOOL;
+	O_OpenCatch : BOOL;
+	O_OpenBag : BOOL;
+	O_CloseBag : BOOL;
+	TopBagOpen : BOOL;
+	TopBagOpenET : UDINT;
+	OpenCatch : BOOL;
+	BagClear : BOOL;
+	MinOpen : BOOL;
+	MinOpenET : UDINT;
+	CloserDown : BOOL;
+	CloserDownET : UDINT;
+	mySeq : INT;
+END_VAR

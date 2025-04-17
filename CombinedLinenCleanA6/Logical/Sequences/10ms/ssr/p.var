@@ -1,0 +1,19 @@
+VAR
+	myHaltSys : BOOL;
+	O_CloseBrush : ARRAY[0..5] OF BOOL;
+	I_BagApproach : ARRAY[0..5] OF BOOL;
+	TON_OpenBrush : ARRAY[0..5] OF TON_10ms;
+	n : USINT;
+	myZone : INT;
+	SettledAtSep : BOOL;
+	O_OpenSep : BOOL;
+	CloseSep : BOOL;
+	I_BagAtRollerRockerBeforePDS1 : BOOL;
+	SettledAtSepET : UDINT;
+	CloseSepET : UDINT;
+	I_BagAtBottom : BOOL;
+	PR3_LineClear : BOOL;
+	PR3_LineClearET : UDINT;
+	PR4_LineClear : BOOL;
+	PR4_LineClearET : UDINT;
+END_VAR

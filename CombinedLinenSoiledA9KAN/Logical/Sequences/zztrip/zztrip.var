@@ -1,0 +1,7 @@
+VAR
+	CountOld	:ARRAY [0..49] OF UINT;	
+	TripPLS	:ARRAY [0..49] OF R_TRIG;	
+	Timer	:ARRAY [0..49] OF TON_10ms;	
+	CountTrip	:ARRAY [0..49] OF BOOL;	
+	n	:UINT;	
+END_VAR

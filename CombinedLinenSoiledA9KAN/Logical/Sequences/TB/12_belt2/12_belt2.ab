@@ -1,0 +1,254 @@
+PROGRAM _CYCLIC
+ 	(* cyclic program *)
+
+;Sequence 2 - Transfer Belt 1 from Stations 1-20
+
+;-----------------------------------------
+;Revision 1.00 18/01/2006 D.J. First Issue
+;-----------------------------------------
+
+;Inputs and Outputs
+;------------------
+
+Bank 						= 2
+
+I_Started					= (D[2] > 0)
+I_PhotoBottom 				= FALSE ;X[8].X15
+I_PhotoTop   				= FALSE ;X[8].X15
+
+Request.TransferBelt[Bank]	= FALSE
+
+O_RunBelt 					= FALSE
+
+Alarm[12].Name 				= 0
+Alarm[12].Bag				= 242
+Alarm[12].Beacon			= TRUE
+Alarm[12].Extra				= 0
+Alarm[12].Time				= 5000
+
+n = D[911] ;Selected Station
+
+STEP = D[912]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Step 0 - Disabled
+IF STEP = 0 THEN
+	;Disabled
+ENDIF
+
+;Step 1 - Check no stations are releasing
+IF STEP = 1 THEN
+	;Don't allow stations to release
+	Ldg[Bank].EnableStnRelease = FALSE
+	;No Station Releaseng and switched on
+	IF ((D[911] = 0) AND I_Started) THEN
+		IF (Bag[242].Cat = 0) THEN
+			D[912] = 2 ;No Bag on belt
+		ELSE
+			D[912] = 4 ;Bag on belt
+		ENDIF
+	ENDIF
+	Alarm[12].Name = almNoAlarm
+ENDIF
+
+;Step 2 - Enable Station search
+IF STEP = 2 THEN
+
+	;Check each station to see if a manual destination has been set
+	LOOP n = Ldg[Bank].StartStn TO Ldg[Bank].EndStn DO
+
+		StnBag = n + (Std.StationBagsStart[Bank] - 1)
+
+		IF ((Bag[StnBag].Dst > 0) AND (Bag[StnBag].Dst < 99) AND I_Started) THEN ;Dest 99 = Empty Bag in station
+			Stn[n].DestManual = Bag[StnBag].Dst
+		ELSE
+			Stn[n].DestManual = 0
+		ENDIF
+		;For pairing set number of spaces to search for
+		Stn[n].SpacesRequired = 0 ;D[2000 + Bag[StnBag].Prg]
+
+	ENDLOOP
+
+	;Station Search
+	IF ((Ldg[Bank].Search = 0) AND I_Started AND NOT Std.EStop) THEN
+		Ldg[Bank].Search = 1
+	ELSE IF ((Ldg[Bank].Search = 2) AND (Ldg[Bank].Found > 0))  THEN
+
+		D[911] 	= Ldg[Bank].Found
+		n 		= D[911]
+
+		StnBag 	= n + (Std.StationBagsStart[Bank] - 1)
+
+		;Clear the release button count if used
+		Stn[n].ManualRelease 	= FALSE
+		Stn[n].PBCount 			= 0
+
+		;------Write Report------
+		IF Std.StationReports  THEN
+
+			IF (ReportLoading[n].Cat = 0) THEN
+
+				;Check if anything has been added and current weight is not less than the previous
+				WeightValue = Stn[n].Weight - INT(StnPrev[n].Wgt)
+				WeightValid = (WeightValue > 0)
+
+				;Check if anything has been added and current weight is not less than the previous
+				CountValue = Stn[n].Count - INT(StnPrev[n].Cnt)
+				CountValid = (CountValue > 0)
+
+				IF (WeightValid OR CountValid) THEN
+
+					;Ensure valid values as we report on either a weight or count change
+					IF (WeightValue < 0) THEN
+						WeightValue = 0
+					ENDIF
+
+					IF (CountValue < 0) THEN
+						CountValue = 0
+					ENDIF
+					
+					ReportLoading[n].Prg = Bag[StnBag].Prg 			;Program
+					ReportLoading[n].Cat = Bag[StnBag].Cat			;Category
+					ReportLoading[n].Cus = Bag[StnBag].Cus			;Customer
+					ReportLoading[n].Wgt = UINT(WeightValue)		;Weight
+					ReportLoading[n].Cnt = UINT(CountValue)			;Count
+					ReportLoading[n].Stn = n         				;Station
+					ReportLoading[n].Mcn = 0						;Machine
+					ReportLoading[n].Bid = Bag[StnBag].Bid			;Batch ID
+				ENDIF
+
+			ENDIF
+
+		ENDIF
+
+		;Set Previous Cat and Cus to Current and Clear Weight and Count
+		StnPrev[n].Prg 	= Bag[StnBag].Prg
+		StnPrev[n].Cat 	= Bag[StnBag].Cat
+		StnPrev[n].Cus 	= Bag[StnBag].Cus
+		StnPrev[n].Wgt 	= 0
+		StnPrev[n].Cnt 	= 0
+		StnPrev[n].Bid 	= Bag[StnBag].Bid
+
+		;Copy Station Data to Belt Bag
+		Bag[242] 		= Bag[StnBag]			;Copy complete bag data
+		Bag[242].Dst 	= USINT(Ldg[Bank].Line)	;Destination
+		Bag[StnBag].Dst = 0 					;Reset Destination (Manual)
+
+		;Clear Manual Release and Count
+		Stn[n].ManualRelease 	= FALSE
+		Stn[n].Count			= 0
+
+		;If Stations are too close to the loading unit then jump to wait for loading unit
+		IF (n >= 1) AND (n <= 4) THEN
+			D[912] = 6
+		ELSE
+			BeltAddTime = (D[911] / 2)
+			Ldg[Bank].EnableStnRelease = TRUE
+			D[912] = 3
+		ENDIF
+
+		Alarm[12].Name = almNoAlarm
+
+	ENDIF
+ELSE
+	Ldg[Bank].Search  	= 0 ;Clear Search if not on step 2
+ENDIF
+
+;Step 3
+;Open Bag and Release to Belt Conveyor
+IF STEP = 3 THEN
+	O_RunBelt  = TRUE
+	IF (I_PhotoBottom OR I_PhotoTop	OR Test.TransferBelt) THEN
+		D[912] = 4
+	ENDIF
+	Alarm[12].Name = almPhotocellNotMade
+ENDIF
+
+;Step 4 - Skipped
+IF STEP = 4 THEN
+	O_RunBelt = TRUE
+	D[912] = 5
+	Alarm[12].Name = almNoAlarm
+ENDIF
+
+;Step 5 - Run belt until top photocell is made.
+IF STEP = 5 THEN
+	O_RunBelt = TRUE
+	IF I_PhotoTop OR Test.TransferBelt THEN
+		D[912] = 6
+	ENDIF
+	Alarm[12].Name = almPhotocellNotMade
+ENDIF
+
+;Step 6 - Wait for loading unit ready
+TON_10ms((STEP = 6),10,RunBelt,Step6ET)
+IF STEP = 6 THEN
+	O_RunBelt = (NOT RunBelt AND Ldg[Bank].EnableStnRelease)
+	IF Enable.TransferBelt[Bank] THEN
+		D[912] = 7
+	ENDIF
+ENDIF
+
+;Step 7 - Run Belt until linen detected for 1 second and Station has emptied
+TON_10ms(((STEP = 7) AND I_PhotoTop),100,LinenDetected,LinenDetectedET)
+IF STEP = 7 THEN
+	O_RunBelt = TRUE
+	Ldg[Bank].EnableStnRelease = TRUE ;Enable Station to Open bags if they haven't been already
+	IF (LinenDetected OR Test.TransferBelt) THEN
+		D[912] = 8
+	ENDIF
+	Alarm[12].Name = almPhotocellNotMade
+ENDIF
+
+;Step 8 - Run Belt until photocells clear for 5 seconds
+TON_10ms(((STEP = 8) AND NOT I_PhotoBottom AND NOT I_PhotoTop AND NOT Std.EStop),500,BeltClear,BeltClearET)
+IF STEP = 8 THEN
+	O_RunBelt = TRUE
+	IF (BeltClear AND MinBeltRun AND (D[911] = 0)) THEN
+		D[912] = 9
+	ENDIF
+	IF NOT Std.EStop THEN
+		IF I_PhotoBottom OR I_PhotoTop THEN
+			Alarm[12].Name = almPhotocellBlocked
+		ELSE IF (D[911] <> 0) THEN
+			Alarm[12].Name = almStationNotClosed
+		ELSE IF NOT MinBeltRun THEN
+			Alarm[12].Name = almClearingBeltPleaseWait
+		ENDIF
+	ENDIF
+ENDIF
+
+;Note - Unitl the Station has closed the min belt run time won't start
+;Note - Speed for Horozintal belt = 45m/min and Inclined 55m/min
+BeltRunTime = (10 + BeltAddTime)
+CTU((O_RunBelt AND Std.Clock1s AND (D[911] = 0) AND NOT Std.EStop),(STEP = 1),BeltRunTime,MinBeltRun,MinBeltRunCV)
+
+;Step 9 - Check Stations Are Closed
+IF STEP = 9 THEN
+	;Move Belt bag to loading unit
+	IF PLS AND ((Bag[244].Cat = 0) AND (Bag[242].Cat > 0)) THEN 
+		Bag[244] = Bag[242]
+		Bag[242] = Bag[0]
+	ENDIF
+	IF (D[911] = 0) THEN
+		D[912] = 1
+	ENDIF
+	Alarm[12].Name = almStationNotClosed
+ENDIF
+
+;Alarms
+TimerAlarm.IN = NOT PLS AND (Alarm[12].Name > 0)
+TimerAlarm.PT = Alarm[12].Time
+TimerAlarm FUB TON_10ms()
+Alarm[12].On = TimerAlarm.Q
+Alarm[12].ET = TimerAlarm.ET
+
+;Outputs
+;Inform Station Sequences that the belt has been
+Ldg[Bank].BeltHasRun = ((D[912] > 3) AND Ldg[Bank].EnableStnRelease)
+
+Y[85].Y07 = O_RunBelt
+END_PROGRAM
+

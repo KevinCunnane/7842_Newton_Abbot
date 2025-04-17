@@ -1,0 +1,116 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;Sequence 30 - Primary Incline Conveyor 4 D[900 + mySeq]
+;Special incline - Only use 1 bag at time to store as buffer.
+;-----------------------------------------
+;Revision 1.00 17/04/2007 D.J. First Issue
+;-----------------------------------------
+mySeq 	= 35
+myIO	= 176	
+myIC 	= 6	
+myZone	= 0	
+	
+I_PaddleInPosition		= X[myIO].X01
+I_BagAtSep              = X[myIO].X03
+I_BagArriveIncline		= X[myIO].X04	
+I_BagInSep				= X[myIO].X02
+I_BagReleased			= X[myIO].X05
+	
+
+O_RunMotor 				= FALSE
+O_OpenSeparator			= FALSE
+RequestRel.IC[myIC]		= FALSE
+
+;Setup Sequence
+;-----------------------
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+
+IF (STEP = 0) THEN
+;	D[900 + mySeq] = 1
+ENDIF
+
+;Run Incline until paddle in position
+IF (STEP = 1) THEN
+	O_RunMotor = TRUE
+	IF I_PaddleInPosition AND NOT I_BagAtTopIncline THEN
+		D[900 + mySeq] = 2
+	ELSE IF I_BagAtTopIncline THEN
+		Alarm[mySeq].Name = almSwitchFault		
+	ENDIF
+ENDIF
+
+;Step 2 wait for trolley at sep
+TON_10ms(I_BagAtSep,200,SettledSep,SettledSepET)	
+	IF (STEP = 2) THEN
+		IF SettledSep THEN
+		D[900 + mySeq] = 3	
+	ENDIF	
+ENDIF
+		
+;Open Separator 1.5 seconds
+TON_10ms(I_BagInSep,150,SettledInSep,SettledInSepET)	
+IF (STEP = 3) THEN
+	IF SettledInSep THEN
+		BagInSep = TRUE
+	ENDIF		
+	O_OpenSeparator = NOT BagInSep
+	IF I_BagArriveIncline THEN
+		D[900 + mySeq] = 4
+	ENDIF
+	IF NOT Std.HaltSysZone[myZone] THEN
+		Alarm[mySeq].Name = almBagNotArrived
+	ENDIF
+ELSE
+	BagInSep = FALSE		
+ENDIF
+	
+;Step 4 Run incline until trolley is at the top	
+IF (STEP = 4) THEN	
+;	O_RunMotor = NOT EnableRel.IC[myIC]
+;	IF I_BagAtTopIncline THEN	
+	IF NOT EnableRel.IC[myIC] THEN
+		D[900 + mySeq] = 5	
+	ENDIF
+;	ENDIF
+;	IF EnableRel.IC[myIC] THEN
+;		Alarm[mySeq].Name = almGeneralSequence
+;	ENDIF		
+ENDIF	
+	
+;Step 5 RequestRel 	
+IF (STEP = 5) THEN 	
+	RequestRel.IC[myIC] = NOT I_BagReleased
+	IF EnableRel.IC[myIC] THEN	
+		D[900 + mySeq] = 6
+	ENDIF	
+	IF  I_BagReleased AND NOT Std.HaltSysZone[myZone] THEN
+		Alarm[mySeq].Name = almSwitchFault			
+	ENDIF		
+ENDIF
+		
+;Step 6 Run To Release trolley	
+IF (STEP = 6) THEN	
+	O_RunMotor = TRUE
+	IF (I_BagReleased OR NOT EnableRel.IC[myIC]) THEN	
+		D[900 + mySeq] = 7
+	ENDIF
+			
+ENDIF		
+	
+;Check not stpped on paddle
+IF (STEP = 7) THEN
+	O_RunMotor = TRUE
+	IF NOT I_PaddleInPosition THEN
+		D[900 + mySeq] = 1
+	ENDIF
+ENDIF
+
+Y[34].Y01		= O_RunMotor
+Y[myIO].Y06 	= O_OpenSeparator
+END_PROGRAM
+

@@ -1,0 +1,14 @@
+(********************************************************************
+ * COPYRIGHT -- Herbert Kannegiesser GmbH
+ ********************************************************************
+ * File: hlDFII.Glob.var
+ * Author: hunholz
+ * Created: January 12, 2012
+ ********************************************************************
+ * Global variables of project POWERTRANSplus
+ ********************************************************************)
+VAR CONSTANT
+	HLDFII_RUN_CLIENT : BOOL := TRUE;
+	HLDFII_IDX_CPCACHE_MAX : UINT := 99;
+	HLDFII_UDP_PORT_LOG4NET : UINT := 1009;
+END_VAR

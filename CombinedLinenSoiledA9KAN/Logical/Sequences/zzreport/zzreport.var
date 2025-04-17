@@ -1,0 +1,14 @@
+VAR RETAIN
+	ReportID	:UINT;	
+END_VAR
+
+
+VAR
+	n	:UINT;	
+	ReportPointer	:UINT;	
+	MaxReportBuffer	:UINT;	
+	MaxReportLoading	:UINT;	
+	MaxReportUnloading	:UINT;	
+	TestUnloadingCat	:UINT;	
+	AddUnloading	:BOOL;	
+END_VAR

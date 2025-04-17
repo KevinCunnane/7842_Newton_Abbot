@@ -1,0 +1,135 @@
+PROGRAM _INIT
+	(* init program *)
+
+
+Std.AutoMaticRelease   	= TRUE	;Set to TRUE for AutoMatic Release using setpoints. FALSE for Push-Button Release
+Std.StationReports  	= TRUE  ;Transfer reports to PC
+
+Std.PairingLoop   		= FALSE
+Std.CustomerFIFO		= TRUE	;Use Customer FIFO Table
+
+Std.MaxIO				= 39	;Max PLC I/O Cards - check X and Y array size
+
+Std.MaxCats           	= 99	;Max Categories - Should be 99 or less Max = 255
+Std.MaxCust           	= 999	;Max Customers
+Std.MaxDischargers    	= 2		;Total Dischargers
+Std.MaxLines          	= 11	    ;Max storage lines
+Std.MaxLinesBuffers   	= 18	;Storage lines + Buffers
+Std.MaxWeighstations  	= 16	    ;Total Weighstations
+Std.MaxStationBanks		= 1		;Total Banks of sorting Stations
+Std.MaxSearch			= 2    	;Include all station banks and Loading VC's etc
+Std.StationBagsStart[1]	= 201	;Bag Number of first bank of sorting stations
+Std.StationBagsStart[2] = 0 	;Bag Number of second bank of sorting stations
+Std.MinReleaseWeight  	= 30	;Include 10ths Norm 30
+
+Ldg[1].StartStn 		= 1 	;Bank 1 Start station number
+Ldg[1].EndStn			= 16	    ;Bank 1 End station number
+
+Ldg[2].StartStn 		= 0 	;Bank 2 Start station number
+Ldg[2].EndStn			= 0		;Bank 2 End station number
+
+;Enter the First and Last bag for all the Storage lines including buffers
+Line[1].FirstBag = 1
+Line[1].LastBag  = 5
+
+Line[2].FirstBag = 6
+Line[2].LastBag  = 10
+
+Line[3].FirstBag = 11
+Line[3].LastBag  = 13
+
+Line[4].FirstBag = 16
+Line[4].LastBag  = 20
+
+Line[5].FirstBag = 26
+Line[5].LastBag  = 29
+
+Line[6].FirstBag = 21
+Line[6].LastBag  = 24
+
+Line[7].FirstBag = 63  ;New line for cdc7
+Line[7].LastBag  = 66
+
+Line[8].FirstBag = 78  ;New line for cdc8
+Line[8].LastBag  = 81
+
+Line[9].FirstBag = 0
+Line[9].LastBag  = 0
+
+Line[10].FirstBag = 70  ;Part of line 1
+Line[10].LastBag  = 72
+
+Line[11].FirstBag = 75  ;Part of line 4
+Line[11].LastBag  = 77
+
+Line[12].FirstBag = 0
+Line[12].LastBag  = 0
+
+Line[13].FirstBag = 0
+Line[13].LastBag  = 0
+
+Line[14].FirstBag = 0
+Line[14].LastBag  = 0
+
+Line[15].FirstBag = 0
+Line[15].LastBag  = 0
+
+Line[16].FirstBag = 51
+Line[16].LastBag  = 52
+
+Line[17].FirstBag = 38
+Line[17].LastBag  = 38
+
+Line[18].FirstBag = 53    ;New line for CP16
+Line[18].LastBag  = 53
+
+
+Line[19].FirstBag = 0
+Line[19].LastBag  = 0
+
+Line[20].FirstBag = 0
+Line[20].LastBag  = 0
+
+Line[21].FirstBag = 227
+Line[21].LastBag  = 227
+
+Line[22].FirstBag = 229
+Line[22].LastBag  = 230
+
+Line[23].FirstBag = 0
+Line[23].LastBag  = 0
+
+Line[24].FirstBag = 0
+Line[24].LastBag  = 0
+
+Line[25].FirstBag = 0
+Line[25].LastBag  = 0
+
+Line[26].FirstBag = 0
+Line[26].LastBag  = 0
+
+Line[27].FirstBag = 0
+Line[27].LastBag  = 0
+
+Line[28].FirstBag = 0
+Line[28].LastBag  = 0
+
+Line[29].FirstBag = 0
+Line[29].LastBag  = 0
+
+Line[30].FirstBag = 0
+Line[30].LastBag  = 0
+
+Line[31].FirstBag = 0
+Line[31].LastBag  = 0
+
+Line[32].FirstBag = 0
+Line[32].LastBag  = 0
+
+Line[33].FirstBag = 0
+Line[33].LastBag  = 0
+
+Line[34].FirstBag = 0
+Line[34].LastBag  = 0
+END_PROGRAM
+

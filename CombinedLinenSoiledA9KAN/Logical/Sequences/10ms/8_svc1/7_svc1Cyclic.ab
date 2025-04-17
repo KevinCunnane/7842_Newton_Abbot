@@ -1,0 +1,159 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+DDDDDD
+
+
+I_CarriageAtTop			= X[3].X09
+I_CarriageAtBottom		= X[3].X10
+I_BagOnCarriage			= X[3].X11
+I_BagReleased 			= X[3].X12
+
+O_MoveUp 				= FALSE
+O_MoveDown 				= FALSE
+O_OpenStop 				= FALSE
+
+Request.SVC[1] 			= FALSE
+Enable.SLU1	 			= FALSE
+
+;Setup Sequence
+;-----------------------
+STEP = D[908]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+Alarm[4].Name 		= 0
+Alarm[4].Bag		= 224
+Alarm[4].Beacon		= TRUE
+Alarm[4].Extra	 	= 0
+Alarm[4].Time		= 3000
+;Step 0 - Disabled
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+;Wait for bag on carriage
+IF (STEP = 1) THEN
+	Enable.SLU1 = (I_CarriageAtBottom AND (NOT I_BagOnCarriage))
+	IF I_BagOnCarriage THEN
+		;BAGMOVE2(I_BagOnCarriage,mem_adr_E,220,221,BagSpacing)
+			IF (Bag[220].Cat>0) AND (Bag[221].Cat=0) THEN
+						Bag[221] = Bag[220]
+						Bag[220] = Bag[0]
+			ENDIF
+		D[908] = 2
+	ENDIF
+ENDIF
+
+IF (STEP = 2) THEN
+	D[908] = 3
+ENDIF
+
+;Bag settles on carriage
+TON_10ms(I_BagOnCarriage,300,SettledOnCarriage,SettledOnCarriageET)
+IF (STEP = 3) THEN
+	IF SettledOnCarriage THEN
+		D[908] = 4
+	ENDIF
+ENDIF
+
+;Move carriage up to top
+IF (STEP = 4) THEN
+	O_MoveUp = (NOT I_CarriageAtTop)
+	IF I_CarriageAtTop THEN
+		D[908] = 5
+	ENDIF
+ENDIF
+
+;Check for space at SIC1 Buffer
+IF (STEP = 5) THEN
+	IF (Line[15].Clear AND NOT Y[5].Y14 AND (Bag[222].Cat = 0) AND (Bag[223].Cat = 0) AND NOT I_BagReleased) THEN
+		D[908] = 6
+	ENDIF
+ENDIF
+
+;Release bag, high-level
+IF (STEP = 6) THEN
+	O_OpenStop = I_CarriageAtTop
+	;BAGMOVE2(PLS,mem_adr_E,221,222,BagSpacing)
+	IF (Bag[221].Cat>0) AND (Bag[222].Cat=0) THEN
+						Bag[222] = Bag[221]
+						Bag[221] = Bag[0]
+			ENDIF
+	IF PLS THEN
+		C[15] = 0	;Reset Trip Count
+	ENDIF
+	
+	IF NOT PLS AND (C[15] > 0) THEN
+		D[908] = 7
+	ENDIF
+ENDIF
+
+;Move carriage down to Bottom
+IF (STEP = 7) THEN
+	IF I_BagOnCarriage THEN
+				D[908] = 0
+	ENDIF
+	O_MoveDown = (NOT I_CarriageAtBottom)
+	IF I_CarriageAtBottom THEN
+		D[908] = 1
+	ENDIF
+ENDIF
+
+;Bag in transit to SIC1 buffer
+IF ((Bag[222].Cat> 0) AND Line[15].Full) THEN
+	;BAGMOVE2(TRUE,mem_adr_E,222,223,BagSpacing)
+		IF (Bag[222].Cat>0) AND (Bag[223].Cat=0) THEN
+						Bag[223] = Bag[222]
+						Bag[222] = Bag[0]
+			ENDIF
+ENDIF
+
+
+;Inverter Speed Selections
+;-------------------------
+;High Speed Used For Up		= 60Hz
+;Medium Speed Used For Down	= 80Hz
+
+TON_10ms(O_MoveUp  ,1680,HighSpeedUp,HighSpeedUpET) 	;Expected 16.94 seconds @ 591mm/sec
+TON_10ms(O_MoveDown,1630,HighSpeedDn,HighSpeedDnET) 		;Expected 16.94 seconds @ 591mm/sec
+IF (STEP = 4) THEN
+	Y[9].Y01 = (NOT HighSpeedUp) 							;High Speed
+	Y[9].Y02 = FALSE										;Medium Speed
+ELSE IF (STEP = 7) THEN
+	Y[9].Y01 = FALSE										;High Speed
+	Y[9].Y02 = (NOT HighSpeedDn)							;Medium Speed
+ELSE
+	Y[9].Y01 = FALSE
+	Y[9].Y02 = FALSE
+ENDIF
+
+;PLC Outputs
+;-----------
+Y[10].Y01 = O_MoveUp
+Y[10].Y02 = O_MoveDown
+Y[10].Y03 = (O_MoveUp OR O_MoveDown)
+Y[10].Y04 = O_OpenStop
+
+
+;Inverter Parameters
+;2	Min Freq			20Hz
+;4	High Speed			60Hz
+;5	Medium Speed		80Hz
+;7  Acceleration Time	0.5sec
+;8  Deceleration Time	0.5sec
+;9  Electronic O/L		5.00A
+;10	DC Injection freq	7Hz
+;11 DC Injection Time	1sec
+;12	DC Brake Voltage	14%
+;13	Starting freq		20Hz
+;30	Regenerative fun	1
+;42	Output freq detect	0.5Hz
+;70	Brake duty			5%
+;79 Operation mode		3
+;80 Motor capicity 		1.5Kw
+;83	Rated motor voltage	400v
+;84	Rated motor freq	50Hz
+END_PROGRAM
+

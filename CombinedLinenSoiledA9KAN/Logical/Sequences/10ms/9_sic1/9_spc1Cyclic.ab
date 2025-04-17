@@ -1,0 +1,111 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;----------------------------------------------
+;Sequence 10 - SPC1 Pneumatic Conveyor 1 D[910]
+;----------------------------------------------
+
+;Inputs
+;Incline Conveyor
+;-----------------------------------------
+;Revision 1.00 09/01/2002 D.J. First Issue
+;-----------------------------------------
+
+I_PaddleinPosition		= X[5].X08
+I_BaginIncline			= X[5].X07
+I_BagatBuffer			= X[5].X10
+
+O_RunMotor 				= FALSE
+O_OpenBufferStop		= FALSE
+
+Request.SIC[1]			= FALSE
+
+;Setup Sequence
+;-----------------------
+STEP = D[909]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND (STEP = 3)),1000,Alarm[9],AlarmET[9])
+
+;Run Incline until paddle in position
+IF (STEP = 1) THEN
+	O_RunMotor = (NOT I_PaddleinPosition)
+	IF I_PaddleinPosition THEN
+		D[909] = 2
+	ENDIF
+ENDIF
+
+;Check romm in buffer
+TON_10ms(I_BagatBuffer,300,BagSettledBuffer,BagSettledBufferET)
+IF (STEP = 2) THEN
+	IF (BagSettledBuffer AND (Bag[224].Cat = 0)) THEN
+		D[909] = 3
+	ENDIF
+ENDIF
+
+;Open Stop on steps 3 - 5
+IF (STEP >= 3) AND (STEP <= 5) THEN
+	O_OpenBufferStop = TRUE
+ENDIF
+
+;Wait for bag in incline
+IF (STEP = 3) THEN
+	;BAGMOVE2(PLS,mem_adr_E,223,224,BagSpacing)
+	IF (Bag[223].Cat>0)AND (Bag[224].Cat=0)THEN
+				Bag[224] = Bag[223]
+				Bag[223] = Bag[0]
+	ENDIF
+	IF I_BaginIncline THEN
+		D[909] = 4
+	ENDIF
+ENDIF
+
+;Let bag settle at base of incline
+TON_10ms((STEP = 4),300,BagSettled,BagSettledET)
+IF (STEP = 4) THEN
+	IF BagSettled THEN
+		D[909] = 5
+	ENDIF
+ENDIF
+
+;Move Bag up incline
+TON_10ms((STEP = 5),200,BagNearTop,BagNearTopET)
+IF (STEP = 5) THEN
+	O_RunMotor = TRUE
+	IF BagNearTop THEN
+		D[909] = 6
+	ENDIF
+ENDIF
+
+;Wait for Ongoing Sequence to Enable
+;Run motor for 0.5 seconds
+TON_10ms((STEP = 6),50,RunOn,RunOnET)
+IF (STEP = 6) THEN
+	O_RunMotor 		= NOT RunOn
+	Request.SIC[1] 	= TRUE
+	IF Enable.SIC[1] THEN
+		D[909] = 7
+	ENDIF
+ENDIF
+
+;Run incline until bag at storage lines
+IF (STEP = 7) THEN
+	;BAGMOVE2(PLS,mem_adr_E,224,225,BagSpacing)
+	IF (Bag[224].Cat>0)AND (Bag[225].Cat=0)THEN
+				Bag[225] = Bag[224]
+				Bag[224] = Bag[0]
+	ENDIF
+	O_RunMotor = TRUE
+	;Bag in transit arrives at the buffers
+	IF NOT Enable.SIC[1] THEN
+		D[909] = 1
+	ENDIF
+ENDIF
+
+Y[10].Y09 = O_RunMotor
+Y[5].Y14 = O_OpenBufferStop
+END_PROGRAM
+

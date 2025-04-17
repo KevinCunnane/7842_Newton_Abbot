@@ -1,0 +1,11 @@
+PROGRAM _INIT
+(* init program *)
+
+;Enable connections set to TRUE or FALSE depending on how many connections are required
+EnableConnection1 = TRUE
+EnableConnection2 = TRUE
+
+;Start Connection
+ResetConnection = TRUE
+END_PROGRAM
+

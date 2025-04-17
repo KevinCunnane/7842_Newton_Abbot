@@ -1,0 +1,5 @@
+VAR
+	n	:UINT;	
+	XForce	:CardInputs;	
+	XForceVal	:CardInputs;	
+END_VAR

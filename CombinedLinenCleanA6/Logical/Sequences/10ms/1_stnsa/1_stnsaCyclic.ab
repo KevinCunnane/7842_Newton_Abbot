@@ -1,0 +1,148 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;Honeycombe Sorting Station Control
+;----------------------------------------------------
+;Revision 1.00 10/01/2002 D.J. First Issue
+;Revision 2.00 07/02/2005 D.J. Removed Stn Mix
+;Revision 3.00 22/08/2006 D.J. Changed to timer array
+;----------------------------------------------------
+
+;Timers
+OpenTime  = 700
+CloseTime = 300
+
+TON_10ms(    OpenBag[1],OpenTime ,BagOpened[1],BagOpenedET[1])
+TON_10ms(NOT OpenBag[1],CloseTime,BagClosed[1],BagClosedET[1])
+TON_10ms(    OpenBag[2],OpenTime ,BagOpened[2],BagOpenedET[2])
+TON_10ms(NOT OpenBag[2],CloseTime,BagClosed[2],BagClosedET[2])
+TON_10ms(    OpenBag[3],OpenTime ,BagOpened[3],BagOpenedET[3])
+TON_10ms(NOT OpenBag[3],CloseTime,BagClosed[3],BagClosedET[3])
+TON_10ms(    OpenBag[4],OpenTime ,BagOpened[4],BagOpenedET[4])
+TON_10ms(NOT OpenBag[4],CloseTime,BagClosed[4],BagClosedET[4])
+TON_10ms(    OpenBag[5],OpenTime ,BagOpened[5],BagOpenedET[5])
+TON_10ms(NOT OpenBag[5],CloseTime,BagClosed[5],BagClosedET[5])
+TON_10ms(    OpenBag[6],OpenTime ,BagOpened[6],BagOpenedET[6])
+TON_10ms(NOT OpenBag[6],CloseTime,BagClosed[6],BagClosedET[6])
+TON_10ms(    OpenBag[7],OpenTime ,BagOpened[7],BagOpenedET[7])
+TON_10ms(NOT OpenBag[7],CloseTime,BagClosed[7],BagClosedET[7])
+TON_10ms(    OpenBag[8],OpenTime ,BagOpened[8],BagOpenedET[8])
+TON_10ms(NOT OpenBag[8],CloseTime,BagClosed[8],BagClosedET[8])
+TON_10ms(    OpenBag[9],OpenTime ,BagOpened[9],BagOpenedET[9])
+TON_10ms(NOT OpenBag[9],CloseTime,BagClosed[9],BagClosedET[9])
+TON_10ms(    OpenBag[10],OpenTime ,BagOpened[10],BagOpenedET[10])
+TON_10ms(NOT OpenBag[10],CloseTime,BagClosed[10],BagClosedET[10])
+TON_10ms(    OpenBag[11],OpenTime ,BagOpened[11],BagOpenedET[11])
+TON_10ms(NOT OpenBag[11],CloseTime,BagClosed[11],BagClosedET[11])
+TON_10ms(    OpenBag[12],OpenTime ,BagOpened[12],BagOpenedET[12])
+TON_10ms(NOT OpenBag[12],CloseTime,BagClosed[12],BagClosedET[12])
+TON_10ms(    OpenBag[13],OpenTime ,BagOpened[13],BagOpenedET[13])
+TON_10ms(NOT OpenBag[13],CloseTime,BagClosed[13],BagClosedET[13])
+TON_10ms(    OpenBag[14],OpenTime ,BagOpened[14],BagOpenedET[14])
+TON_10ms(NOT OpenBag[14],CloseTime,BagClosed[14],BagClosedET[14])
+TON_10ms(    OpenBag[15],OpenTime ,BagOpened[15],BagOpenedET[15])
+TON_10ms(NOT OpenBag[15],CloseTime,BagClosed[15],BagClosedET[15])
+TON_10ms(    OpenBag[16],OpenTime ,BagOpened[16],BagOpenedET[16])
+TON_10ms(NOT OpenBag[16],CloseTime,BagClosed[16],BagClosedET[16])
+
+
+LOOP n = 1 TO Std.MaxWeighstations DO
+
+	Bag[200+n].Wgt = Stn[n].Weight
+
+	STEP = D[920 + n]
+	;Setup Pulse contact
+	PLS[n] = (STEP <> LASTSTEP[n])
+	LASTSTEP[n] = STEP
+
+	;Step 0 - Disabled
+	IF STEP = 0 THEN
+		Stn[n].LampOn = TRUE
+		Stn[n].CloseFlap = TRUE
+		;Disabled
+	ENDIF
+
+	IF STEP = 1 THEN
+		Stn[n].LampOn = TRUE
+		IF D[901] = n THEN
+			D[901] = 0
+		ENDIF
+		IF BagClosed[n] THEN
+			D[920 + n] = 2
+		ENDIF
+	ENDIF
+
+	IF STEP = 2 THEN
+		IF D[901] = n THEN
+			D[920 + n] = 3
+		ENDIF
+	ENDIF
+
+	IF STEP = 3 THEN
+		Stn[n].LampOn = TRUE
+		Stn[n].CloseFlap = TRUE
+		;StnMix[n].Cat[0] = 0 ;Set All Mixing Registers to 0 for this station report must have been done
+		IF (BagOpened[n] AND ((Stn[n].Weight < 30) OR Test.Stations) AND Ldg[1].BeltHasRun) THEN//Std.TransferBeltRun) THEN
+			D[920 + n] = 1
+		ENDIF
+	ENDIF
+	OpenBag[n] = (STEP = 3)
+
+ENDLOOP
+
+;Outputs
+;-------
+
+Y[12].Y05 = OpenBag[1]
+Y[12].Y06 = OpenBag[2]
+Y[12].Y07 = OpenBag[3]
+Y[12].Y08 = OpenBag[4]
+Y[13].Y05 = OpenBag[5]
+Y[13].Y06 = OpenBag[6]
+Y[13].Y07 = OpenBag[7]
+Y[13].Y08 = OpenBag[8]
+Y[14].Y05 = OpenBag[9]
+Y[14].Y06 = OpenBag[10]
+Y[14].Y07 = OpenBag[11]
+Y[14].Y08 = OpenBag[12]
+Y[15].Y05 = OpenBag[13]
+Y[15].Y06 = OpenBag[14]
+Y[15].Y07 = OpenBag[15]
+Y[15].Y08 = OpenBag[16]
+
+;Lamps to Outputs - From weighing / search
+Y[12].Y01 = (Stn[1].LampOn  OR (Stn[1].LampFlashFast AND Std.Clock100ms))
+Y[12].Y02 = (Stn[2].LampOn  OR (Stn[2].LampFlashFast AND Std.Clock100ms))
+Y[12].Y03 = (Stn[3].LampOn  OR (Stn[3].LampFlashFast AND Std.Clock100ms))
+Y[12].Y04 = (Stn[4].LampOn  OR (Stn[4].LampFlashFast AND Std.Clock100ms))
+Y[13].Y01 = (Stn[5].LampOn  OR (Stn[5].LampFlashFast AND Std.Clock100ms))
+Y[13].Y02 = (Stn[6].LampOn  OR (Stn[6].LampFlashFast AND Std.Clock100ms))
+Y[13].Y03 = (Stn[7].LampOn  OR (Stn[7].LampFlashFast AND Std.Clock100ms))
+Y[13].Y04 = (Stn[8].LampOn  OR (Stn[8].LampFlashFast AND Std.Clock100ms))
+Y[14].Y01 = (Stn[9].LampOn  OR (Stn[9].LampFlashFast AND Std.Clock100ms))
+Y[14].Y02 = (Stn[10].LampOn OR (Stn[10].LampFlashFast AND Std.Clock100ms))
+Y[14].Y03 = (Stn[11].LampOn OR (Stn[11].LampFlashFast AND Std.Clock100ms))
+Y[14].Y04 = (Stn[12].LampOn OR (Stn[12].LampFlashFast AND Std.Clock100ms))
+Y[15].Y01 = (Stn[13].LampOn OR (Stn[13].LampFlashFast AND Std.Clock100ms))
+Y[15].Y02 = (Stn[14].LampOn OR (Stn[14].LampFlashFast AND Std.Clock100ms))
+Y[15].Y03 = (Stn[15].LampOn OR (Stn[15].LampFlashFast AND Std.Clock100ms))
+Y[15].Y04 = (Stn[16].LampOn OR (Stn[16].LampFlashFast AND Std.Clock100ms))
+
+Y[8].Y01 = Stn[1].CloseFlap
+Y[8].Y02 = Stn[2].CloseFlap
+Y[8].Y03 = Stn[3].CloseFlap
+Y[8].Y04 = Stn[4].CloseFlap
+Y[8].Y05 = Stn[5].CloseFlap
+Y[8].Y06 = Stn[6].CloseFlap
+Y[8].Y07 = Stn[7].CloseFlap
+Y[8].Y08 = Stn[8].CloseFlap
+Y[8].Y09 = Stn[9].CloseFlap
+Y[8].Y10 = Stn[10].CloseFlap
+Y[8].Y11 = Stn[11].CloseFlap
+Y[8].Y12 = Stn[12].CloseFlap
+Y[8].Y13 = Stn[13].CloseFlap
+Y[8].Y14 = Stn[14].CloseFlap
+Y[8].Y15 = Stn[15].CloseFlap
+Y[8].Y16 = Stn[16].CloseFlap
+END_PROGRAM
+

@@ -1,0 +1,71 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;Sequence 30 - Primary Incline Conveyor 4 D[900 + mySeq]
+
+;-----------------------------------------
+;Revision 1.00 17/04/2007 D.J. First Issue
+;-----------------------------------------
+mySeq 	= 36
+myIO	= 177	
+myZone	= 0	
+	
+I_PaddleInPosition		= X[myIO].X01
+I_BagAtSep              = X[myIO].X03
+I_BagArriveIncline		= X[myIO].X04	
+I_OutgoingFull			= X[myIO].X05
+
+
+O_RunMotor 				= FALSE
+O_OpenSeparator			= FALSE
+
+
+;Setup Sequence
+;-----------------------
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;If no bags on the buffers then stop the motor
+NoBags = (STEP = 1) AND NOT I_BagAtSep
+TON_10ms(NoBags,2000,StopIncline,StopInclineET)
+TON_10ms(I_OutgoingFull,100,OutgoingFull,OutgoingFullET)
+
+O_RunMotor = (NOT OutgoingFull AND NOT StopIncline AND NOT Std.HaltSysZone[myZone] AND (STEP <> 0) AND (STEP <> 2)); AND (STEP <> 2))
+
+IF (STEP = 0) THEN
+;	D[900 + mySeq] = 1
+ENDIF
+
+;Run Incline until paddle in position
+IF (STEP = 1) THEN
+	IF (I_PaddleInPosition AND I_BagAtSep AND O_RunMotor) THEN
+		D[900 + mySeq] = 2
+	ENDIF
+ENDIF
+
+;Open Separator 1.5 seconds
+;Allow 3 sec for trolley to be detected releasing from separator
+TON_10ms((STEP = 2),150,ReleasedToIncline,ReleasedToInclineET)
+TON_10ms(ReleasedToIncline,550,TransitWindowClosed,TransitWindowClosedET)
+IF (STEP = 2) THEN
+	O_OpenSeparator	= NOT ReleasedToIncline
+	IF I_BagArriveIncline OR TransitWindowClosed THEN
+		D[900 + mySeq] = 3
+	ENDIF
+	ELSE 
+	ReleasedToIncline = FALSE
+ENDIF
+
+;Check not stpped on paddle
+IF (STEP = 3) THEN
+	IF NOT I_PaddleInPosition THEN
+		D[900 + mySeq] = 1
+	ENDIF
+ENDIF
+
+Y[34].Y02		= O_RunMotor
+Y[myIO].Y06 	= O_OpenSeparator
+END_PROGRAM
+

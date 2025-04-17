@@ -1,0 +1,51 @@
+(********************************************************************
+ * COPYRIGHT -- Microsoft
+ ********************************************************************
+ * Library: KGstd
+ * File: KGstd.var
+ * Author: hunholz
+ * Created: June 23, 2011
+ ********************************************************************
+ * Constants of library KGstd
+ ********************************************************************)
+VAR CONSTANT
+	KG_ERR_RB_NOREAD : UINT := 1;
+	KG_ERR_RB_POINTER : UINT := 2;
+	KG_ERR_RB_WRITEPOINTER : UINT := 3;
+	KG_ERR_RB_READPOINTER : UINT := 4;
+	KG_ERR_RB_STARTPOINTER : UINT := 5;
+	KG_ERR_RB_LOCPOINTER : UINT := 6;
+	KG_ERR_RB_SIZE : UINT := 7;
+	KG_ERR_GETETHPORT_IFSTRING : UINT := 21;
+	KG_ERR_GETETHPORT_ADRIF : UINT := 22;
+	KG_ERR_WRONGSIZES : UINT := 30;
+	KG_INFO_DO_NEW : UINT := 31;
+	KG_ERR_NULPOINTER : UINT := 40;
+	KG_ERR_NULLSTRING : UINT := 41;
+END_VAR
+(*RB Modus für kgRBloc*)
+VAR CONSTANT
+	KG_RB_LOC_MODE_ABSOLUTE : USINT := 0;
+	KG_RB_LOC_MODE_FROMSTART : USINT := 1;
+	KG_RB_LOC_MODE_FROMEND : USINT := 2;
+END_VAR
+(*CPU Identifier*)
+VAR CONSTANT
+	KG_CPU_X20CP3484 : UDINT := 16#23A6;
+	KG_CPU_X20CP1484 : UDINT := 16#23A5;
+	KG_CPU_X20CP1484_1 : UDINT := 16#AABE;
+	KG_CPU_X20CP3484_1 : UDINT := 16#AABF;
+	KG_CPU_X20CP1486 : UDINT := 16#2164;
+	KG_CPU_X20CP3486 : UDINT := 16#1F19;
+	KG_CPU_X20CP3585 : UDINT := 16#C3AF;
+	KG_CPU_PP420_1043_75 : UDINT := 16#23BD;
+	KG_CPU_PP65_0571_P74 : UDINT := 16#A964;
+	KG_CPU_CTT_11 : UDINT := 16#A2BC;
+	KG_CPU_PCT_03 : UDINT := 16#A7DD;
+	KG_CPU_PCT_04 : UDINT := 16#B399;
+END_VAR
+(*Units*)
+VAR CONSTANT
+	KG_UNIT_METRIC : USINT := 0;
+	KG_UNIT_US : USINT := 1;
+END_VAR

@@ -1,0 +1,217 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 29	;Sequence number
+myIO				= 115
+myZone				= 3
+	
+	
+I_BagAtSep[1]		= X[myIO].X01
+I_BagAtSep[2]		= X[myIO].X02
+I_BagAtSep[3]		= X[myIO + 1].X01	
+I_ReleasedSep[1]	= X[myIO].X03
+I_ReleasedSep[2]	= X[myIO].X04
+I_ReleasedSep[3]	= X[myIO + 1].X03	
+
+myBuffBag[1]		= 811	
+myBuffBag[2]		= 801
+myBuffBag[3]		= 821
+	
+myRelLine[1]		= 63	
+myRelLine[2]		= 64	
+	
+MaxBatchSize 		= 3 ; Max number of bags to send from 1 line with out selecting another..	
+	
+O_SelectLine[1]		= FALSE
+O_SelectLine[2]		= FALSE
+O_SelectLine[3]		= FALSE	
+	
+O_OpenSep[1]		= FALSE	
+O_OpenSep[2]		= FALSE
+O_OpenSep[3]		= FALSE	
+	
+O_SelectDest[1]		= FALSE	
+O_SelectDest[2]		= FALSE	
+	
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 10000 + mySeq
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+;Setup Sequence
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+LOOP n = 1 TO 3 DO	
+	TON_Settled[n].IN = I_BagAtSep[n]	
+	TON_Settled[n].PT = 150
+	TON_Settled[n] FUB TON_10ms()	
+	myBag = myBuffBag[n]
+	LineValid[n] = TON_Settled[n].Q AND (Bag[myBag].Cat > 0) AND NOT I_ReleasedSep[n]		
+	TON_SettledInSep[n].IN = I_ReleasedSep[n]
+	TON_SettledInSep[n].PT = 50
+	TON_SettledInSep[n] FUB TON_10ms()	
+	
+	;Alarms	
+ENDLOOP		
+;Step 1 Try to find batch with the same category 
+
+TON_10ms((STEP =1),5,ScanUpdate,ScanUpdateET)	
+IF (STEP = 1) AND ScanUpdate THEN ; Allow short time for trips to settle before looking for next batch	
+	IF (CurrentDest <= 0) OR (CurrentDest > 2) THEN
+		CurrentDest = 1
+	ENDIF
+	IF (CurrentLine <= 0) OR (CurrentLine > 3) THEN
+		CurrentLine = 1
+	ENDIF		
+	IF (PrevLine <= 0) OR (PrevLine > 3) THEN
+		PrevLine = 1 
+	ENDIF			
+	IF (LineBatchCount[CurrentLine] >= MaxBatchSize) AND LineValid[CurrentLine] AND (DestSearchCount > 2) THEN
+		LineBatchCount[CurrentLine] = 0
+	ENDIF	
+	myDestLine = myRelLine[CurrentDest]
+		IF Line[myDestLine].Clear AND NOT Line[myDestLine].TripFault AND NOT Std.HaltSysZone[myZone] THEN
+		;Search for line with matching cat starting at the currently selected line. Ensure we do not send more than a certain number of bags from 1 line.	
+		myBag = myBuffBag[CurrentLine]
+		myDestBag	= (Line[myDestLine].LastBag - Line[myDestLine].Space) 	
+		
+			
+		IF LineValid[CurrentLine] AND (LineBatchCount[CurrentLine] < MaxBatchSize) THEN ; Check line is valid	
+			IF (Bag[myBag].Cat = Bag[myDestBag].Cat) THEN ; Match Cats.
+				D[900 + mySeq] = 2	
+			ELSE IF (Bag[Line[myDestLine].FirstBag].Cat = 0) THEN ; Line is empty 
+				D[900 + mySeq] = 2	
+			ELSE IF (DestSearchCount > 2) THEN ; No matches send any bag
+				D[900 + mySeq] = 2
+			ELSE
+				INC CurrentLine ; Search next line.		
+				INC LineSearchCount
+				IF LineSearchCount > 3 THEN ; Search all lines if nothing search next buffer.
+					LineSearchCount = 0
+					INC CurrentDest	
+					INC DestSearchCount
+				ENDIF		
+			ENDIF
+		ELSE
+			INC CurrentLine ; Search next line.		
+			INC LineSearchCount
+			IF LineSearchCount > 3 THEN ; Search all lines if nothing search next buffer.
+				LineSearchCount = 0
+				INC CurrentDest
+				INC DestSearchCount	
+			ENDIF			
+		ENDIF		
+	ELSE IF NOT Std.HaltSysZone[myZone] THEN		
+		INC CurrentDest
+	ENDIF		
+ELSE IF (STEP <> 1) THEN
+	DestSearchCount = 0
+	LineSearchCount	= 0		
+ENDIF	
+	
+;Step 2 Select Points if required	
+TON_10ms(ResetRequired,200,ResetPoints,ResetPointsET)
+IF (STEP = 2) THEN		
+	IF (CurrentDest > 0) AND (CurrentDest < 3) AND (CurrentLine > 0) AND (CurrentLine < 4) THEN 
+		ResetRequired = ((CurrentDest <> PrevDest) OR (CurrentLine <> PrevLine))	
+		O_SelectDest[CurrentDest] = TRUE
+		O_SelectLine[CurrentLine] = TRUE	
+		IF NOT ResetRequired OR ResetPoints THEN	
+			;Clear All other line batch Counts
+			LOOP n = 1 TO 3 DO
+				IF (n <> CurrentLine) THEN
+					LineBatchCount[n] = 0
+				ENDIF		
+			ENDLOOP		
+			D[900 + mySeq] = 3
+		ENDIF		
+	ELSE
+		D[900 + mySeq]  = 1 ; Invalid line/Dest selection reset seq
+	ENDIF	
+ENDIF
+	
+;Step 3 Release trolley		
+		
+IF (STEP = 3) THEN	
+	IF (CurrentDest > 0) AND (CurrentDest < 3) AND (CurrentLine > 0) AND (CurrentLine < 4) THEN 
+		myDestLine = myRelLine[CurrentDest]
+		myBag = myBuffBag[CurrentLine]
+		myDestBag = Line[myDestLine].LastBag
+			
+		ReleaseValid = (Bag[myBag].Cat > 0) AND Line[myDestLine].Clear
+		O_SelectDest[CurrentDest] = TRUE
+		O_SelectLine[CurrentLine] = TRUE	
+		O_OpenSep[CurrentLine] =  NOT Released;ReleaseValid AND
+		IF TON_SettledInSep[CurrentLine].Q THEN
+			Released = TRUE	
+		ENDIF	
+		IF Line[myDestLine].Trip THEN
+			INC LineBatchCount[CurrentLine]
+			PrevDest = CurrentDest
+			PrevLine = CurrentLine	
+			Bag[myDestBag] = Bag[myBag]	
+			Bag[myBag] = Bag[0]
+			D[900 + mySeq] = 1
+		ENDIF		
+		IF (Bag[myBag].Cat = 0)THEN
+			Alarm[mySeq].Bag = myBag
+			Alarm[mySeq].Name = almBagDataError	
+		ENDIF	
+	ELSE
+		Alarm[mySeq].Time = 0
+		Alarm[mySeq].Name = almGeneralSequence
+	ENDIF			
+ELSE
+	Released = FALSE		
+ENDIF		
+
+;ClearBatch Counts	
+
+IF ClearCounts THEN	
+	LOOP n = 1 TO 3 DO
+		LineBatchCount[n] = 0
+	ENDLOOP	
+	ClearCounts = FALSE
+ENDIF	
+;-----------------------------------
+;PLC Outputs - adjust to suit system
+;-----------------------------------
+	
+Y[myIO].Y05 =  O_OpenSep[1]
+Y[myIO].Y06 =  O_OpenSep[2] 
+Y[myIO + 1].Y05 = O_OpenSep[3] 
+	
+Y[myIO].Y07 = O_SelectLine[1]
+Y[myIO].Y08 = O_SelectLine[2]
+Y[myIO + 1].Y07 = O_SelectLine[3]		
+Y[myIO + 1].Y08 = O_SelectLine[1] OR O_SelectLine[2]	
+	
+Y[myIO + 2].Y07 = O_SelectDest[1]	
+Y[myIO + 2].Y08 = O_SelectDest[2]	
+
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+Alarm[mySeq].Zone 	= myZone
+END_PROGRAM
+

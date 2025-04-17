@@ -1,0 +1,4 @@
+VAR
+	n : UINT;
+	ValidCat : DINT;
+END_VAR

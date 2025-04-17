@@ -1,0 +1,14 @@
+(********************************************************************
+ * COPYRIGHT -- Herbert Kannegiesser GmbH
+ ********************************************************************
+ * Library: WL_UserLib
+ * File: WL_UserLib.var
+ * Author: stahlhut
+ * Created: January 10, 2012
+ ********************************************************************
+ * Constants of library WL_UserLib
+ ********************************************************************)
+VAR CONSTANT
+	HLKANLINK_MAX_CLIENTCONNS : UINT := 10; (*Anzahl der Clienten *)
+	HLKANLINK_MAX_SERVERCONNS : UINT := 10; (*Anzahl der Server *)
+END_VAR

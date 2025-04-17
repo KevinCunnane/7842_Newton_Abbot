@@ -1,0 +1,106 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;----------------------------------------------
+;Sequence 10 - SPC1 Pneumatic Conveyor 1 D[910]
+;----------------------------------------------
+
+;Inputs
+;Incline Conveyor
+;-----------------------------------------
+;Revision 1.00 09/01/2002 D.J. First Issue
+;-----------------------------------------
+
+I_PaddleinPosition		= X[6].X09
+I_BaginIncline			= X[6].X14
+
+O_RunMotor 				= FALSE
+
+O_OpenBufferStop		= FALSE
+
+Request.CIC[1]			= FALSE
+
+;Setup Sequence
+;-----------------------
+STEP = D[921]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND (STEP = 3)),1000,Alarm[9],AlarmET[9])
+
+;Run Incline until paddle in position
+IF (STEP = 1) THEN
+	O_RunMotor = (NOT I_PaddleinPosition)
+	IF I_PaddleinPosition THEN
+		D[921] = 2
+	ENDIF
+ENDIF
+
+;Check romm in buffer
+TON_10ms(I_BagatBuffer,300,BagSettledBuffer,BagSettledBufferET)
+IF (STEP = 2) THEN
+	IF NOT ((I_BaginIncline) AND (Bag[59].Cat = 0)) THEN
+		D[921] = 3
+
+	ENDIF
+ENDIF
+
+;
+
+;Wait for bag in incline
+IF (STEP = 3) THEN
+IF I_BaginIncline AND (Bag[59].Cat > 0) THEN
+		D[921] = 4
+	ENDIF
+ENDIF
+
+
+;Let bag settle at base of incline
+TON_10ms((STEP = 4),1000,BagSettled,BagSettledET)
+IF (STEP = 4) THEN
+	IF BagSettled THEN
+		D[921] = 5
+	ENDIF
+ENDIF
+
+;Move Bag up incline
+TON_10ms((STEP = 5),200,BagNearTop,BagNearTopET)
+IF (STEP = 5) THEN
+	O_RunMotor = TRUE
+	IF BagNearTop THEN
+		D[921] = 6
+	ENDIF
+ENDIF
+
+;Wait for Ongoing Sequence to Enable
+;Run motor for 0.5 seconds
+TON_10ms((STEP = 6),50,RunOn,RunOnET)
+IF (STEP = 6) THEN
+	O_RunMotor 		= NOT RunOn
+	IF ((Line[8].Clear) AND (Bag[81].Cat = 0)) THEN
+		C[8] = 0
+		D[921]  = 7
+	ENDIF
+ENDIF
+
+
+;Run incline until bag at storage lines
+IF (STEP = 7) THEN
+	O_RunMotor 		= TRUE
+	IF Line[8].Full THEN
+        IF (Bag[59].Cat>0)AND (Bag[81].Cat=0)THEN
+				Bag[81] = Bag[59]
+				Bag[59] = Bag[0]
+		ENDIF
+		D[921] = 1
+	ENDIF
+ENDIF
+
+		
+
+Y[8].Y10 = O_RunMotor
+
+END_PROGRAM
+

@@ -1,0 +1,169 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;----------------------------------------------
+;Sequence 10 - SPC1 Pneumatic Conveyor 1 D[910]
+;----------------------------------------------
+
+;Inputs
+;Incline Conveyor
+;-----------------------------------------
+;Revision 1.00 09/01/2002 D.J. First Issue
+;-----------------------------------------
+
+I_BagAtBuffer		= X[5].X02
+I_BagInCPC1  		= X[2].X04
+//I_BagatBuffer			= X[5].X10
+
+O_RunMotor 				= FALSE
+O_OpenBufferStop		= FALSE
+O_Reset                     = FALSE
+
+O_SelectY510 			= FALSE
+O_SelectY514            = FALSE
+O_SelectY706            = FALSE
+mySeq                          = 19
+;-----------------------
+STEP = D[919]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 51
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+;wait for space
+TON_10ms((STEP = 1),300,Reset,ResetET)
+IF (STEP = 1) THEN
+		O_Reset  = TRUE
+		IF Reset THEN
+		D[919] = 2
+	ENDIF
+ENDIF
+
+;Check romm in buffer
+TON_10ms(I_BagAtBuffer,300,BagSettledAtBuffer,BagSettledAtBufferET)
+
+IF (STEP = 2) THEN
+	IF (Bag[51].Cat>0) THEN
+		IF (Line[Bag[51].Dst].Space>0) AND (Bag[60].Cat=0) THEN
+			D[919] = 3
+		ENDIF
+	ENDIF
+ENDIF
+
+;
+
+;Wait for bag in incline
+IF (STEP = 3) THEN
+	IF BagSettledAtBuffer THEN
+		IF (Bag[51].Dst >= 1) AND (Bag[51].Dst <=4) THEN
+			IF (Bag[36].Cat=0) AND Request.CP[5]  THEN
+				D[919]=4
+			ENDIF
+		ELSE IF Line[8].Clear AND (D[920]=3)	AND X[2].X01 AND (Bag[51].Dst = 8) THEN
+			D[919] = 5
+		ELSE IF (Bag[51].Dst = 5) AND Line[5].Clear AND (Bag[29].Cat=0)  THEN
+			C[5] = 0
+			D[919] = 6
+		ELSE IF (Bag[51].Dst = 6) AND Line[6].Clear AND (Bag[24].Cat=0)  THEN
+			C[6] = 0
+			D[919]= 7
+		ENDIF
+	ENDIF
+ENDIF
+
+;move to CIC1
+IF (STEP = 4) THEN
+		O_OpenBufferStop = TRUE
+		
+		IF NOT Request.CP[5]  THEN
+			IF (Bag[51].Cat>0) AND (Bag[36].Cat=0) THEN
+				Bag[36] = Bag[51]
+				Bag[51] = Bag[0]
+			ENDIF
+			D[919] = 1
+		ENDIF
+ENDIF
+
+IF (STEP = 5) THEN
+	IF PLS THEN
+		IF (Bag[51].Cat>0) AND (Bag[60].Cat=0) THEN
+				Bag[60] = Bag[51]
+				Bag[51] = Bag[0]
+			ENDIF
+		ENDIF
+		O_OpenBufferStop = TRUE
+		O_SelectY706        = TRUE
+		O_SelectY510        = TRUE
+		IF I_BagInCPC1 THEN
+			IF (Bag[60].Cat>0) AND (Bag[58].Cat=0) THEN
+				Bag[58] = Bag[60]
+				Bag[60] = Bag[0]
+			ENDIF
+			D[919] = 1
+		ENDIF
+ENDIF
+
+IF (STEP = 6) THEN
+	IF PLS THEN
+		IF (Bag[51].Cat>0) AND (Bag[60].Cat=0) THEN
+				Bag[60] = Bag[51]
+				Bag[51] = Bag[0]
+			ENDIF
+		ENDIF
+		O_OpenBufferStop = TRUE
+		O_SelectY514        = TRUE
+		O_SelectY510        = TRUE
+	IF Line[5].Trip THEN
+		IF (Bag[60].Cat>0) AND (Bag[29].Cat=0) THEN
+				Bag[29] = Bag[60]
+				Bag[60] = Bag[0]
+			ENDIF
+			D[919] = 1
+		ENDIF
+//	ENDIF
+ENDIF
+
+IF (STEP = 7) THEN
+	IF PLS THEN
+		IF (Bag[51].Cat>0) AND (Bag[60].Cat=0) THEN
+				Bag[60] = Bag[51]
+				Bag[51] = Bag[0]
+		ENDIF
+	 ENDIF
+		O_OpenBufferStop = TRUE
+	//	O_SelectY514        = TRUE
+		O_SelectY510        = TRUE
+	IF Line[6].Trip THEN
+		IF (Bag[60].Cat>0) AND (Bag[24].Cat=0) THEN
+				Bag[24] = Bag[60]
+				Bag[60] = Bag[0]
+				Bag[24].Dst = 0
+		ENDIF
+			D[919] = 1
+	ENDIF
+//	ENDIF
+ENDIF
+
+
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+
+Y[5].Y11  =  O_Reset
+Y[5].Y15  =  O_Reset
+Y[7].Y08  =  O_Reset
+
+
+Y[9].Y12 = O_OpenBufferStop
+Y[5].Y10 = O_SelectY510  
+Y[5].Y14 = O_SelectY514 
+Y[7].Y06 = O_SelectY706 
+END_PROGRAM
+

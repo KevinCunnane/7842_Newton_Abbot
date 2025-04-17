@@ -1,0 +1,37 @@
+(********************************************************************
+ * COPYRIGHT -- Kannegiesser UK Ltd
+ ********************************************************************
+ * Program: zzAI2744
+ * File: zzAI2744Cyclic.ab
+ * Author: zmclaren
+ * Created: May 25, 2012
+ ********************************************************************
+ * Implementation of program zzAI2744
+ ********************************************************************)
+
+PROGRAM _CYCLIC
+(* First we need to see if the last value is different to the previous one, *) 
+(* Then we will set the counters for each to zero *) 
+(* Also the Config Outputs will need setting to 0*) 
+IF (D[998] = 0) THEN
+	LOOP i = 1 TO 54 DO
+		IF (LastRawValue[i] = AI261Raw[i])THEN        (* We have no change between the  two values *) 
+			IF (NoChangeCounter[i] >= 21) THEN          (* We need to reset the output back to zero *)
+				ConfigOutput[i]    = 0
+			ELSE
+				IF (NoChangeCounter[i] = 20) THEN  (* We have had 20 cycles with no change on the input *) 
+					NoChangeCounter[i] = NoChangeCounter[i] + 1
+					ConfigOutput[i]    = %00110001  (* Make a change to both the Data Rate and teh Range *) 
+				ELSE
+					NoChangeCounter[i] = NoChangeCounter[i] + 1  (* Increment the no change counter *) 
+				ENDIF
+			ENDIF
+		ELSE     (* There has been a change between the two  Values so store the old value and clear the counter *) 
+			LastRawValue[i] = AI261Raw[i]  (* Store the Last Value *)
+			NoChangeCounter[i] = 0         (* Reset the Counter *)
+			ConfigOutput[i]    = 0         (* Leave the configuration as  0 *) 
+		ENDIF
+	ENDLOOP
+ENDIF
+
+END_PROGRAM

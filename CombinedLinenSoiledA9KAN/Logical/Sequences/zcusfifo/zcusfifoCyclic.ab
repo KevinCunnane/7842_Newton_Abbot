@@ -1,0 +1,112 @@
+PROGRAM _CYCLIC
+;------------------------------------------------------
+;Revision 1.00 11/02/2002 D.J. First Issue
+;Revision 2.00 11/06/2002 D.J. Included Bags In Transit
+;------------------------------------------------------
+
+
+;Include any Bags In Transit if required
+
+;Check if found in Bags in transit
+;IF (Bag[104].Cus = D[401]) AND (D[401] > 0)) THEN		;Offgoing BIT
+;	Std.CustomerFound = TRUE
+;ENDIF
+;IF (Bag[105].Cus = D[401]) AND (D[401] > 0)) THEN		;SIC1 Bag
+;	Std.CustomerFound = TRUE
+;ENDIF
+;IF (Bag[106].Cus = D[401]) AND (D[401] > 0)) THEN		;Pairing Loop BIT
+;	Std.CustomerFound = TRUE
+;ENDIF
+
+;New Customers
+OngoingCus 	= D[498]
+EditCus		= D[499]
+
+IF Std.CustomerFIFO THEN
+
+	;The following are Set by the "Bag Shuffle"
+	;First customer not found clear from the FIFO
+	IF NOT Std.CustomerFound THEN
+		D[401] = 0
+	ENDIF
+
+	;Shuffle the Table down
+	D[400] = 0
+
+	LOOP n = 401 TO 496 DO
+
+		IF ((D[n] = 0) AND (D[n + 1] > 0)) THEN
+			D[n] = D[n + 1]
+			D[n + 1] = 0
+		ENDIF
+
+		IF (D[n] > 0) THEN
+			;Inc FIFO Header Count
+			D[400] = (D[400] + 1)
+		ENDIF
+
+		;Clear New Customer if found
+		IF ((OngoingCus > 0) AND (OngoingCus = D[n])) THEN
+			OngoingCus = 0
+		ENDIF
+
+		;Clear Edited Customer if found
+		IF ((EditCus > 0) AND (EditCus = D[n])) THEN
+			EditCus = 0
+		ENDIF
+
+
+	ENDLOOP
+
+	;D498 = Ongoing New Customer
+	IF ((OngoingCus > 0) AND (D[401 + D[400]] = 0)) THEN
+		D[401 + D[400]]	= OngoingCus
+		OngoingCus 		= 0
+		D[400] 			= (D[400] + 1)
+	ENDIF
+
+	;D499 = Edited New Customer
+	IF ((EditCus > 0) AND (D[401 + D[400]] = 0)) THEN
+		D[401 + D[400]]	= EditCus
+		EditCus 		= 0
+		D[400] 			= (D[400] + 1)
+	ENDIF
+
+	;Find the Current Customer for each Discharger and allocate the Next Customer
+
+	LOOP x = 1 TO Std.MaxDischargers DO
+
+		Uld[x].FIFONextCustomer = 0
+		Uld[x].FIFOCustomerFound = FALSE
+
+		;If No Customer then Allocate with the First
+		IF (Uld[x].FIFOCustomer = 0) THEN
+			Uld[x].FIFOCustomer = D[401]
+		ENDIF
+
+		;If Next Customer available then allocate New Customer
+		IF (D[400] > 0) THEN
+			LOOP n = 401 TO (D[400] + 400) DO
+				IF ((Uld[x].FIFOCustomer = D[n]) AND (D[n] > 0)) THEN
+					Uld[x].FIFOCustomerFound = TRUE
+					IF (D[n + 1] > 0) THEN
+						Uld[x].FIFONextCustomer = D[n + 1]
+					ENDIF
+				ENDIF
+			ENDLOOP
+		ENDIF
+
+		;If the current customer has been removed then set the next as the first
+		IF ((Uld[x].FIFONextCustomer = 0) AND NOT Uld[x].FIFOCustomerFound) THEN
+			Uld[x].FIFONextCustomer = D[401]
+		ENDIF
+
+	ENDLOOP
+
+
+ENDIF
+
+D[498] = OngoingCus
+D[499] = EditCus
+END_PROGRAM
+

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio Version=3.0.90.20 SP02?>
+<Package Version="0.20.7" xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="File" Description="Package data types">mnParam.typ</Object>
+    <Object Type="File" Description="Package variables">mnParam.var</Object>
+    <Object Type="Program" Language="IEC" Description="Parameter Manager">mnParam</Object>
+    <Object Type="Library" Language="IEC">mnParamLib</Object>
+    <Object Type="File">history.Pkg_mnParam.txt</Object>
+    <Object Type="File">CfgMsgStat.mnParam.txt</Object>
+    <Object Type="File" Reference="true">C:\BR_SPS_Projekte\Trunk\10_Generell\Pkg_mnParam\Doku.KGFW-SPS.mnParam.docx</Object>
+  </Objects>
+  <Dependencies>
+    <Dependency ObjectName="asmem" />
+    <Dependency ObjectName="fileio" />
+    <Dependency ObjectName="dataobj" />
+    <Dependency ObjectName="standard" />
+    <Dependency ObjectName="asarlog" />
+    <Dependency ObjectName="sys_lib" />
+    <Dependency ObjectName="asusb" />
+  </Dependencies>
+</Package>

@@ -1,0 +1,109 @@
+PROGRAM _CYCLIC
+	;Reports To Graphics  - No changes required!
+
+	;-----------------------------------------
+	;Revision 1.00 19/01/2006 First Issue D.J.
+	;-----------------------------------------
+
+	;ReportBuffer 0 used to clear report all Zero
+	ReportBuffer[0].Cat = 0
+	ReportBuffer[0].Cus = 0
+	ReportBuffer[0].Wgt = 0
+	ReportBuffer[0].Cnt = 0
+	ReportBuffer[0].Stn = 0
+	ReportBuffer[0].Mcn = 0
+
+	;Report array sizes - see declerations
+	MaxReportBuffer		= 199	;1 less than array allocation as Array 0 is used as Zero values
+	MaxReportLoading 	= 49	;Normally at least MaxStations
+	MaxReportUnloading 	= 9		;Normally at least MaxDischargers
+
+	;Shuffle reports buffer
+	ReportPointer		= 0 	;Reports Pointer
+
+	LOOP n = 1 TO MaxReportBuffer DO
+
+		IF ((ReportBuffer[n].Cat = 0) AND (n < MaxReportBuffer)) THEN
+			ReportBuffer[n] 		= ReportBuffer[n + 1]
+			ReportBuffer[n + 1] 	= ReportBuffer[0]
+		ENDIF
+
+		;Inc Reports Pointer
+		IF (ReportBuffer[n].Cat > 0) THEN
+			ReportPointer = (ReportPointer + 1)
+		ENDIF
+
+	ENDLOOP
+
+	;Put loaded reports into reports buffer
+	LOOP n = 1 TO MaxReportLoading DO
+		IF ((ReportBuffer[ReportPointer + 1].Cat = 0) AND (ReportPointer < MaxReportBuffer)) THEN
+			IF (ReportLoading[n].Cat > 0) THEN
+				ReportBuffer[ReportPointer + 1] = ReportLoading[n]
+				ReportLoading[n] 				= ReportBuffer[0]
+				ReportPointer 					= (ReportPointer + 1)
+			ENDIF
+		ENDIF
+	ENDLOOP
+
+	;Put unloaded reports into reports buffer
+	LOOP n = 1 TO MaxReportUnloading DO
+		IF ((ReportBuffer[ReportPointer + 1].Cat = 0) AND (ReportPointer < MaxReportBuffer)) THEN
+			IF ReportUnloading[n].Cat > 0 THEN
+				ReportBuffer[ReportPointer + 1] = ReportUnloading[n]
+				ReportUnloading[n] 				= ReportBuffer[0]
+				ReportPointer 					= (ReportPointer + 1)
+			ENDIF
+		ENDIF
+	ENDLOOP
+
+
+	;Reports Read from Graphics D[63]
+	;Generate Unique Report ID
+	IF (D[63] = ReportID) THEN
+		;Clear first report
+		ReportBuffer[1] = ReportBuffer[0]
+		;Inc Report ID
+		ReportID = ReportID + 1
+	ENDIF
+
+	;Set Report ID to Valid Range
+	IF ((ReportID < 1) OR (ReportID > 9999)) THEN
+		ReportID = 1
+	ENDIF
+
+	;Make Report at front of Q ready for Graphics
+	IF (ReportBuffer[1].Cat > 0) THEN	;Reports Waiting
+		D[1] = 1
+	ELSE
+		D[1] = 0
+	ENDIF
+	D[2] = ReportBuffer[1].Cus ;D2 = Reports Customer
+	D[3] = ReportBuffer[1].Cat ;D3 = Reports Category
+	D[4] = ReportBuffer[1].Wgt ;D4 = Reports Weight
+	D[5] = ReportBuffer[1].Cnt ;D5 = Reports Count
+	D[6] = ReportBuffer[1].Stn ;D6 = Reports Station
+	D[7] = ReportBuffer[1].Mcn ;D7 = Reports Machine
+	D[8] = 0 ;D8 = Reports Batch Code
+	D[9] = 0 ;D9 = Reports Customer High?
+	D[10] = ReportID
+
+
+	;---------------
+	;Reports testing
+	;---------------
+
+	;Add unloading report
+	IF (AddUnloading AND (TestUnloadingCat > 0)) THEN
+		IF (ReportUnloading[1].Cat = 0) THEN
+			ReportUnloading[1].Cat = TestUnloadingCat	;Category
+			ReportUnloading[1].Cus = 20					;Customer
+			ReportUnloading[1].Wgt = 500				;Weight
+			ReportUnloading[1].Cnt = 0					;Count
+			ReportUnloading[1].Stn = 0					;Station
+			ReportUnloading[1].Mcn = 1					;Machine
+		ENDIF
+		AddUnloading = FALSE
+	ENDIF
+END_PROGRAM
+

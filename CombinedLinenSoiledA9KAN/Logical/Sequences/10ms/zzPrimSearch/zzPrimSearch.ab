@@ -1,0 +1,269 @@
+(********************************************************************
+ * COPYRIGHT -- HP
+ ********************************************************************
+ * Program: zzPrimSearch
+ * File: zzPrimSearch.ab
+ * Author: treamsbottom
+ * Created: May 09, 2014
+ ********************************************************************
+ * Implementation of program zzPrimSearch
+ ********************************************************************)
+
+PROGRAM _INIT
+
+
+END_PROGRAM
+
+
+PROGRAM _CYCLIC
+
+;Find destination of primary bags using SLAC. As there are multiple Bags in transit before PPN use the last bag in transit for the calculation.
+
+MaxBuffers 		= 1	
+MinLine			= 1
+MaxLine			= 10	
+myStartStop		= 7700 // 7700 means 100 on tview
+MaxDepth		= 17	
+myTransitLine	= 32; Ongoing line transfers multiple bags
+	
+OngoingEnabled = (D[4]>0)	
+	
+BufferBagNum[1] = Line[16].FirstBag 	
+//BufferBagNum[2] = Line[65].FirstBag	
+
+	
+;Search only 1 buffer bag per scan/task
+Buffer = Buffer + 1
+IF Buffer > MaxBuffers THEN
+	Buffer = 1
+ENDIF
+;Set Test Value for Monitoring
+IF TestBuffer > 0 THEN
+	Buffer = TestBuffer
+ENDIF
+
+BufferBag		= BufferBagNum[Buffer]
+BufferSettled 	= TRUE
+BufferPrg 		= Bag[BufferBag].Prg
+BufferCat		= Bag[BufferBag].Cat
+BufferCus		= Bag[BufferBag].Cus
+BufferDst 		= Bag[BufferBag].Dst
+
+IF (BufferSettled AND (BufferCat > 0) AND (BufferPrg > 0) AND (BufferPrg <= Std.MaxProg) AND OngoingEnabled) THEN
+	
+	;Manual Destination has been set?
+	IF (BufferDst > 0) THEN
+;		n = BufferDst
+;
+;		IF ((n >= MinLine) AND (n <= MaxLine) AND (Line[n].Space > 0) AND Line[n].Clear) THEN
+;			Dest 	= n
+;			Buff 	= Buffer
+;		
+;		ELSE
+;			Alarm[mySeq].Name 	= almDestinationNotValid
+;			Alarm[mySeq].Bag	= BufferBag
+;		ENDIF
+;	
+	
+	ELSE IF Std.AutoLineAllocation THEN ;/BufferDst > 0
+	
+		;Search Each Storage Area
+		AreaChoice[1] = D[3000 + BufferPrg]
+		AreaChoice[2] = D[3100 + BufferPrg]
+		AreaChoice[3] = D[3200 + BufferPrg]
+		AreaChoice[4] = D[3300 + BufferPrg] 
+		
+		LOOP Area = 1 TO 4 DO
+			Dest = 0
+				
+			AreaStartLine 	= D[250 + AreaChoice[Area]]		
+			AreaEndLine 	= D[270 + AreaChoice[Area]]
+			AreaValid		= ((AreaStartLine > 0) AND (AreaEndLine > 0) AND (AreaEndLine >= AreaStartLine))
+			IF AreaValid THEN
+		 	
+				
+				;Search other buffers, as if destination has already been assigned for an empty a different line would be assigned due to BIT calc
+				IF (Dest = 0) THEN	
+					LOOP n = 1 TO MaxBuffers DO 
+						IF (n <> Buffer) THEN ; Don't check self
+							myBag = BufferBagNum[n]
+							Match = (Bag[myBag].Prg = BufferPrg); AND (Bag[myBag].Cus = BufferCus) 
+							SearchDest = Bag[myBag].Dst
+							myLineValid = ((SearchDest >= MinLine) AND (SearchDest <= MaxLine))
+							myLineUsed	= (D[myStartStop + SearchDest] > 0) ;Start / Stop On	
+							IF (Match AND myLineValid AND myLineUsed AND (Line[SearchDest].SpaceBIT > 0) AND Line[SearchDest].Clear) THEN
+								Dest = SearchDest
+							ENDIF
+						ENDIF
+						EXITIF (Dest > 0)		
+					ENDLOOP		
+				ENDIF
+					
+				; Search ongoing transit buffer to find matching prg's; and customers later if requested	
+				IF (Dest = 0) THEN	
+					LOOP n = Line[myTransitLine].FirstBag TO Line[myTransitLine].LastBag DO 
+						Match = (Bag[n].Prg = BufferPrg); AND (Bag[n].Cus = BufferCus) 
+						SearchDest = Bag[n].Dst
+						myLineValid = ((SearchDest >= MinLine) AND (SearchDest <= MaxLine))
+						myLineUsed	= (D[myStartStop + SearchDest] > 0) ;Start / Stop On	
+						IF (Match AND myLineValid AND myLineUsed AND (Line[SearchDest].SpaceBIT > 0) AND Line[SearchDest].Clear) THEN
+							Dest = SearchDest
+						ENDIF
+					EXITIF (Dest > 0)		
+					ENDLOOP		
+				ENDIF		
+					
+				;Search for a line with the same program
+					;---------------------------------------
+				IF (Dest = 0) THEN	 
+					LOOP myLine = AreaStartLine TO AreaEndLine DO
+						myLineValid = ((myLine >= MinLine) AND (myLine <= MaxLine))
+						myLineUsed	= (D[myStartStop + myLine] > 0) ;Start / Stop On
+						IF myLineValid AND myLineUsed THEN
+							n 			= myLine
+							SearchBag[0] 	= (Line[n].LastBag - Line[n].Space)
+;							SearchBag[1]    = (Line[n + 20].LastBag - Line[n + 20].Space)
+;							SearchBag[2]    = (Line[n + 40].LastBag - Line[n + 40].Space)	
+							Condtion[1] 	= ((SearchBag[0] >= Line[n].FirstBag) AND (Bag[SearchBag[0]].Prg = BufferPrg))
+;							Condtion[2] 	= ((SearchBag[1] >= Line[n + 20].FirstBag) AND (Bag[SearchBag[1]].Prg = BufferPrg))
+;							Condtion[3] 	= ((SearchBag[2] >= Line[n + 40].FirstBag) AND (Bag[SearchBag[2]].Prg = BufferPrg))	
+							Match = (Condtion[1] OR Condtion[2] OR Condtion[3])
+							IF (Match  AND (Line[n].SpaceBIT > 0) AND Line[n].Clear) THEN 
+								;Found line with a matching program
+								Dest 	= n
+							ENDIF ;/SearchBag[0]
+						ENDIF ;/myLineValid
+						EXITIF (Dest <> 0)
+					ENDLOOP ;/myLine loop
+				ENDIF
+				;Search for an empty line
+				;------------------------
+				IF (Dest = 0) THEN
+					LOOP myLine = AreaStartLine TO AreaEndLine DO
+						myLineValid = ((myLine >= MinLine) AND (myLine <= MaxLine))
+						myLineUsed	= (D[myStartStop + myLine] > 0) ;Start / Stop On
+						IF myLineValid AND myLineUsed THEN
+							n 			= myLine
+							SearchBag[0] 	= (Line[n].FirstBag)
+;							SearchBag[1]    = (Line[n + 20].LastBag - Line[n + 20].Space)
+;							SearchBag[2]    = (Line[n + 40].LastBag - Line[n + 40].Space)	
+							Match = (Bag[SearchBag[0]].Prg = 0)// AND (Bag[SearchBag[1]].Prg = 0) AND (Bag[SearchBag[2]].Prg = 0))	
+							IF (Match AND (Line[n].SpaceBIT = Line[n].Space ) AND Line[n].Clear) THEN 
+								;Found line with a matching program
+								Dest 	= n
+							ENDIF ;/SearchBag[0]
+						ENDIF ;/myLineValid
+						EXITIF (Dest <> 0)
+					ENDLOOP ;/myLine loop
+				ENDIF ;/Dest = 0
+					
+;				Search for a line that already contains a bag with the same Program starting at the back
+;				----------------------------------------------------------------------------------------
+				IF (Dest = 0) THEN
+					LOOP myDepth = (MaxDepth - 2) DOWNTO 0 DO ;Don't search the last bag as the line would already be full!!
+						LOOP myLine = AreaStartLine TO AreaEndLine DO
+							//LOOP LineIndex = 0 TO 2 DO
+								myLineValid = ((myLine >= MinLine) AND (myLine <= MaxLine))
+								myLineUsed	= (D[myStartStop + myLine] > 0) ;Start / Stop On
+								IF myLineValid AND myLineUsed THEN
+									n 			= myLine 
+									SearchBag[0] 	= (Line[n].FirstBag + myDepth)
+									IF ((Bag[SearchBag[0]].Prg = BufferPrg) AND (Line[n].SpaceBIT > 0) AND Line[n].Clear) THEN 
+										;Found line with a matching program
+										FoundDepth 	= myDepth
+										Dest 		= myLine
+									ENDIF ;/SearchBag[0]
+								ENDIF ;/myLineValid
+								//EXITIF (Dest <> 0)
+							//ENDLOOP
+							EXITIF (Dest <> 0)
+						ENDLOOP ;/myLine loop
+						EXITIF (Dest <> 0)
+					ENDLOOP ;/myDepgh
+				ENDIF ;/Dest = 0
+					
+					
+				;Search for a line that already contains a bag with the same customer starting at the back
+				;----------------------------------------------------------------------------------------
+				IF (Dest = 0) THEN
+					LOOP myDepth = (MaxDepth - 2) DOWNTO 0 DO ;Don't search the last bag as the line would already be full!!
+						LOOP myLine = AreaStartLine TO AreaEndLine DO
+							//LOOP LineIndex = 0 TO 2 DO
+								myLineValid = ((myLine >= MinLine) AND (myLine <= MaxLine))
+								myLineUsed	= (D[myStartStop + myLine] > 0) ;Start / Stop On
+								IF myLineValid AND myLineUsed THEN
+									n 			= myLine 
+									SearchBag[0] 	= (Line[n].FirstBag + myDepth)
+									IF ((Bag[SearchBag[0]].Cus  = BufferCus) AND (Line[n].SpaceBIT > 0) AND Line[n].Clear) THEN 
+										;Found line with a matching program
+										FoundDepth 	= myDepth
+										Dest 		= myLine
+									ENDIF ;/SearchBag[0]
+								ENDIF ;/myLineValid
+							//EXITIF (Dest <> 0)
+							//ENDLOOP
+						EXITIF (Dest <> 0)
+						ENDLOOP ;/myLine loop
+						EXITIF (Dest <> 0)
+					ENDLOOP ;/myDepgh
+				ENDIF ;/Dest = 0
+			
+				;Search for line with the most space
+				;-----------------------------------
+				IF (Dest = 0) THEN
+					mySpace = 0
+					myFound	= 0
+					LOOP myLine = AreaStartLine TO AreaEndLine DO
+						myLineValid = ((myLine >= MinLine) AND (myLine <= MaxLine))
+						myLineUsed	= (D[myStartStop + myLine] > 0) ;Start / Stop On
+						IF myLineValid AND myLineUsed THEN
+							n 			= myLine
+							SearchBag[0] 	= (Line[n].LastBag)
+							LineSpace = Line[n].SpaceBIT
+							IF ((Bag[SearchBag[0]].Prg = 0) AND (LineSpace > mySpace) AND (Line[n].SpaceBIT > 0)  AND Line[n].Clear) THEN 
+								;Found line with a matching program
+								myFound	= n
+								mySpace = LineSpace
+							ENDIF ;/SearchBag[0]
+						ENDIF ;/myLineValid
+					ENDLOOP ;/myLine loop
+				
+					IF (myFound > 0) THEN
+						Dest 	= myFound
+					ENDIF
+				
+				ENDIF ;/Dest = 0	
+			
+			
+															
+			ENDIF ;/Area Valid
+			EXITIF (Dest <> 0)				
+		ENDLOOP ;/Area Loop
+		IF (Dest <> 0) AND (Line[Dest].Space > 0) THEN 
+			Bag[BufferBag].Dst = USINT(Dest)	
+		ELSE IF (Dest <> 0) THEN
+		;	Alarm[mySeq].Name = almDestinationNotValid		
+		ENDIF	
+	
+	ELSE;//End Std.AutoAllocation
+		LineSearch[1]   = D[3000 + Bag[BufferBag].Prg]
+		LineSearch[2]   = D[3100 + Bag[BufferBag].Prg]
+		LineSearch[3]   = D[3200 + Bag[BufferBag].Prg]
+		LineSearch[4]   = D[3300 + Bag[BufferBag].Prg]
+		;Check line choice 1st to 4th in order if any valid then exit loop
+		LOOP Choice = 1 TO 4 DO
+			LineValid = (D[100 + LineSearch[Choice]] > 0)			
+			LineClear = Line[LineSearch[Choice]].Clear AND (Bag[Line[LineSearch[Choice]].LastBag].Cat = 0) AND (Line[LineSearch[Choice]].SpaceBIT > 0)
+			IF (LineSearch[Choice] > 0) AND LineValid AND LineClear THEN
+				Bag[BufferBag].Dst = USINT(LineSearch[Choice])					
+			ENDIF
+			EXITIF (Bag[BufferBag].Dst <> 0)
+		ENDLOOP
+	ENDIF ;/BufferDst > 0
+			
+ENDIF ;/BagSettled
+
+	
+
+
+END_PROGRAM

@@ -1,0 +1,103 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;----------------------------------------------
+;Sequence 10 - SPC1 Pneumatic Conveyor 1 D[910]
+;----------------------------------------------
+
+;Inputs
+;Incline Conveyor
+;-----------------------------------------
+;Revision 1.00 09/01/2002 D.J. First Issue
+;-----------------------------------------
+
+I_PaddleinPosition		= X[8].X03
+I_BaginIncline			= X[8].X07
+I_BagOut                = X[4].X08
+
+Request.CIC[7]            = FALSE
+
+O_RunMotor 				= FALSE
+
+;Setup Sequence
+;-----------------------
+STEP = D[922]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND (STEP = 3)),1000,Alarm[9],AlarmET[9])
+
+;Run Incline until paddle in position
+IF (STEP = 1) THEN
+	O_RunMotor = (NOT I_PaddleinPosition)
+	IF I_PaddleinPosition THEN
+		D[922] = 2
+	ENDIF
+ENDIF
+
+;Check romm in buffer
+TON_10ms(I_BagatBuffer,300,BagSettledBuffer,BagSettledBufferET)
+IF (STEP = 2) THEN
+	//IF NOT ((I_BaginIncline) AND (Bag[59].Cat = 0)) THEN
+		D[922] = 3
+
+	//ENDIF
+ENDIF
+
+;
+
+;Wait for bag in incline
+IF (STEP = 3) THEN
+IF I_BaginIncline  THEN
+		D[922] = 4
+	ENDIF
+ENDIF
+
+
+;Let bag settle at base of incline
+TON_10ms((STEP = 4),1000,BagSettled,BagSettledET)
+IF (STEP = 4) THEN
+	IF BagSettled THEN
+		D[922] = 5
+	ENDIF
+ENDIF
+
+;Move Bag up incline
+TON_10ms((STEP = 5),200,BagNearTop,BagNearTopET)
+IF (STEP = 5) THEN
+	O_RunMotor = TRUE
+	IF BagNearTop THEN
+		D[922] = 6
+	ENDIF
+ENDIF
+
+;Wait for Ongoing Sequence to Enable
+;Run motor for 0.5 seconds
+TON_10ms((STEP = 6),50,RunOn,RunOnET)
+IF (STEP = 6) THEN
+	O_RunMotor 	= NOT RanOn
+    Request.CIC[7] = TRUE
+	IF Enable.CIC[7] THEN
+		D[922] = 7
+
+	ENDIF
+ENDIF
+
+
+;Run incline until bag at storage lines
+IF (STEP = 7) THEN
+	O_RunMotor 		= TRUE
+	IF I_BagOut THEN
+		D[922] = 1
+	ENDIF
+
+ENDIF
+
+		
+
+Y[8].Y13 = O_RunMotor
+
+END_PROGRAM
+

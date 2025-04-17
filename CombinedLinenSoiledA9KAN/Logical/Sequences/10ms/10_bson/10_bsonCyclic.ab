@@ -1,0 +1,125 @@
+PROGRAM _CYCLIC
+(* cyclic program *)
+
+;----------------------------------------
+;Sequence 14 - Ongoing Bag Stacker D[910]
+;----------------------------------------
+
+;Inputs
+I_TiltA					= X[6].X02
+I_TiltB					= X[6].X03
+I_OnLineA		  		= X[6].X04
+I_Bagout				= X[6].X05
+
+
+O_SelectLineA			= FALSE
+O_SelectLineB			= FALSE
+O_OperatePusher			= FALSE
+O_TiltCylinder			= FALSE
+O_OpenStops				= FALSE
+O_OpenBufferStop		= FALSE
+
+;Setup Sequence
+;-----------------------
+STEP = D[910]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND ((STEP = 3) OR (STEP = 4) OR (STEP = 8))),6000,Alarm[10],AlarmET[10])
+
+IF (STEP = 0) THEN
+	;Do Nothing
+ENDIF
+
+;Select Line 'a'
+TON_10ms((STEP = 1),100,ResetPoint,ResetPointET)
+IF (STEP = 1) THEN
+	O_SelectLineA = TRUE
+	IF ResetPoint THEN
+		D[910] = 2
+	ENDIF
+ENDIF
+
+;Wait for bag to be ready
+IF (STEP = 2) THEN
+	IF (Request.SDC[1] OR Request.SDC[2]) THEN
+		D[910] = 3
+	ENDIF
+ENDIF
+
+;Enable requesting discharger to send a bag
+IF (STEP = 3) THEN
+	IF I_OnLineA THEN
+		D[910] = 4
+	ELSE
+		;Set Bags from SDC1 or SDC1
+		IF (Request.SDC[1] AND NOT Enable.SDC[2]) THEN
+			Enable.SDC[1] = TRUE
+		ELSE IF (Request.SDC[2] AND NOT Enable.SDC[1]) THEN
+			Enable.SDC[2] = TRUE
+		ENDIF
+	ENDIF
+ELSE
+	Enable.SDC[1] = FALSE
+	Enable.SDC[2] = FALSE
+ENDIF
+
+;Wait for bag in Tilt position
+TON_10ms((I_TiltA AND I_TiltB),300,BagatTilt,BagatTiltET)
+IF (STEP = 4) THEN
+	O_SelectLineB = TRUE
+	IF BagatTilt THEN
+		D[910] = 5
+	ENDIF
+ENDIF
+
+;Tilt down
+TON_10ms((STEP = 5),500,TiltDown,TiltDownET)
+IF (STEP = 5) THEN
+	O_TiltCylinder = TRUE
+	IF TiltDown THEN
+		D[910] = 6
+	ENDIF
+ENDIF
+
+;Tilt up
+TON_10ms((STEP = 6),500,TiltUp,TiltUpET)
+IF (STEP = 6) THEN
+	IF TiltUp THEN
+		D[910] = 7
+	ENDIF
+ENDIF
+
+;Check not full
+TON_10ms((NOT I_Bagout),300,NotFull,NotFullET)
+IF (STEP = 7) THEN
+	IF NotFull THEN
+		D[910] = 8
+	ENDIF
+ENDIF
+
+;Open stops to release bag
+IF (STEP = 8) THEN
+	O_OpenStops = TRUE
+	IF I_Bagout THEN
+		D[910] = 1
+	ENDIF
+ENDIF
+
+;Pusher Cylinder
+TON_10ms(((STEP = 7) OR (STEP = 8)) AND (NOT Pushed),500,O_OperatePusher,RequirePusherET)
+TON_10ms(O_OperatePusher,500,Pushed,PushedET)
+
+Y[5].Y10 = Enable.SDC[2]
+Y[5].Y11 = Enable.SDC[1]
+
+Y[6].Y01 = O_SelectLineA
+Y[6].Y02 = O_SelectLineB
+Y[6].Y03 = O_OpenStops
+Y[6].Y04 = O_OperatePusher
+Y[6].Y05 = O_TiltCylinder
+
+END_PROGRAM
+

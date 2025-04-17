@@ -1,0 +1,28 @@
+VAR CONSTANT
+	Dec_C_MaxPressureReliefs : UINT := 1;
+END_VAR
+VAR RETAIN
+	LASTSTEP : ARRAY[0..Dec_C_MaxPressureReliefs] OF UINT;
+END_VAR
+VAR
+	PLS : ARRAY[0..Dec_C_MaxPressureReliefs] OF BOOL;
+	STEP : UINT;
+	TimerAlarm : ARRAY[0..Dec_C_MaxPressureReliefs] OF TON_10ms;
+	mySeq : UINT;
+	I_BagAtPR : ARRAY[0..Dec_C_MaxPressureReliefs] OF BOOL;
+	n : INT;
+	BagSettled : ARRAY[0..Dec_C_MaxPressureReliefs] OF TON_10ms;
+	myRelLine : UINT;
+	myLastBag : UINT;
+	myBag : UINT;
+	O_OpenStop : ARRAY[0..Dec_C_MaxPressureReliefs] OF BOOL;
+	myZone : INT;
+END_VAR
+VAR RETAIN
+	ReleaseValid : ARRAY[0..Dec_C_MaxPressureReliefs] OF BOOL;
+END_VAR
+VAR
+	TON_10msReleaseValid : ARRAY[0..Dec_C_MaxPressureReliefs] OF TON_10ms;
+	TimeOutTimer : ARRAY[0..Dec_C_MaxPressureReliefs] OF TON_10ms;
+	DebugTimeOut_Counter : ARRAY[0..Dec_C_MaxPressureReliefs] OF UDINT;
+END_VAR

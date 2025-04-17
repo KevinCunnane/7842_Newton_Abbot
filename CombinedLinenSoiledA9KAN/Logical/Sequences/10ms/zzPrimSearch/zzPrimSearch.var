@@ -1,0 +1,59 @@
+(********************************************************************
+ * COPYRIGHT -- HP
+ ********************************************************************
+ * Program: zzPrimSearch
+ * File: zzPrimSearch.var
+ * Author: treamsbottom
+ * Created: May 09, 2014
+ ********************************************************************
+ * Local variables of program zzPrimSearch
+ ********************************************************************)
+VAR
+	MaxBuffers : UINT;
+	BufferBagNum : ARRAY[0..3] OF UINT;
+	Buffer : UINT;
+	TestBuffer : UINT;
+	BufferBag : UINT;
+	BufferSettled : BOOL;
+	SettledBuffer : ARRAY[0..3] OF BOOL;
+	BufferPrg : USINT;
+	BufferCat : UDINT;
+	BufferCus : UDINT;
+	BufferDst : USINT;
+	n : UINT;
+	MinLine : UINT;
+	MaxLine : UINT;
+	Dest : UINT;
+	Buff : UINT;
+	mySeq : UINT;
+	AreaChoice : ARRAY[0..4] OF UINT;
+	Area : UINT;
+	AreaStartLine : UINT;
+	AreaEndLine : UINT;
+	AreaValid : BOOL;
+	myLine : UINT;
+	myLineValid : BOOL;
+	myLineUsed : BOOL;
+	myStartStop : UINT;
+	SearchBag : ARRAY[0..4] OF UINT;
+	myDepth : UINT;
+	MaxDepth : UINT;
+	FoundDepth : UINT;
+	mySpace : UINT;
+	myFound : UINT;
+	LineSearch : ARRAY[0..4] OF UINT;
+	Choice : USINT;
+	LineValid : BOOL;
+	LineClear : BOOL;
+	TransitBag : UINT;
+	t : UINT;
+	Debug : BOOL;
+	Match : BOOL;
+	LineSpace : UINT;
+	LineIndex : USINT;
+	Condtion : ARRAY[0..3] OF BOOL;
+	myTransitLine : UINT;
+	SearchDest : UINT;
+	myBag : UINT;
+	OngoingEnabled : BOOL;
+END_VAR

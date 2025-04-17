@@ -1,0 +1,53 @@
+VAR
+	BagReleased : BOOL;
+	BagValid : BOOL;
+	DestValid : BOOL;
+	I_BagAtSep : BOOL;
+	I_BagReleased : BOOL;
+END_VAR
+VAR RETAIN
+	LASTSTEP : UINT;
+END_VAR
+VAR
+	myBag : UINT;
+	myDest : USINT;
+	myIC : USINT;
+	myIO : UINT;
+END_VAR
+VAR RETAIN
+	myPrevSelLine : USINT;
+END_VAR
+VAR
+	myPUP : ARRAY[0..2] OF USINT;
+	myRelDest : ARRAY[0..2] OF USINT;
+	mySelLine : USINT;
+	mySeq : UINT;
+	O_OpenSep : BOOL;
+	O_Select : ARRAY[0..9] OF BOOL;
+END_VAR
+VAR RETAIN
+	PLS : BOOL;
+END_VAR
+VAR
+	PointsReset : BOOL;
+	PointsResetET : UDINT;
+	ResetPoints : BOOL;
+	SettledAtSep : BOOL;
+	SettledAtSepET : UDINT;
+END_VAR
+VAR RETAIN
+	STEP : UINT;
+END_VAR
+VAR
+	TimerAlarm : TON_10ms;
+	I_BagArrive : ARRAY[0..2] OF BOOL;
+	myOutBag : ARRAY[0..2] OF UINT;
+	PUPClear : ARRAY[0..2] OF BOOL;
+	myZone : INT;
+	I_BagInSep : BOOL;
+	SettledInSep : BOOL;
+	SettledInSepET : UDINT;
+	BagInSep : BOOL;
+	ReleaseValid : BOOL;
+	AutoDestChange : BOOL;
+END_VAR

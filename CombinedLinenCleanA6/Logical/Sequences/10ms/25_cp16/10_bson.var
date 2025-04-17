@@ -1,0 +1,51 @@
+VAR
+	I_OnLineA : BOOL;
+	I_TiltA : BOOL;
+	I_TiltB : BOOL;
+	I_Bagout : BOOL;
+	O_OpenBufferStop : BOOL;
+	O_SelectLineA : BOOL;
+	O_SelectLineB : BOOL;
+	O_OpenStops : BOOL;
+	O_TiltCylinder : BOOL;
+	O_OperatePusher : BOOL;
+	PLS : BOOL;
+END_VAR
+VAR RETAIN
+	LASTSTEP : UINT;
+	STEP : UINT;
+END_VAR
+VAR
+	TiltDownET : UDINT;
+	TiltDown : BOOL;
+	TiltUpET : UDINT;
+	TiltUp : BOOL;
+	NotFullET : UDINT;
+	NotFull : BOOL;
+	RequirePusherET : UDINT;
+	Pushed : BOOL;
+	PushedET : UDINT;
+	BagAtTiltET : TIME;
+	BagAtTilt : BOOL;
+	PointReset : BOOL;
+	PointResetET : TIME;
+	TimerAlarm : TON_10ms;
+	ResetPoint : BOOL;
+	ResetPointET : UDINT;
+	BagatTilt : BOOL;
+	BagatTiltET : UDINT;
+	I_BagatBuffer : BOOL;
+	O_Reset : BOOL;
+	O_OpenBuffer : BOOL;
+	O_SelectLine13_1 : BOOL;
+	O_SelectLine14_1 : BOOL;
+	O_SelectLine15_1 : BOOL;
+	O_SelectLine16_1 : BOOL;
+	O_SelectLine16_2 : BOOL;
+	mySeq : INT;
+	Reset : BOOL;
+	ResetET : UDINT;
+	Destination : INT;
+	BagSettledBuffer : BOOL;
+	BagSettledBufferET : UDINT;
+END_VAR

@@ -1,0 +1,19 @@
+VAR RETAIN
+	n	:UINT;	
+	ValidWeight	:BOOL;	
+	SP1Reached	:BOOL;	
+	SP2Reached	:BOOL;	
+	SP3Reached	:BOOL;	
+	TestWeight	:UINT;	
+	StnIntoQ	:BOOL;	
+	StnsInQ	:BOOL;	
+	PurgeStation	:BOOL;	
+	StnsToPurge	:BOOL;	
+END_VAR
+
+
+VAR
+	ManualRelease	:BOOL;	
+	TestStation	:UINT;	
+	z	:UINT;	
+END_VAR

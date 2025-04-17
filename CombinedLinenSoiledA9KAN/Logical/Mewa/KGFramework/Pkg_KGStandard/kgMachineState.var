@@ -1,0 +1,38 @@
+(********************************************************************
+ * COPYRIGHT -- Herbert Kannegiesser GmbH
+ ********************************************************************
+ * Package: Pkg_KGStandard
+ * File: kgMachineState.var
+ * Author: hunholz
+ * Created: January 27, 2012
+ ********************************************************************
+ * Variables of package Pkg_KGStandard
+ ********************************************************************)
+VAR CONSTANT
+	KG_MACHINESTATE_OFF : UINT := 0; (*Machine is turned off*)
+	KG_MACHINESTATE_EMERGENCYSTOP : UINT := 1; (*Emergency stop*)
+	KG_MACHINESTATE_SAFESTOP : UINT := 2; (*Safe stop*)
+	KG_MACHINESTATE_FAULT : UINT := 3; (*Fault*)
+	KG_MACHINESTATE_FAULT_GONE : UINT := 4; (*Fault, wait for acknowledge*)
+	KG_MACHINESTATE_SERVICE : UINT := 5; (*Service*)
+	KG_MACHINESTATE_AUTOMATIC_RUN : UINT := 6; (*Automatic Run*)
+	KG_MACHINESTATE_STOP : UINT := 7; (*Stop*)
+	KG_MACHINESTATE_WAIT_AUTOMATIC : UINT := 8; (*Automatic Wait (Standby)*)
+	KG_MACHINESTATE_WAIT_MAN : UINT := 9; (*Automatic Wait for manual action*)
+	KG_MACHINESTATE_WARNING : UINT := 10; (*Automatic Warning*)
+END_VAR
+(*Special states for dryer*)
+VAR CONSTANT
+	KG_MACHINESTATE_DRY_HEATING : UINT := 30; (*Automatic heating*)
+	KG_MACHINESTATE_DRY_COOLDOWN : UINT := 31; (*Automatic cooldown*)
+	KG_MACHINESTATE_DRY_CLEAN_FILTER : UINT := 32; (*Automatic clean filter*)
+	KG_MACHINESTATE_DRY_AFTERRUN : UINT := 33; (*Automatic afterrun*)
+	KG_MACHINESTATE_DRY_FAN_CLEAN : UINT := 34; (*Automatic running cleaning fan*)
+END_VAR
+(*Special states for conveyor*)
+VAR CONSTANT
+	KG_MACHINESTATE_CONV_FWD : UINT := 40; (*Automatic running forward*)
+	KG_MACHINESTATE_CONV_FWD2 : UINT := 41; (*Automatic running forward 2nd speed*)
+	KG_MACHINESTATE_CONV_REV : UINT := 42; (*Automatic running reverse*)
+	KG_MACHINESTATE_CONV_REV2 : UINT := 43; (*Automatic running reverse 2nd speed*)
+END_VAR

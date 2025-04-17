@@ -1,0 +1,48 @@
+VAR
+	TransitWindowClosedET : TIME;
+	TransitWindowClosed : BOOL;
+	TimerAlarm : TON_10ms;
+	StopInclineET : TIME;
+	StopIncline : BOOL;
+	STEP : UINT;
+	SettledAtSepET : UDINT;
+	SettledAtSep : BOOL;
+	ReleasedToInclineET : TIME;
+	ReleasedToIncline : BOOL;
+END_VAR
+VAR RETAIN
+	PLS : BOOL;
+END_VAR
+VAR
+	O_RunMotor : BOOL;
+	O_OpenSeparator : BOOL;
+	NoBags : BOOL;
+	myZone : INT;
+	myX20IO : UINT;
+	mySeq : UINT;
+	myRelLine : UINT;
+	myRelBag : UINT;
+	myLine : UINT;
+	myLastBag : UINT;
+	myIO : UINT;
+	myFirstBag : UINT;
+	myBufferBag : UINT;
+END_VAR
+VAR RETAIN
+	LASTSTEP : UINT;
+END_VAR
+VAR
+	I_TrolleyOutAtBott : BOOL;
+	I_TrolleyOnIncline : BOOL;
+	I_PaddleInPosition : BOOL;
+	I_OutgoingFull : BOOL;
+	I_BagInSep : BOOL;
+	I_BagAtSep : BOOL;
+	I_ArriveIncline : BOOL;
+	BagReleasedSep : BOOL;
+	BagReleased : BOOL;
+	BagArriveIncline : BOOL;
+	SettledInSep : BOOL;
+	SettledInSepET : UDINT;
+	BagArrived : BOOL;
+END_VAR

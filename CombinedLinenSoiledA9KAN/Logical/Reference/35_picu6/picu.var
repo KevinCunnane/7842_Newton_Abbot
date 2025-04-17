@@ -1,0 +1,40 @@
+VAR RETAIN
+	STEP : UINT;
+	PLS : BOOL;
+	LASTSTEP : UINT;
+END_VAR
+VAR
+	O_RunMotor : BOOL;
+	I_OutgoingFull : BOOL;
+	O_OpenSeparator : BOOL;
+	ReleasedToIncline : BOOL;
+	ReleasedToInclineET : TIME;
+	OutgoingFull : BOOL;
+	OutgoingFullET : TIME;
+	NoBags : BOOL;
+	StopInclineET : TIME;
+	StopIncline : BOOL;
+	I_PaddleInPosition : BOOL;
+	BagArriveIncline : BOOL;
+	I_ArriveIncline : BOOL;
+	TransitWindowClosedET : TIME;
+	TransitWindowClosed : BOOL;
+	BagReleasedSep : BOOL;
+	I_BagAtSep : BOOL;
+	I_LoadingInPosition : BOOL;
+	TrackInPosET : TIME;
+	TrackInPos : BOOL;
+	mySeq : UINT;
+	I_BagArriveIncline : BOOL;
+	myIO : UINT;
+	I_BagAtTopIncline : BOOL;
+	I_BagReleased : BOOL;
+	myIC : UINT;
+	SettledSep : BOOL;
+	SettledSepET : UDINT;
+	myZone : INT;
+	I_BagInSep : BOOL;
+	SettledInSep : BOOL;
+	SettledInSepET : UDINT;
+	BagInSep : BOOL;
+END_VAR

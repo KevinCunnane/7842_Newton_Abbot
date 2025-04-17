@@ -1,0 +1,160 @@
+PROGRAM _CYCLIC
+	(* cyclic program *)
+
+;--------------------------------------------
+;Sequence 8 - SVC1 Vertical conveyor 1 D[908]
+;--------------------------------------------
+
+;--------------------------------------------
+;Sequence 52 - CVC1 Vertical conveyor 1 D[952]
+;--------------------------------------------
+
+;Inputs
+I_CarriageAtTop			= X[4].X13
+I_CarriageAtBottom		= X[4].X14
+I_BagOnCarriage			= X[4].X15
+I_BagAtBuffer1			= X[7].X04 AND (D[29]>0)
+I_BagAtBuffer2			= X[7].X03 AND (D[19]>0)
+
+O_MoveUp 				= FALSE
+O_MoveDown 				= FALSE
+O_OpenStop 				= FALSE
+O_Select1				= FALSE
+O_Select2				= FALSE
+
+//Enable.LU[1]			= FALSE
+
+Alarm[14].Name 				= 0
+Alarm[14].Bag				= 10001
+Alarm[14].Beacon			= TRUE
+Alarm[14].Extra				= 0
+Alarm[14].Time			  	= 5000
+
+;Setup Sequence
+STEP = D[914]
+;Setup Pulse contact 
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Alarm
+;TON_10ms(((NOT PLS) AND (STEP <> 2) AND (STEP <> 6)AND (STEP <> 10)AND (STEP <> 11)AND (STEP <> 14) AND (STEP <> 16)),3000,Alarm[52],AlarmET[52])
+
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+;Move bag from LU to Carriage
+IF (STEP = 1) THEN
+O_MoveUp = (NOT I_CarriageAtTop AND NOT I_BagOnCarriage)
+	IF I_CarriageAtTop THEN
+		D[914] = 2
+	ENDIF
+ENDIF
+
+TON_10ms(I_BagAtBuffer1,300,SettledAtBuffer1,SettledAtBuffer1ET)
+TON_10ms(I_BagAtBuffer2,300,SettledAtBuffer2,SettledAtBuffer2ET)
+IF (STEP = 2) THEN
+	Alternator = Alternator + 1
+	IF (Alternator > 3) THEN
+		Alternator = 1
+	ENDIF
+	IF (SettledAtBuffer2) THEN
+		D[48]	= 2
+		D[914]	= 3
+	ELSE IF ( SettledAtBuffer1) THEN
+		D[48]	= 1
+		D[914]	= 3
+	ELSE IF ((Alternator = 3) AND SettledAtBuffer1) THEN
+		;D[48]	= 1
+		;D[914]	= 3
+	ENDIF
+ENDIF
+
+;Bag moves to carriage
+TON_10ms(I_BagOnCarriage,300,SettledOnCarriage,SettledOnCarriageET)
+IF (STEP = 3) THEN
+	O_Select1 = ((D[48] = 1) AND I_CarriageAtTop)
+	O_Select2 = ((D[48] = 2) AND I_CarriageAtTop)
+	IF I_BagOnCarriage THEN
+		D[914] = 4
+	ENDIF
+ENDIF
+
+;Clear route selection
+IF (STEP <> 2) AND (STEP <> 3) THEN
+	D[48] = 0
+ENDIF
+
+;Bag Settles on carriage
+TON_10ms(I_BagOnCarriage,200,SettledOnCarriage,SettledOnCarriageET)
+IF (STEP = 4) THEN
+	IF SettledOnCarriage THEN
+		D[914] = 5
+	ENDIF
+ENDIF
+
+;Move carriage down to bottom
+IF (STEP = 5) THEN
+	O_MoveDown = (NOT I_CarriageAtBottom)
+	IF I_CarriageAtBottom THEN
+		D[914] = 6
+	ENDIF
+ENDIF
+
+;Wait for loading unit to call the bag
+IF (STEP = 6) THEN
+	IF Enable.CVC[2] THEN
+		D[914] = 7
+	ENDIF
+ENDIF
+
+;Bag arrves at loading unit
+IF (STEP = 7) THEN
+	O_OpenStop = I_CarriageAtBottom
+	IF NOT Enable.CVC[2] THEN
+		D[914] = 1
+	ENDIF
+ENDIF
+
+
+
+
+;High Speed Used For Up		= 50Hz
+;Medium Speed Used For Down	= 50Hz
+
+TON_10ms(O_MoveUp  ,700,HighSpeedUp,HighSpeedUpET) 		;Expected 16.94 seconds @ 591mm/sec
+TON_10ms(O_MoveDown,700,HighSpeedDn,HighSpeedDnET) 		;Expected 16.94 seconds @ 591mm/sec
+IF (STEP = 1) THEN
+	Y[8].Y03 = (NOT HighSpeedUp) 							;High Speed
+	Y[8].Y04 = FALSE										;Medium Speed
+ELSE IF (STEP = 5) THEN
+	Y[8].Y03 = FALSE										;High Speed
+	Y[8].Y04 = (NOT HighSpeedDn)							;Medium Speed
+ELSE
+	Y[8].Y03 = FALSE
+	Y[8].Y04 = FALSE
+ENDIF
+
+;PLC Outputs
+;-----------
+Y[9].Y05 = O_MoveUp
+Y[9].Y06 = O_MoveDown
+Y[9].Y07 = (O_MoveUp OR O_MoveDown)
+Y[9].Y08 = O_OpenStop
+
+Y[7].Y04 = O_Select1
+Y[7].Y03 = O_Select2
+
+
+END_PROGRAM
+
+
+
+
+
+
+
+
+
+

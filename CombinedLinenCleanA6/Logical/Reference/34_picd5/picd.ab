@@ -1,0 +1,120 @@
+PROGRAM _CYCLIC
+
+;Sequence 24 - Primary Incline Conveyor 1 D[900 + mySeq]
+
+;Note - Not a real sequence and not shown
+
+;-----------------------------------------
+;Revision 1.00 17/04/2007 D.J. First Issue
+;-----------------------------------------
+
+mySeq = 34
+myIC = 5	
+myIO = 175
+myX20IO	= 33	
+myBufferBag = 908
+myRelLine	= 70	
+myLine = 85 ; Line used to track bags	
+myZone	= 1
+	
+myLastBag = Line[myLine].LastBag	
+myFirstBag = Line[myLine].FirstBag	
+myRelBag = Line[myRelLine].LastBag
+	
+I_PaddleInPosition		= X[myIO].X01
+I_BagInSep				= X[myIO].X02
+I_BagAtSep              = X[myIO].X03
+I_ArriveIncline			= X[myIO].X04
+
+O_RunMotor 				= FALSE
+O_OpenSeparator			= FALSE
+Enable.IC[myIC]			= FALSE	
+	
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= myFirstBag
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+;Setup Sequence
+;-----------------------
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;If no bags on the buffers then stop the motor
+NoBags = (((Bag[myFirstBag].Cat = 0) OR ((STEP = 1) AND Bag[myBufferBag].Cat > 0))  AND ((STEP = 1) AND I_PaddleInPosition))
+IF NoBags THEN
+	StopIncline = TRUE
+ELSE IF (STEP <> 1) THEN	
+	StopIncline = FALSE
+ENDIF		
+
+O_RunMotor = (Line[myRelLine].Clear AND NOT Line[myRelLine].TripFault AND NOT Std.HaltSysZone[myZone] AND (STEP <> 2) AND (STEP <> 0))
+IF (STEP = 0) THEN
+
+ENDIF
+
+;Run Incline until paddle in position
+TON_10ms(I_BagAtSep,25,SettledAtSep,SettledAtSepET)	;75
+IF (STEP = 1) THEN
+	IF ((I_PaddleInPosition OR StopIncline) AND O_RunMotor AND SettledAtSep AND (Bag[myLastBag].Cat = 0) AND (Bag[myBufferBag].Cat > 0) AND NOT I_BagInSep) THEN
+		D[900 + mySeq] = 2
+	ENDIF
+	IF I_BagInSep THEN
+		Alarm[mySeq].Name = almSwitchFault
+	ENDIF		
+ENDIF
+
+;Release Bag into incline
+
+TON_10ms(I_BagInSep,150,SettledInSep,SettledInSepET)	
+IF (STEP = 2) THEN
+	IF SettledInSep THEN
+		BagArrived = TRUE
+	ENDIF		
+	O_OpenSeparator	= (Bag[myLastBag].Cat = 0) AND NOT BagArrived
+	IF I_ArriveIncline THEN
+		IF ((Bag[myBufferBag].Cat > 0) AND (Bag[myLastBag].Cat = 0)) THEN
+			Bag[myLastBag] = Bag[myBufferBag]
+			Bag[myBufferBag] = Bag[0]
+		ENDIF
+		D[900 + mySeq] = 3
+	ENDIF	
+	IF (Bag[myLastBag].Cat > 0) THEN
+		Alarm[mySeq].Name = almBagDataError
+		Alarm[mySeq].Time = 0
+		Alarm[mySeq].Bag = myLastBag
+	ELSE
+		Alarm[mySeq].Name = almBagNotReleased		
+		Alarm[mySeq].Bag = myBufferBag
+	ENDIF		
+ELSE
+	BagArrived = FALSE		
+ENDIF
+
+;Check not stpped on paddle
+IF (STEP = 3) THEN
+	IF NOT I_PaddleInPosition THEN
+		D[900 + mySeq] = 1
+	ENDIF
+ENDIF
+
+;Move data from incline..
+IF Line[myRelLine].Trip AND (Bag[myFirstBag].Cat > 0) AND (Bag[myRelBag].Cat = 0)  THEN ; Trip includes debounce
+	Bag[myRelBag] = Bag[myFirstBag]		
+	Bag[myFirstBag] = Bag[0]	
+ENDIF	
+
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+Alarm[mySeq].Zone 	= myZone
+Y[myX20IO].Y03 	= O_RunMotor AND NOT StopIncline
+Y[myIO].Y06 	= O_OpenSeparator
+END_PROGRAM
+

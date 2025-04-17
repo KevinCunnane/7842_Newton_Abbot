@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio Version=4.7.2.98?>
+<Cpu xmlns="http://br-automation.co.at/AS/Cpu">
+  <Objects>
+    <Object Type="Package">AccessAndSecurity</Object>
+  </Objects>
+  <Configuration ClassID="X20CP1486" GeneratePPCode="false" HasNcOperatingSystem="true" LocalVariablesMemory="MemoryPool" ModuleID="CP1486" OnlineConfigurationName="10.8.4.20" Target="SG4">
+    <AutomationRuntime Version="C4.72" />
+    <Build GccVersion="4.1.2" />
+    <DefaultTargetMemory DataObjects="UserROM" Libraries="UserROM" Tasks="UserROM" />
+    <Io ArConfigDataModule="false" ArConfigDataModulePath="$(AS_CPU_PATH)\AS\CfgData.br" IoMapDataModule="false" IoMapDataModulePath="$(AS_CPU_PATH)\AS\IomData.br" Supervision="false" />
+    <Safety SafetyRelease="1.10" />
+    <TaskClasses DefaultIoTaskClass="Automatic" DefaultTaskClass="Cyclic2" />
+    <Transfer AllowWarmRestart="true" DownloadMode="OneCycle" GeneratePviTransferList="true" IgnoreBrDependencies="false" IgnoreTargetOnlyObjects="false" PackedArConfig="false" PackedIoMap="false" PromptBeforeProject="true" PromptBeforeTask="false" TransferOnlyRelevantChanges="false" />
+    <Vc FirmwareVersion="V4.72.0" />
+    <TechnologyPackages>
+      <SafetyRelease Version="1.10.0" />
+    </TechnologyPackages>
+    <OnlineConfiguration Name="ARwin" DeviceType="TCPIP" DeviceParameters="/IF=tcpip /LOPO=11159 /SA=1" ConnectionParameters="/COMT=2500 /RT=1000 /AM=* /DAIP=10.8.4.20 /REPO=11159 /ANSL=1" Description="" />
+  </Configuration>
+</Cpu>

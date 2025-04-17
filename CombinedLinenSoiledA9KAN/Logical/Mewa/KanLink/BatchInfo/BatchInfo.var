@@ -1,0 +1,9 @@
+VAR
+	BagNum : ARRAY[0..10] OF UINT;
+	n : UINT;
+	length : UINT;
+	myCategoryString : STRING[11];
+	myCustomerString : STRING[11];
+	nxt_adr : UDINT;
+	GetTimeStamp : DTGetTime;
+END_VAR

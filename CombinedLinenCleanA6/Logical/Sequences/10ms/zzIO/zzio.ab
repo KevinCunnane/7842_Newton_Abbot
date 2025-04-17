@@ -1,0 +1,65 @@
+PROGRAM _CYCLIC
+(* cyclic program *)
+
+;Transmit I/O to PC Graphics
+
+;-----------------------------------------------------------------------------------------
+;Version 1.00 19/12/2005 D.J. First Issue
+;Version 2.00 13/11/2006 D.J. All I/O Sent to Graphics
+;Version 3.00 02/05/2007 D.J. Do more than 1 card per scan
+;Version 4.00 20/11/2009 D.J. Changed from 16 I/O to 8 I/O Per Card (2 cards per 16-bit D)
+;-----------------------------------------------------------------------------------------
+
+LOOP n = 1 TO 5 DO ;Do 5 * 2 cards per scan
+	
+	CurrentCard 	= CurrentCard + 2
+	DataRegister 	= DataRegister + 1
+	
+	IF (CurrentCard > Std.MaxIO) OR (DataRegister > 199) THEN
+		CurrentCard = 0
+		DataRegister = 0
+	ENDIF
+	
+	InputCard.Input[0] 	= X[CurrentCard + 0].X01
+	InputCard.Input[1] 	= X[CurrentCard + 0].X02
+	InputCard.Input[2] 	= X[CurrentCard + 0].X03
+	InputCard.Input[3] 	= X[CurrentCard + 0].X04
+	InputCard.Input[4] 	= X[CurrentCard + 0].X05
+	InputCard.Input[5] 	= X[CurrentCard + 0].X06
+	InputCard.Input[6] 	= X[CurrentCard + 0].X07
+	InputCard.Input[7] 	= X[CurrentCard + 0].X08
+	InputCard.Input[8] 	= X[CurrentCard + 1].X01
+	InputCard.Input[9] 	= X[CurrentCard + 1].X02
+	InputCard.Input[10] = X[CurrentCard + 1].X03
+	InputCard.Input[11] = X[CurrentCard + 1].X04
+	InputCard.Input[12] = X[CurrentCard + 1].X05
+	InputCard.Input[13] = X[CurrentCard + 1].X06
+	InputCard.Input[14] = X[CurrentCard + 1].X07
+	InputCard.Input[15] = X[CurrentCard + 1].X08
+	InputCard FUB BIT_ENCODE()
+
+	D[400 + DataRegister] 	= InputCard.Output
+
+	OutputCard.Input[0] 	= Y[CurrentCard + 0].Y01
+	OutputCard.Input[1] 	= Y[CurrentCard + 0].Y02
+	OutputCard.Input[2] 	= Y[CurrentCard + 0].Y03
+	OutputCard.Input[3] 	= Y[CurrentCard + 0].Y04
+	OutputCard.Input[4] 	= Y[CurrentCard + 0].Y05
+	OutputCard.Input[5] 	= Y[CurrentCard + 0].Y06
+	OutputCard.Input[6] 	= Y[CurrentCard + 0].Y07
+	OutputCard.Input[7] 	= Y[CurrentCard + 0].Y08
+	OutputCard.Input[8] 	= Y[CurrentCard + 1].Y01
+	OutputCard.Input[9] 	= Y[CurrentCard + 1].Y02
+	OutputCard.Input[10] 	= Y[CurrentCard + 1].Y03
+	OutputCard.Input[11] 	= Y[CurrentCard + 1].Y04
+	OutputCard.Input[12] 	= Y[CurrentCard + 1].Y05
+	OutputCard.Input[13] 	= Y[CurrentCard + 1].Y06
+	OutputCard.Input[14] 	= Y[CurrentCard + 1].Y07
+	OutputCard.Input[15] 	= Y[CurrentCard + 1].Y08
+	OutputCard FUB BIT_ENCODE()
+
+	D[600 + DataRegister] 	= OutputCard.Output
+
+ENDLOOP
+END_PROGRAM
+

@@ -1,0 +1,210 @@
+;CAN Bus data exchange with CBW
+
+;--------------------------------------------------------
+;Version 1.00 02/11/2009 D.J. First Issue
+;Version 2.00 22/04/2011 D.J. Weight Calculation now here
+;--------------------------------------------------------
+
+PROGRAM _INIT
+
+CAN_enable = 1
+EventWrite1 = 0									;Reset CAN data table WRITE event
+EventRead1 = 0  								;Reset CAN data table READ event
+EventWrite2 = 0									;Reset CAN data table WRITE event
+EventRead2 = 0  								;Reset CAN data table READ event
+;EventWrite3 = 0									;Reset CAN data table WRITE event
+;EventRead3 = 0  							    ;Reset CAN data table READ event
+
+CANopen_01.enable		= CAN_enable
+CANopen_01.baud_rate	= 25					;Define baud rate - 250 kbit/s
+CANopen_01.cob_anz		= 100      				;Define number of link objects
+CANopen_01.error_adr	= ADR(error_var)		;Define address for error output
+CANopen_01.device		= ADR("SL1.IF1.ST1.IF1.ST2.IF1")	;Define number of device
+CANopen_01.info			= 0
+
+CANopen_01 FUB CANopen()						;Initiate CANopen
+
+IF CANopen_01.status=0 THEN						;Check error level
+
+	DOInfo.enable = 1
+	DOInfo.pName  = "can_cmd"
+
+	DOInfo FUB DatObjInfo()
+
+	IF (DOInfo.status = 0) THEN
+
+		data_adr					= DOInfo.pDatObjMem
+		CANdftab_01.enable			= 1
+		CANdftab_01.us_ident 		= CANopen_01.us_ident	;Set us_id
+		CANdftab_01.table_adr		= data_adr				;Define address of data object
+		CANdftab_01.tab_num			= UINT(DOInfo.len / 72)	;Define number of values
+
+		CANdftab_01 FUB CANdftab()    						;Initiate CANdftab
+
+		IF CANdftab_01.status = 0 THEN
+			WriteFrame1.ControlSignals = BIT_SET(WriteFrame1.ControlSignals,0);Set Live Signal
+			;WriteFrame2.ControlSignals = BIT_SET(WriteFrame2.ControlSignals,0)
+			;WriteFrame3.ControlSignals = BIT_SET(WriteFrame3.ControlSignals,0)
+			CANOK = TRUE
+		ENDIF
+
+	ENDIF
+
+ENDIF
+
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+IF CANOK THEN
+
+	;----------------
+	;Set Write values
+	;----------------
+
+	;------------------------------------------------------
+	;Configure the CAN write to CBW1 SDC1
+	;------------------------------------------------------
+
+	IF CAN[1].BagReady THEN
+		WriteFrame1.ControlSignals = BIT_SET(WriteFrame1.ControlSignals, 1)
+	ELSE
+		WriteFrame1.ControlSignals = BIT_CLR(WriteFrame1.ControlSignals, 1)
+	ENDIF
+
+	;WriteFrame1.FaultNumber = 0
+	WriteFrame1.Category    = UINT(CAN[1].Category)
+	WriteFrame1.Customer    = UINT(CAN[1].Customer)
+	WriteFrame1.Weight      = CAN[1].Weight
+
+	;Write to Machine1
+	EventWrite1 = TRUE
+
+	;WriteFrame1a.Machine    = CAN[1].MachineID
+	;WriteFrame1a.BatchCode  = CAN[1].BatchCode
+	;WriteFrame1a.Spare1 	= 0
+	;WriteFrame1a.Spare2 	= 0
+
+	;EventWrite1a = TRUE
+
+	;------------------------------------------------------
+	;Configure the CAN write to CBW2 SDC2
+	;------------------------------------------------------
+	IF CAN[2].BagReady THEN
+			WriteFrame2.ControlSignals = BIT_SET(WriteFrame2.ControlSignals, 1)
+	ELSE
+			WriteFrame2.ControlSignals = BIT_CLR(WriteFrame2.ControlSignals, 1)
+	ENDIF
+
+	;WriteFrame2.FaultNumber = 0
+	WriteFrame2.Category = UINT(CAN[2].Category)
+	WriteFrame2.Customer 	= UINT(CAN[2].Customer)
+	WriteFrame2.Weight 		= CAN[2].Weight
+
+	;Write to CBW2
+	EventWrite2 = TRUE
+
+	;WriteFrame2a.Machine 	= CAN[2].MachineID
+	;WriteFrame2a.BatchCode 	= CAN[2].BatchCode
+	;WriteFrame2a.Spare1 	= 0
+	;WriteFrame2a.Spare2 	= 0
+
+	;EventWrite2a = TRUE
+
+
+	;------------------------
+	;Service CAN table
+	;------------------------
+
+	IF CANdftab_01.status=0 THEN						(*check error level*)
+		CANrwtab_01.enable		= 1
+		CANrwtab_01.tab_ident	= CANdftab_01.tab_ident (*define tab_id*)
+		CANrwtab_01 FUB CANrwtab()						(*initiate CANrwtab*)
+		LastError = CANrwtab_01.status
+	ENDIF
+
+
+	;----------------------------------------------------
+	;Check for incomming data from CBW1
+	;----------------------------------------------------
+	IF EventRead1 = TRUE THEN
+		EventRead1 = FALSE
+
+		CAN[1].Live 		= BIT_TST(ReadFrame1.ControlSignals,0)
+		CAN[1].DropLoad 	= BIT_TST(ReadFrame1.ControlSignals,1)
+		CAN[1].LoadDropped 	= BIT_TST(ReadFrame1.ControlSignals,2)
+		;CAN[1].FaultNumber	= ReadFrame1.FaultNumber
+
+		IF CAN[1].Live THEN
+			CAN[1].LiveTime = 50	;5 seconds
+		ENDIF
+
+		IF NOT CAN[1].Live THEN
+			ReadFrame1.ControlSignals = BIT_CLR(ReadFrame1.ControlSignals,0)
+		ENDIF
+
+	ENDIF
+
+	;----------------------------------------------------
+	;Check for incomming data from CBW2
+	;----------------------------------------------------
+	IF EventRead2 = TRUE THEN
+		EventRead2 = FALSE
+
+		CAN[2].Live			= BIT_TST(ReadFrame2.ControlSignals,0)
+		CAN[2].DropLoad		= BIT_TST(ReadFrame2.ControlSignals,1)
+		CAN[2].LoadDropped  = BIT_TST(ReadFrame2.ControlSignals,2)
+		;CAN[2].FaultNumber  = ReadFrame2.FaultNumber
+
+		IF CAN[2].Live THEN
+			CAN[2].LiveTime = 50	;5 seconds
+		ENDIF
+
+		IF NOT CAN[2].Live THEN
+			ReadFrame2.ControlSignals = BIT_CLR(ReadFrame2.ControlSignals,0)
+		ENDIF
+
+	ENDIF
+
+	;-----------------
+	;Live section
+	;-----------------
+	LOOP n = 1 TO 8 DO
+
+		IF (CAN[n].LiveTime > 0) THEN
+			CAN[n].LiveTime = (CAN[n].LiveTime - 1)
+		ENDIF
+
+		CAN[n].Live = (CAN[n].LiveTime <> 0)
+
+	ENDLOOP
+
+ENDIF
+
+;Monitor Registers for TrackView
+D[81] = UINT(ReadFrame1.ControlSignals)	;ID = 121
+D[82] = UINT(WriteFrame1.ControlSignals)	;ID = 120
+
+D[83] = UINT(ReadFrame2.ControlSignals)	;ID = 131
+D[84] = UINT(WriteFrame2.ControlSignals)	;ID = 130
+
+;D[85] = UINT(ReadFrame3.ControlSignals)	;ID = 141
+;D[86] = UINT(WriteFrame3.ControlSignals)	;ID = 140
+
+;D[87] = UINT(ReadFrame4.ControlSignals)	;ID = 261
+;D[88] = UINT(WriteFrame4.ControlSignals)	;ID = 260
+
+;D[89] = UINT(ReadFrame5.ControlSignals)	;ID = 251
+;D[90] = UINT(WriteFrame5.ControlSignals)	;ID = 241
+
+;D[91] = UINT(ReadFrame6.ControlSignals)	;ID = 252
+;D[92] = UINT(WriteFrame6.ControlSignals)	;ID = 242
+
+;D[93] = UINT(ReadFrame7.ControlSignals)	;ID = 253
+;D[94] = UINT(WriteFrame7.ControlSignals)	;ID = 243
+
+;D[95] = UINT(ReadFrame8.ControlSignals)	;ID = 254
+;D[96] = UINT(WriteFrame8.ControlSignals)	;ID = 244
+
+END_PROGRAM
+

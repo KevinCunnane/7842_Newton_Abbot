@@ -1,0 +1,48 @@
+VAR
+	I_CarrAtTop : BOOL;
+	I_CarrAtBottom : BOOL;
+END_VAR
+VAR RETAIN
+	STEP : UINT;
+END_VAR
+VAR
+	PLS : BOOL;
+END_VAR
+VAR RETAIN
+	LASTSTEP : UINT;
+END_VAR
+VAR
+	O_MoveCarrUp : BOOL;
+	O_OpenCarrStop : BOOL;
+	O_MoveCarrDown : BOOL;
+	I_BagOnCarr : BOOL;
+	O_OpenBuffer : BOOL;
+	SettledBuffer : BOOL;
+	SettledBufferET : TIME;
+	I_BagAtBuffer : BOOL;
+	BagSettledOnCarr : BOOL;
+	BagSettledOnCarrET : TIME;
+	I_BagReleased : BOOL;
+	TimerAlarm : TON_10ms;
+	I_BagAtLLBuff : BOOL;
+	O_LLBuffOpen : BOOL;
+	SettledBufferSDC2ET : TIME;
+	SettledBufferSDC2 : BOOL;
+	I_BagAtBufferSDC2 : BOOL;
+	Alt : USINT;
+	O_OpenBuffer1 : BOOL;
+	I_PaddleinPosition : BOOL;
+	I_BaginIncline : BOOL;
+	I_BagatBuffer : BOOL;
+	O_RunMotor : BOOL;
+	O_OpenBufferStop : BOOL;
+	BagSettledBuffer : BOOL;
+	BagSettledBufferET : UDINT;
+	BagSettled : BOOL;
+	BagSettledET : UDINT;
+	BagNearTop : BOOL;
+	BagNearTopET : UDINT;
+	RunOn : BOOL;
+	RunOnET : UDINT;
+	O_Select : ARRAY[0..6] OF BOOL;
+END_VAR

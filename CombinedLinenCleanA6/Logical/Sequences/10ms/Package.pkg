@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="Program" Language="IEC" Description="*Search for ongoing lines using SLAC looking at last bag in transit">zzPrimSearch</Object>
+    <Object Type="Program" Language="IEC">zzStnSer</Object>
+    <Object Type="Program" Language="IEC" Description="Counting frames inputs &amp; Piece Weights">zzCount</Object>
+    <Object Type="Program" Language="IEC" Description="* Station mixing Customer and Categories">zzStnMix</Object>
+    <Object Type="Program" Language="IEC" Description="* System status">zzStatus</Object>
+    <Object Type="Program" Language="IEC" Description="* Loading unit SLU1">1_clu_1</Object>
+    <Object Type="Program" Language="IEC" Description="* SVC1 Up from SLU1 &amp; Loading">2_cvc1</Object>
+    <Object Type="Program" Language="IEC" Description="* SPC1 Empty bags up">3_cic1</Object>
+    <Object Type="Program" Language="IEC" Description="* SPC1 Empty bags up">4_cic2</Object>
+    <Object Type="Program" Language="IEC" Description="* SPC1 Empty bags up">5_cic3</Object>
+    <Object Type="Program" Language="IEC" Description="* Honeycombe Stations 1 - 16 - GREEN LAMPS">1_stnsa</Object>
+    <Object Type="Program" Language="IEC" Description="* STB1 Transfer Belt 1">2_belt1</Object>
+    <Object Type="Program" Language="IEC" Description="* Loading unit SLU1">3_slu_1</Object>
+    <Object Type="Program" Language="IEC" Description="* Soiled Low  Ongoing Transfer Lines 1 - 6">4_spn1</Object>
+    <Object Type="Program" Language="IEC" Description="* Soiled Offgoing Transfer Lines 1 - 10">5_spf1</Object>
+    <Object Type="Program" Language="IEC" Description="* SDC1 Machine 1 BCD/CAN">6_sdc1</Object>
+    <Object Type="Program" Language="IEC" Description="* SDC1 Machine 1 BCD/CAN">7_sdc2</Object>
+    <Object Type="Program" Language="IEC" Description="* SDC1 Machine 1 BCD/CAN">8_sdc3</Object>
+    <Object Type="Program" Language="IEC" Description="* SDC1 Machine 1 BCD/CAN">9_sdc4</Object>
+    <Object Type="Program" Language="IEC" Description="* SDC1 Machine 1 BCD/CAN">10_sdc5</Object>
+    <Object Type="Program" Language="IEC" Description="* SDC1 Machine 1 BCD/CAN">11_sdc6</Object>
+    <Object Type="Program" Language="IEC" Description="*PUP1 Unloading point">12_ebag</Object>
+    <Object Type="Program" Language="IEC" Description="*PUP5 Unloading point">13_fb_eb</Object>
+    <Object Type="Program" Language="IEC" Description="* SVC1 Up from SLU1 &amp; Loading">14_cvc2</Object>
+    <Object Type="Program" Language="IEC" Description="* SDC1 Machine 1 BCD/CAN">15_cdc7</Object>
+    <Object Type="Program" Language="IEC" Description="* SPC1 Empty bags up">16_cic4</Object>
+    <Object Type="Program" Language="IEC" Description="* SPC1 Empty bags up">17_cp12</Object>
+    <Object Type="Program" Language="IEC" Description="* SDC1 Machine 1 BCD/CAN">18_cdc8</Object>
+    <Object Type="Program" Language="IEC" Description="* SPC1 Empty bags up">19_cp13</Object>
+    <Object Type="Program" Language="IEC" Description="* SPC1 Empty bags up">20_cpc1</Object>
+    <Object Type="Program" Language="IEC" Description="* SPC1 Empty bags up">21_cic6</Object>
+    <Object Type="Program" Language="IEC" Description="* SPC1 Empty bags up">22_cic7</Object>
+    <Object Type="Program" Language="IEC" Description="*PP4 Full bag from PID4">23_Ebag</Object>
+    <Object Type="Program" Language="IEC" Description="* SVC1 Inverter VC">24_csb1</Object>
+    <Object Type="Program" Language="IEC" Description="* SBSN1 Bagstacker Ongoing ">25_cp16</Object>
+    <Object Type="Program" Language="IEC" Description="* SBSF1 Bagstacker Offgoing">26_cic8</Object>
+    <Object Type="Program" Language="IEC" Description="* SVC2 2-level - Inverter">27_csb2</Object>
+    <Object Type="Program" Language="IEC" Description="Weight ">zzAI2744</Object>
+    <Object Type="Program" Language="IEC" Description="*Speed Reducers">ssr</Object>
+    <Object Type="Program" Language="IEC" Description="* Indication pictures on graphics">zzIndi</Object>
+    <Object Type="Program" Language="IEC" Description="* TCP IP Communications For Driver V5.0 and above">zzTCPIP</Object>
+    <Object Type="Program" Language="IEC" Description="* PLC Output forcing from graphics">zzForceO</Object>
+    <Object Type="Program" Language="IEC" Description="* PLC Inputs and Outputs to Graphics">zzIO</Object>
+    <Object Type="Program" Language="IEC" Description="* PLC Status to Graphics">zzOk</Object>
+  </Objects>
+</Package>

@@ -1,0 +1,149 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 21	;Sequence number
+myIO				= 107
+myZone	= 0	
+	
+TrolleyBatchSize 	= 4	
+	
+I_BagAtSep[1]			= X[myIO].X01
+I_BagAtSep[2]			= X[myIO].X02
+I_BagInSep[1]			= X[347].X01
+I_BagInSep[2]			= X[347].X02	
+I_LineFull				= X[myIO].X03		
+I_BufferLineFull[1]		= X[347].X08	
+I_BufferLineFull[2]		= X[177].X05	
+
+O_OpenSep[1]			= FALSE	
+O_OpenSep[2]			= FALSE
+O_Select[1]				= FALSE		
+O_Select[2]				= FALSE
+
+Alarm[mySeq].Name 	= 0
+Alarm[mySeq].Bag	= 10000 + mySeq
+Alarm[mySeq].Beacon	= TRUE
+Alarm[mySeq].Extra	= 0
+Alarm[mySeq].Time	= 3000
+
+;Setup Sequence
+STEP = D[900 + mySeq]
+;Setup Pulse contact
+PLS = (STEP <> LASTSTEP)
+LASTSTEP = STEP
+
+;Keep trolley counts inrange 	 
+LOOP n = 1 TO 2 DO
+	IF (TrolleyCount[n] >$FFFE) THEN
+		TrolleyCount[n] = $FFFE		
+	ENDIF	
+ENDLOOP		
+
+;Sequence
+IF (STEP = 0) THEN
+	;Disabled
+ENDIF
+
+;Step 1 Decide where to take trolley from
+TON_10ms(I_BagAtSep[1],200,SettledAtSep[1],SettledAtSepET[1])
+TON_10ms(I_BagAtSep[2],200,SettledAtSep[2],SettledAtSepET[2])
+TON_10ms(I_BufferLineFull[1],400,BufferFull[1],BufferFullET[1])
+TON_10ms(I_BufferLineFull[2],400,BufferFull[2],BufferFullET[2])
+TON_10ms(Reset,200,ResetPoints,ResetPointsET)
+IF (STEP = 1) THEN
+	;Force line choice if line is full
+	IF NOT Reset THEN
+		IF BufferFull[1] AND NOT BufferFull[2] THEN	
+			myLine = 1	
+		ELSE IF BufferFull[2] AND NOT BufferFull[1] THEN	
+			myLine = 2	
+		ENDIF		
+	ENDIF
+	IF (myLine = 0) OR (myLine > 2) THEN
+		myLine = 1		
+	ENDIF			
+
+	IF (SettledAtSep[myLine] AND (TrolleyCount[myLine] < TrolleyBatchSize) AND NOT I_LineFull AND NOT Reset AND NOT Std.HaltSysZone[myZone]) THEN 
+		IF (myLine = myPrevLine) THEN
+			D[900 +  mySeq] = (myLine + 1)
+		ELSE	
+			Reset = TRUE
+		ENDIF		
+	ELSE IF Reset THEN
+		O_Select[myLine] = TRUE
+		IF ResetPoints THEN	
+			myPrevLine = myLine
+			D[900 +  mySeq] = (myLine + 1)		
+		ENDIF		
+	ELSE IF (TrolleyCount[myLine] >= TrolleyBatchSize) OR NOT I_BagAtSep[myLine] THEN	
+		TrolleyCount[myLine] = 0 
+		INC myLine	
+	ENDIF	
+ELSE
+	Reset = FALSE		
+ENDIF	
+
+;Step 2 Select Line 1
+TON_10ms(I_BagInSep[1],150,SettledInSep[1],SettledInSepET[1])	
+IF (STEP = 2) THEN 	
+	myLine = 1
+	IF SettledInSep[myLine] THEN
+		BagInSep[myLine] = TRUE
+	ENDIF		
+	O_Select[myLine] = TRUE	
+	O_OpenSep[myLine] = NOT BagInSep[myLine]
+	IF I_LineFull THEN	
+		INC TrolleyCount[myLine]
+		D[900 + mySeq] = 1	
+	ENDIF	
+	Alarm[mySeq].Name = almBagNotReleased
+ELSE	
+	BagInSep[1] = FALSE		
+ENDIF		
+
+;Step 3 Select Line 2
+TON_10ms(I_BagInSep[2],150,SettledInSep[2],SettledInSepET[2])	
+IF (STEP = 3) THEN 	
+	myLine = 2
+	IF SettledInSep[myLine] THEN
+		BagInSep[myLine] = TRUE
+	ENDIF		
+	O_Select[myLine] = TRUE	
+	O_OpenSep[myLine] = NOT BagInSep[myLine]
+	IF I_LineFull THEN	
+		INC TrolleyCount[myLine]
+		D[900 + mySeq] = 1	
+	ENDIF	
+	Alarm[mySeq].Name = almBagNotReleased	
+ELSE
+	BagInSep[2] = FALSE	
+ENDIF		
+
+;-----------------------------------
+;PLC Outputs - adjust to suit system
+;-----------------------------------
+
+Y[myIO].Y05 = O_OpenSep[1]
+Y[myIO].Y06 = O_OpenSep[2]
+Y[myIO].Y07 = O_Select[1]	
+Y[myIO].Y08 = O_Select[2]	
+
+;Alarms
+TimerAlarm.IN 		= NOT PLS AND (Alarm[mySeq].Name > 0)
+TimerAlarm.PT 		= Alarm[mySeq].Time
+TimerAlarm FUB TON_10ms()
+Alarm[mySeq].On 	= TimerAlarm.Q
+Alarm[mySeq].ET 	= TimerAlarm.ET
+Alarm[mySeq].Zone 	= myZone
+END_PROGRAM
+
+END_PROGRAM
+

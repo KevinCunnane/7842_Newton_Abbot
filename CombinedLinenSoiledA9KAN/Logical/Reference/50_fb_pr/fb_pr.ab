@@ -1,0 +1,129 @@
+;--------------------------------------------
+;Sequence 0 - XXX0  D[900 + mySeq]
+;--------------------------------------------
+
+PROGRAM _INIT
+(* init program *)
+END_PROGRAM
+
+PROGRAM _CYCLIC
+
+;Inputs
+mySeq				= 50	;Sequence number
+myZone				= 4
+	
+;Index relates to line on storage,,	
+I_BagAtPR[1]		= X[211].X01
+
+
+LOOP n = 1 TO Dec_C_MaxPressureReliefs DO
+	
+	O_OpenStop[n] = FALSE
+		
+	Alarm[mySeq + n].Name 	= 0
+	Alarm[mySeq + n].Bag	= 0
+	Alarm[mySeq + n].Beacon	= TRUE
+	Alarm[mySeq + n].Extra	= 0
+	Alarm[mySeq + n].Time	= 3000
+	
+	BagSettled[n].IN = I_BagAtPR[n]	
+	BagSettled[n].PT = 75		
+	BagSettled[n] FUB TON_10ms()
+		
+	TimeOutTimer[n].IN = (D[900 + mySeq + n] = 2)
+	TimeOutTimer[n].PT = 6000	
+	TimeOutTimer[n] FUB TON_10ms()	
+		
+	;Setup Sequence
+	STEP = D[900 + mySeq + n]
+	;Setup Pulse contact
+	PLS[n] = (STEP <> LASTSTEP[n])
+	LASTSTEP[n] = STEP
+	
+	;Set up local vars	
+	myBag = Line[n].FirstBag	
+	myRelLine = n + 20
+	myLastBag = Line[myRelLine].LastBag
+		
+	;Sequence
+	IF (STEP = 0) THEN
+		D[900 + mySeq + n] = 1
+	ENDIF
+	TON_10msReleaseValid[n].IN = ((D[900 + mySeq + n] = 1) AND (Bag[myBag].Cat > 0) AND  Line[myRelLine].Clear AND (Bag[myLastBag].Cat = 0)AND NOT I_BagAtPR[n] AND NOT Line[myRelLine].TripFault AND NOT Std.HaltSysZone[myZone])
+	TON_10msReleaseValid[n].PT = 450 ;Must be longer then Line full timer  + Travel time
+	TON_10msReleaseValid[n] FUB TON_10ms()	
+	;Bag Settles at PR	
+	IF (STEP = 1) THEN
+		IF TON_10msReleaseValid[n].Q THEN
+			ReleaseValid[n] = TRUE
+		ENDIF		
+		O_OpenStop[n] = ReleaseValid[n]
+		IF BagSettled[n].Q THEN 			
+			D[900 + mySeq + n] = 2
+		ENDIF		
+		IF BagSettled[n].Q  AND (Bag[myBag].Cat = 0) THEN
+			Alarm[mySeq + n].Name =  almSwitchFault	
+		ELSE IF Line[myRelLine].TripFault THEN		
+			Alarm[mySeq + n].Name =  almSwitchFault		
+		ENDIF		
+	ELSE
+		ReleaseValid[n] = FALSE		
+	ENDIF
+	
+	IF (STEP = 2) THEN
+		;O_OpenStop[n] = TRUE
+		IF Line[myRelLine].Trip THEN ;OR Line[myRelLine].LongTrip THEN 			
+			Bag[myLastBag] = Bag[myBag]
+			Bag[myBag] = Bag[0]	
+			D[900 + mySeq + n] = 1	
+		ELSE IF TimeOutTimer[n].Q THEN
+			INC DebugTimeOut_Counter[n]
+			D[900 + mySeq + n] = 1
+		ENDIF	
+		IF NOT Std.HaltSysZone[myZone] THEN
+			Alarm[mySeq + n].Name = almBagNotReleased		
+		ENDIF	
+	ENDIF	
+	
+	;Alarms
+	TimerAlarm[n].IN 		= NOT PLS[n] AND (Alarm[mySeq + n].Name > 0)
+	TimerAlarm[n].PT 		= Alarm[mySeq + n].Time
+	TimerAlarm[n] FUB TON_10ms()
+	Alarm[mySeq + n].On 	= TimerAlarm[n].Q
+	Alarm[mySeq + n].ET 	= TimerAlarm[n].ET
+	Alarm[mySeq + n].Zone 	= myZone		
+ENDLOOP
+
+;-----------------------------------
+;PLC Outputs - adjust to suit system
+;-----------------------------------
+Y[211].Y05 = O_OpenStop[1]		
+Y[211].Y06 = O_OpenStop[2]
+Y[212].Y05 = O_OpenStop[3]		
+Y[212].Y06 = O_OpenStop[4]
+Y[213].Y05 = O_OpenStop[5]		
+Y[213].Y06 = O_OpenStop[6]
+Y[214].Y05 = O_OpenStop[7]		
+Y[214].Y06 = O_OpenStop[8]
+Y[215].Y05 = O_OpenStop[9]		
+Y[215].Y06 = O_OpenStop[10]
+Y[216].Y05 = O_OpenStop[11]		
+Y[216].Y06 = O_OpenStop[12]
+Y[229].Y05 = O_OpenStop[15]
+
+Y[217].Y05 = O_OpenStop[21]		
+Y[217].Y06 = O_OpenStop[22]
+Y[218].Y05 = O_OpenStop[23]		
+Y[218].Y06 = O_OpenStop[24]
+Y[219].Y05 = O_OpenStop[25]		
+Y[219].Y06 = O_OpenStop[26]
+Y[220].Y05 = O_OpenStop[27]		
+Y[220].Y06 = O_OpenStop[28]
+Y[221].Y05 = O_OpenStop[29]		
+Y[221].Y06 = O_OpenStop[30]
+Y[222].Y05 = O_OpenStop[31]		
+Y[222].Y06 = O_OpenStop[32]
+Y[231].Y06 = O_OpenStop[35]	
+
+END_PROGRAM
+

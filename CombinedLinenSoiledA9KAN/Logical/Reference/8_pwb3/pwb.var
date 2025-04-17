@@ -1,0 +1,25 @@
+VAR RETAIN
+	LASTSTEP : UINT;
+	PLS : BOOL;
+	STEP : UINT;
+END_VAR
+VAR
+	TimerAlarm : TON_10ms;
+	mySeq : UINT;
+	myIO : UINT;
+	myBag : UINT;
+	myRelLine : UINT;
+	I_BagInBeam : BOOL;
+	O_OpenSep : BOOL;
+	myLP : UINT;
+	WeighBeamClear : BOOL;
+	SettleTime : UDINT;
+	BagSettled : BOOL;
+	BagSettledET : UDINT;
+	RawWgt : DINT;
+	Wgt : INT;
+	OkToRelease : BOOL;
+	myOutBag : UINT;
+	myDisplayBag : UINT;
+	myZone : INT;
+END_VAR
