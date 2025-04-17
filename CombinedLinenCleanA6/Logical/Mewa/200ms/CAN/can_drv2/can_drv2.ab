@@ -66,12 +66,12 @@ IF CANOK THEN
 	;Configure the CAN write to CBW1 SDC1
 	;------------------------------------------------------
 Line[7].SpaceBIT
-	IF (Line[7].SpaceBIT>0) AND CAN[1].BagReady THEN
+	IF  CAN[1].BagReady THEN
 		WriteFrame1.ControlSignals = BIT_SET(WriteFrame1.ControlSignals, 1)
 	ELSE
 		WriteFrame1.ControlSignals = BIT_CLR(WriteFrame1.ControlSignals, 1)
 	ENDIF
-	IF (Line[5].SpaceBIT>0) AND CAN[1].BagReady THEN
+	IF  CAN[1].BagReady THEN
 		WriteFrame1.ControlSignals = BIT_SET(WriteFrame1.ControlSignals, 2)
 	ELSE
 		WriteFrame1.ControlSignals = BIT_CLR(WriteFrame1.ControlSignals, 2)
