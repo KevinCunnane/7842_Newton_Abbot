@@ -1,0 +1,64 @@
+1,1,1
+Language,Current,English
+Access,Level,4
+Config,MasterPC,1
+Config,WorkingPath,C:\Job\G\TrackView3 V2.3\
+Config,BrowsePath,C:\Job\G\TrackView3 V2.3\
+Config,MIS_FileUse,0
+Common,Run TCP/IP Driver,1
+Config,Reports_Station,1
+Config,Printer_Station,0
+Common,Demo,0
+Common,Backup,0
+Common,Shutdown,0
+Config,Reporting,0
+TCP_IP_Client Enabled,0,1
+TCP_IP_Client Enabled,1,0
+TCP_IP_Client RemoteHost,0,10x8x4x219
+TCP_IP_Client RemotePortRead,1,31200
+TCP_IP_Client RemoteHost,1,10.0.10.51
+TCP_IP_Client RemotePortWrite,1,31300
+TCP_IP_Client RemotePortRead,0,31000
+TCP_IP_Client RemotePortWrite,0,31100
+TCP_IP_Client RemoteHost,2,10.0.10.101
+TCP_IP_Client RemotePortRead,2,31000
+TCP_IP_Client RemotePortWrite,2,31100
+TCP_IP_Driver,Display,1
+Common,Debug,0
+Common,StoreErrors,1
+Common,Trap Errors,1
+TCP_IP_Driver,CommPort,2
+TCP_IP_Driver,CommBaud,115200
+TCP_IP_Driver,Spaces,88
+TCP_IP_Driver,LocalPort,31000
+TCP_IP_Driver,Sockets,6
+Common,Run PVI Manager,0
+System,DisplayOption,0
+Config,Ticket_Printer,0
+TCP_IP_Client RemoteHost,10,192
+TCP_IP_Client RemoteHost,20,168
+TCP_IP_Client RemoteHost,30,1
+TCP_IP_Client RemoteHost,40,101
+TCP_IP_Client RemoteHost,11,192
+TCP_IP_Client RemoteHost,21,168
+TCP_IP_Client RemoteHost,31,1
+TCP_IP_Client RemoteHost,41,221
+TCP_IP_Client RemoteHost,12,192
+TCP_IP_Client RemoteHost,22,168
+TCP_IP_Client RemoteHost,32,1
+TCP_IP_Client RemoteHost,42,101
+Printers,Reports,1
+Printers,Ticket,0
+TCP_IP_Client Enabled,2,0
+TCP_IP_Driver,AlwaysSend,0
+Access,AccSupervisor,0
+Access,AccEngineer,0
+AutoDisplay,LoadingBigDisplay,1
+LoadingBigDisplay,StartForm,0
+Categories,ShowOnlyUsed,1
+Access,PCNum,5
+RunAnotherProgram,0,D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\
+RunAnotherProgram,Path,C:\TrackView3\XPConfig.exe
+RunAnotherProgram,MenuText,VNC - Aero System
+RunAnotherProgram,1,D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\
+RunAnotherProgram,Use,0

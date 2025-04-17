@@ -1,0 +1,7 @@
+Temp/
+Binaries/
+*.isopen
+*.dock
+*.state
+Logs/
+*_git2*

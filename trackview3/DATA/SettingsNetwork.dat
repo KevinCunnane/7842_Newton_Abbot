@@ -1,0 +1,330 @@
+Config,Reporting,1
+Config,Recirculation0,1
+Config,RecircOngoing0,0
+Config,RecircOffgoing0,0
+Config,AutomaticRecirculation0,1
+Config,Recirculation1,0
+Config,RecircOngoing1,0
+Config,RecircOffgoing1,0
+Config,AutomaticRecirculation1,0
+Config,Weighing,1
+Config,Counting,0
+Config,ReleaseByCount,0
+Config,UseDuckerLogo,0
+MIS,MISWorkingPath,D:\Projects\TrackView 3\TrackView V1.0\TVIEW\FORMS\
+MIS,MISMachineIDPath,D:\Projects\TrackView 3\TrackView V1.0\TVIEW\FORMS\
+MIS,MISMachineID,0
+Common,Debug,1
+Common,Trap Errors,1
+Common,OperatorEditBags,0
+Common,OperatorLoading,0
+Common,OperatorUnloading,0
+Common,TxtBoxAutoClear,1
+Config,DischargerName 0,Discharger Name Not Set
+Config,DischargerName 1,SDC1
+Config,DischargerName 2,SDC2
+Config,DischargerName 3,CDC1-4 103
+Config,DischargerName 4,CDC2 104
+Config,DischargerName 5,CDC3 105
+Config,DischargerName 6,CDC4 106
+Config,DischargerName 7,CDC5 107
+Config,DischargerName 8,CDC6 108
+Config,DischargerName 9,CDC7 109
+Config,DischargerName 10,CDC8 110
+Config,DischargerName 11,Discharger Name Not Set
+Config,DischargerName 12,Discharger Name Not Set
+Config,DischargerName 13,Discharger Name Not Set
+Config,StationName 1,Sorting Stations 1-16
+Config,StationName 2,Station Name Not Set
+Config,StationName 3,Station Name Not Set
+Config,StationName 4,Station Name Not Set
+Config,PLCName 0,Soiled System
+Config,PLCName 1,Clean System
+Config,PLCName 2,Primary System
+Stations,UseLoadingProgram,1
+CallOff,ShowLine 0,1
+CallOff,ShowBatch 0,1
+CallOff,CategoryChoice1st 0,1
+CallOff,CategoryChoice2nd 0,0
+CallOff,CategoryChoice3rd 0,0
+CallOff,ShowCustomers 0,0
+CallOff,BatchSameCat 0,0
+CallOff,BatchSameCus 0,0
+CallOff,AllowBatchChange 0,1
+CallOff,ShowLine 1,1
+CallOff,ShowBatch 1,1
+CallOff,CategoryChoice1st 1,1
+CallOff,CategoryChoice2nd 1,0
+CallOff,CategoryChoice3rd 1,0
+CallOff,ShowCustomers 1,0
+CallOff,BatchSameCat 1,0
+CallOff,BatchSameCus 1,0
+CallOff,AllowBatchChange 1,1
+CallOff,ShowLine 2,1
+CallOff,ShowBatch 2,1
+CallOff,CategoryChoice1st 2,1
+CallOff,CategoryChoice2nd 2,0
+CallOff,CategoryChoice3rd 2,0
+CallOff,ShowCustomers 2,0
+CallOff,BatchSameCat 2,0
+CallOff,BatchSameCus 2,0
+CallOff,AllowBatchChange 2,0
+CallOff,ShowLine 3,1
+CallOff,ShowBatch 3,1
+CallOff,CategoryChoice1st 3,1
+CallOff,CategoryChoice2nd 3,0
+CallOff,CategoryChoice3rd 3,0
+CallOff,ShowCustomers 3,0
+CallOff,BatchSameCat 3,0
+CallOff,BatchSameCus 3,0
+CallOff,AllowBatchChange 3,0
+CallOff,ShowLine 4,1
+CallOff,ShowBatch 4,1
+CallOff,CategoryChoice1st 4,1
+CallOff,CategoryChoice2nd 4,0
+CallOff,CategoryChoice3rd 4,0
+CallOff,ShowCustomers 4,0
+CallOff,BatchSameCat 4,0
+CallOff,BatchSameCus 4,0
+CallOff,AllowBatchChange 4,0
+CallOff,ShowLine 5,1
+CallOff,ShowBatch 5,1
+CallOff,CategoryChoice1st 5,1
+CallOff,CategoryChoice2nd 5,0
+CallOff,CategoryChoice3rd 5,0
+CallOff,ShowCustomers 5,0
+CallOff,BatchSameCat 5,0
+CallOff,BatchSameCus 5,0
+CallOff,AllowBatchChange 5,0
+CallOff,ShowLine 6,1
+CallOff,ShowBatch 6,1
+CallOff,CategoryChoice1st 6,1
+CallOff,CategoryChoice2nd 6,0
+CallOff,CategoryChoice3rd 6,0
+CallOff,ShowCustomers 6,0
+CallOff,BatchSameCat 6,0
+CallOff,BatchSameCus 6,0
+CallOff,AllowBatchChange 6,0
+CallOff,ShowLine 7,1
+CallOff,ShowBatch 7,1
+CallOff,CategoryChoice1st 7,1
+CallOff,CategoryChoice2nd 7,0
+CallOff,CategoryChoice3rd 7,0
+CallOff,ShowCustomers 7,0
+CallOff,BatchSameCat 7,0
+CallOff,BatchSameCus 7,0
+CallOff,AllowBatchChange 7,0
+CallOff,ShowLine 8,0
+CallOff,ShowBatch 8,0
+CallOff,CategoryChoice1st 8,0
+CallOff,CategoryChoice2nd 8,0
+CallOff,CategoryChoice3rd 8,0
+CallOff,ShowCustomers 8,0
+CallOff,BatchSameCat 8,0
+CallOff,BatchSameCus 8,0
+CallOff,AllowBatchChange 8,0
+CallOff,ShowLine 9,0
+CallOff,ShowBatch 9,0
+CallOff,CategoryChoice1st 9,0
+CallOff,CategoryChoice2nd 9,0
+CallOff,CategoryChoice3rd 9,0
+CallOff,ShowCustomers 9,0
+CallOff,BatchSameCat 9,0
+CallOff,BatchSameCus 9,0
+CallOff,AllowBatchChange 9,0
+CallOff,ShowLine 10,0
+CallOff,ShowBatch 10,0
+CallOff,CategoryChoice1st 10,0
+CallOff,CategoryChoice2nd 10,0
+CallOff,CategoryChoice3rd 10,0
+CallOff,ShowCustomers 10,0
+CallOff,BatchSameCat 10,0
+CallOff,BatchSameCus 10,0
+CallOff,AllowBatchChange 10,0
+CallOff,ShowLine 11,0
+CallOff,ShowBatch 11,0
+CallOff,CategoryChoice1st 11,0
+CallOff,CategoryChoice2nd 11,0
+CallOff,CategoryChoice3rd 11,0
+CallOff,ShowCustomers 11,0
+CallOff,BatchSameCat 11,0
+CallOff,BatchSameCus 11,0
+CallOff,AllowBatchChange 11,0
+CallOff,ShowLine 12,0
+CallOff,ShowBatch 12,0
+CallOff,CategoryChoice1st 12,0
+CallOff,CategoryChoice2nd 12,0
+CallOff,CategoryChoice3rd 12,0
+CallOff,ShowCustomers 12,0
+CallOff,BatchSameCat 12,0
+CallOff,BatchSameCus 12,0
+CallOff,AllowBatchChange 12,0
+CallOff,ShowLine 13,0
+CallOff,ShowBatch 13,0
+CallOff,CategoryChoice1st 13,0
+CallOff,CategoryChoice2nd 13,0
+CallOff,CategoryChoice3rd 13,0
+CallOff,ShowCustomers 13,0
+CallOff,BatchSameCat 13,0
+CallOff,BatchSameCus 13,0
+CallOff,AllowBatchChange 13,0
+CallOff,ShowLine 14,0
+CallOff,ShowBatch 14,0
+CallOff,CategoryChoice1st 14,0
+CallOff,CategoryChoice2nd 14,0
+CallOff,CategoryChoice3rd 14,0
+CallOff,ShowCustomers 14,0
+CallOff,BatchSameCat 14,0
+CallOff,BatchSameCus 14,0
+CallOff,AllowBatchChange 14,0
+dbOptions,CatDbUseLongID,0
+dbOptions,CatDbUseSoiledLines,1
+dbOptions,CatDbSoiledLines=2,1
+dbOptions,CatDbUseSetpoints,1
+dbOptions,CatDbUseCleanLines,1
+dbOptions,CatDbCleanLines=2,0
+dbOptions,CatDbUseBatchSize,0
+dbOptions,CatDbUsePieceWeight,0
+dbOptions,CatDbUseCategoryType,1
+dbOptions,CatDbUseWashCodes,0
+dbOptions,CatDbLongIDInBag,0
+dbOptions,CatDbLongIDShowLeft,0
+dbOptions,SystemUseBatchCodes,1
+dbOptions,0,0
+dbOptions,1,0
+dbOptions,LongCharAllow,2
+dbOptions,LongIDMax,4
+dbOptions,CatDbLongCharAllow,2
+dbOptions,CatDbLongIDMax,5
+dbOptions,SysBatchCodes,0
+dbOptions,CatDbUseBagColour,1
+dbOptions,dbRepairAtStart,0
+dbOptions,dbRepairAtTime,1
+dbOptions,dbRepairTimeVal,04/04/2025 23:59:00
+System,SystemName,Newton Abbott
+Config,ColorChoice,1
+Config,ColourChoice,0
+dbOptions,CatDbLongEntry,0
+dbOptions,dbOptionsEntry59:00$,0
+dbOptions,CatDbCleanLines2,1
+dbOptions,CusDbUseLongID,0
+dbOptions,CusDbUseBagColour,1
+dbOptions,CusDbLongIDInBag,0
+dbOptions,CusDbLongIDShowLeft,0
+dbOptions,CusDbLongEntry,0
+dbOptions,CusDbLongCharAllow,2
+dbOptions,CusDbLongIDMax,5
+Purging,PurgeWeight,200
+Config,StationProgName 1,116.LDG
+Stations,UseLoadingBig,0
+Config,StationProgName 2,StationProgName 2wt$
+Config,DischargerProgName 1,Dave.ULD
+Config,DischargerProgName 2,DischargerProgName 2$
+Config,DischargerProgName 3,DischargerProgName 3$
+Config,StationName 5,Station Name Not Set
+Config,StationName 6,Station Name Not Set
+Config,StationName 7,Station Name Not Set
+Config,StationName 8,Station Name Not Set
+dbOptions,CatDbSoiledLines2,1
+Database,LastRepair D:\Projects\TrackView 3\TrackView V1.0\TVIEW\FORMS\Data\dbCategories.mdb,25/02/2005
+Database,LastRepair D:\Projects\TrackView 3\TrackView V1.0\TVIEW\FORMS\Data\dbCustomers.mdb,25/02/2005
+Database,LastRepair D:\Projects\TrackView 3\TrackView V1.0\TVIEW\FORMS\Data\dbGroups.mdb,25/02/2005
+Database,LastRepair D:\Projects\TrackView 3\TrackView V1.0\TVIEW\FORMS\Data\dbLanguage.mdb,25/02/2005
+Config,StationProgName 3,StationProgName 3jects\TrackView 3\TrackView V1.0\TVIEW\FORMS\Data\dbLanguage.mdbb
+Config,StationProgName 4,StationProgName 4jects\TrackView 3\TrackView V1.0\TVIEW\FORMS\Data\dbLanguage.mdbb
+Database,LastRepair D:\Projects\Wednesbury\TrackView V1.0\TVIEW\FORMS\Data\dbCategories.mdb,10/03/2005
+Database,LastRepair D:\Projects\Wednesbury\TrackView V1.0\TVIEW\FORMS\Data\dbCustomers.mdb,10/03/2005
+Database,LastRepair D:\Projects\Wednesbury\TrackView V1.0\TVIEW\FORMS\Data\dbLanguage.mdb,10/03/2005
+Database,LastRepair D:\Projects\Wednesbury\TrackView V1.0\TVIEW\FORMS\Data\dbGroups.mdb,10/03/2005
+Config,Reports_Shift_Start_0,00:00:00
+Config,Reports_Shift_Start_1,00:00:00
+Config,Reports_Shift_Start_2,00:00:00
+Config,Reports_Shift_End_0,00:00:00
+Config,Reports_Shift_End_1,00:00:00
+Config,Reports_Shift_End_2,00:00:00
+Config,Reports_Shift_Button_0,0
+Config,Reports_Shift_Button_1,1
+Config,Reports_Shift_Button_2,2
+Config,Reports_Show_Shift_0,0
+Config,Reports_Show_Shift_1,0
+Config,Reports_Show_Shift_2,0
+Config,DeleteOldReports,0
+Reports,Special_Station,1
+Access,PCName1,Master Soiled Wash Area
+Access,PCName2,Sorting Stations 1-16
+Access,PCName3,Sorting Stations 37-52
+Access,PCName4,Sorting Stations 27-36 Counting
+Access,PCName5,Daves Laptop
+Database,LastRepair D:\Projects\Mewa Bottrop\TrackView V1.0\TVIEW\FORMS\Data\dbCategories.mdb,20/11/2005
+Database,LastRepair D:\Projects\Mewa Bottrop\TrackView V1.0\TVIEW\FORMS\Data\dbCustomers.mdb,20/11/2005
+Database,LastRepair D:\Projects\Mewa Bottrop\TrackView V1.0\TVIEW\FORMS\Data\dbLanguage.mdb,20/11/2005
+Database,LastRepair D:\Projects\Mewa Bottrop\TrackView V1.0\TVIEW\FORMS\Data\dbGroups.mdb,20/11/2005
+Database,LastRepair D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\Data\dbCategories.mdb,13/02/2006
+Database,LastRepair D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\Data\dbCustomers.mdb,13/02/2006
+Database,LastRepair D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\Data\dbLanguage.mdb,13/02/2006
+Database,LastRepair D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\Data\dbGroups.mdb,13/02/2006
+Database,LastRepair D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\Data\dbTCPDriver.mdb,13/02/2006
+Master,IP,10x8x4x219
+Database,LastRepair D:\Projects\Grief\TrackView3 V1.1\TVIEW\FORMS\Data\dbCategories.mdb,11/05/2006
+Database,LastRepair D:\Projects\Grief\TrackView3 V1.1\TVIEW\FORMS\Data\dbCustomers.mdb,11/05/2006
+Database,LastRepair D:\Projects\Grief\TrackView3 V1.1\TVIEW\FORMS\Data\dbTCPDriver.mdb,11/05/2006
+Database,LastRepair D:\Projects\Grief\TrackView3 V1.1\TVIEW\FORMS\Data\dbLanguage.mdb,11/05/2006
+Database,LastRepair D:\Projects\Grief\Clean\TrackView3 V1.1\TVIEW\FORMS\Data\dbCategories.mdb,22/05/2006
+Database,LastRepair D:\Projects\Grief\Clean\TrackView3 V1.1\TVIEW\FORMS\Data\dbCustomers.mdb,22/05/2006
+Database,LastRepair D:\Projects\Grief\Clean\TrackView3 V1.1\TVIEW\FORMS\Data\dbLanguage.mdb,22/05/2006
+Database,LastRepair D:\Projects\Grief\Clean\TrackView3 V1.1\TVIEW\FORMS\Data\dbTCPDriver.mdb,22/05/2006
+Stations,TestWeight,303
+Database,LastRepair D:\Projects\GMP Athens\TrackView3 V1.1\Data\dbCategories.mdb,23/08/2006
+Database,LastRepair D:\Projects\GMP Athens\TrackView3 V1.1\Data\dbCustomers.mdb,23/08/2006
+Database,LastRepair D:\Projects\GMP Athens\TrackView3 V1.1\Data\dbTCPDriver.mdb,23/08/2006
+Config,DischargerProgName 5,DischargerProgName 5’
+Database,LastRepair C:\TrackView3\Data\dbCategories.mdb,14/01/2007
+Database,LastRepair C:\TrackView3\Data\dbCustomers.mdb,14/01/2007
+Database,LastRepair C:\TrackView3\Data\dbLanguage.mdb,14/01/2007
+Database,LastRepair C:\TrackView3\Data\dbSequences.mdb,14/01/2007
+Database,LastRepair C:\TrackView3\Data\dbTCPDriver.mdb,14/01/2007
+Database,LastRepair C:\TrackView3\Data\dbIO.mdb,14/01/2007
+Database,LastRepair C:\TrackView3\Data\dbAlarmHistory.mdb,14/01/2007
+Access,Engineer,A2SCPU
+Access,Supervisor,A1SCPU
+Reports,ID0,219
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.2\Data\dbCategories.mdb,19/11/2007
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.2\Data\dbCustomers.mdb,19/11/2007
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.2\Data\dbLanguage.mdb,19/11/2007
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.2\Data\dbSequences.mdb,19/11/2007
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.2\Data\dbTCPDriver.mdb,19/11/2007
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.2\Data\dbIO.mdb,19/11/2007
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.2\Data\dbAlarmHistory.mdb,19/11/2007
+MIS,MISPath,MISPath007 \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.2\
+MIS,MISFileName,vienne.TXT
+MIS,MISUse,1
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.3\Data\dbCategories.mdb,07/02/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.3\Data\dbCustomers.mdb,07/02/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.3\Data\dbLanguage.mdb,07/02/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.3\Data\dbSequences.mdb,07/02/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.3\Data\dbTCPDriver.mdb,08/02/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.3\Data\dbIO.mdb,08/02/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\E\Elis Vienne\TrackView3 V2.3\Data\dbAlarmHistory.mdb,08/02/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbCategories.mdb,26/08/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbCustomers.mdb,26/08/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbLanguage.mdb,26/08/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbSequences.mdb,26/08/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbTCPDriver.mdb,26/08/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbIO.mdb,27/08/2008
+Database,LastRepair \\srv-banbury-nas\controls\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbAlarmHistory.mdb,27/08/2008
+Database,LastRepair J:\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbCategories.mdb,21/04/2009
+Database,LastRepair J:\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbCustomers.mdb,21/04/2009
+Database,LastRepair J:\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbLanguage.mdb,21/04/2009
+Database,LastRepair J:\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbSequences.mdb,21/04/2009
+Database,LastRepair J:\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbTCPDriver.mdb,21/04/2009
+Database,LastRepair J:\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbIO.mdb,21/04/2009
+Database,LastRepair J:\Job\G\4987_Gonesse\TrackView3 V2.3\Data\dbAlarmHistory.mdb,21/04/2009
+Config,DischargerProgName 6,DischargerProgName 6§
+Config,DischargerProgName 4,DischargerProgName 4§
+Database,LastRepair C:\Job\G\TrackView3 V2.3\Data\dbCategories.mdb,14/04/2025
+Database,LastRepair C:\Job\G\TrackView3 V2.3\Data\dbCustomers.mdb,14/04/2025
+Database,LastRepair C:\Job\G\TrackView3 V2.3\Data\dbLanguage.mdb,14/04/2025
+Database,LastRepair C:\Job\G\TrackView3 V2.3\Data\dbSequences.mdb,14/04/2025
+Database,LastRepair C:\Job\G\TrackView3 V2.3\Data\dbTCPDriver.mdb,14/04/2025
+Database,LastRepair C:\Job\G\TrackView3 V2.3\Data\dbIO.mdb,14/04/2025
+Database,LastRepair C:\Job\G\TrackView3 V2.3\Data\dbAlarmHistory.mdb,14/04/2025
