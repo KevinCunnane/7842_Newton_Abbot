@@ -208,10 +208,10 @@
     <Connection Connector="X2X1" TargetModule="X20BM11t" TargetConnector="X2X2" />
   </Module>
   <Module Name="X20BM11" Type="X20BM11" Version="1.1.0.0">
-    <Connection Connector="X2X1" TargetModule="X20BM11ad" TargetConnector="X2X2" />
+    <Connection Connector="X2X1" TargetModule="X20BB80" TargetConnector="IF1" />
   </Module>
   <Module Name="X20BM11a" Type="X20BM11" Version="1.1.0.0">
-    <Connection Connector="X2X1" TargetModule="X20BB80" TargetConnector="IF1" />
+    <Connection Connector="X2X1" TargetModule="X20BM11" TargetConnector="X2X2" />
   </Module>
   <Module Name="X20BM11aa" Type="X20BM11" Version="1.1.0.0">
     <Connection Connector="X2X1" TargetModule="X20BM11z" TargetConnector="X2X2" />
@@ -363,6 +363,10 @@
   <Module Name="X20CS1070" Type="X20CS1070" Version="1.8.0.0">
     <Connection Connector="SS1" TargetModule="X20TB12af" TargetConnector="SS" />
     <Connection Connector="SL" TargetModule="X20BM11" TargetConnector="SL1" />
+    <Connector Name="IF1">
+      <Parameter ID="Baudrate" Value="250000" />
+    </Connector>
+    <Parameter ID="FunctionModel" Value="Stream1xCan" />
     <Parameter ID="Supervision" Value="off" />
   </Module>
   <Module Name="X20DM9324_X301" Type="X20DM9324" Version="1.2.0.0">

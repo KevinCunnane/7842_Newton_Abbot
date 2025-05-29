@@ -16,13 +16,13 @@ EventRead2 = 0  								;Reset CAN data table READ event
 ;EventRead3 = 0  							    ;Reset CAN data table READ event
 
 CANopen_01.enable		= CAN_enable
-CANopen_01.baud_rate	= 25					;Define baud rate - 250 kbit/s
+CANopen_01.baud_rate	= 25					;Define baud rate - 250 kbit/s      CS1070 11= CAN H  21= CAN L 12 = CAN G
 CANopen_01.cob_anz		= 100      				;Define number of link objects
 CANopen_01.error_adr	= ADR(error_var)		;Define address for error output
-CANopen_01.device		= ADR("SL1.IF1.ST1.IF1.ST2.IF1")	;Define number of device
+CANopen_01.device		= ADR ("SL1.IF1.ST1.IF1.ST2.IF1")	;Define number of device ("SL1.IF1.ST1.IF1.ST2.IF1") ("SL1.IF1.ST1.IF1.ST2.IF1")   port on unit ("SL1.IF3") 5 = CAN H 6 = CANL 7= CAN GROUND
 CANopen_01.info			= 0
 
-CANopen_01 FUB CANopen()						;Initiate CANopen
+CANopen_01 FUB CANopen()						;Initiate CANopen   SL1.IF1.ST1.IF1.ST2
 
 IF CANopen_01.status=0 THEN						;Check error level
 
@@ -43,7 +43,7 @@ IF CANopen_01.status=0 THEN						;Check error level
 
 		IF CANdftab_01.status = 0 THEN
 			WriteFrame1.ControlSignals = BIT_SET(WriteFrame1.ControlSignals,0);Set Live Signal
-			;WriteFrame2.ControlSignals = BIT_SET(WriteFrame2.ControlSignals,0)
+			WriteFrame2.ControlSignals = BIT_SET(WriteFrame2.ControlSignals,0)
 			;WriteFrame3.ControlSignals = BIT_SET(WriteFrame3.ControlSignals,0)
 			CANOK = TRUE
 		ENDIF
@@ -161,7 +161,7 @@ IF CANOK THEN
 		ENDIF
 
 		IF NOT CAN[2].Live THEN
-			ReadFrame2.ControlSignals = BIT_CLR(ReadFrame2.ControlSignals,0)
+		;	ReadFrame2.ControlSignals = BIT_CLR(ReadFrame2.ControlSignals,0)
 		ENDIF
 
 	ENDIF
@@ -169,7 +169,7 @@ IF CANOK THEN
 	;-----------------
 	;Live section
 	;-----------------
-	LOOP n = 1 TO 8 DO
+	LOOP n = 1 TO 2 DO
 
 		IF (CAN[n].LiveTime > 0) THEN
 			CAN[n].LiveTime = (CAN[n].LiveTime - 1)
