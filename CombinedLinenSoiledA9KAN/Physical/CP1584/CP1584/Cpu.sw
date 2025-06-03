@@ -34,10 +34,10 @@
   </TaskClass>
   <TaskClass Name="Cyclic#3" />
   <TaskClass Name="Cyclic#4">
-    <Task Name="Kan_Drv" Source="Mewa.KanLink.Kan_Drv.prg" Memory="UserROM" Language="IEC" Debugging="true" />
+    <Task Name="Kan_Drv" Source="Mewa.KanLink.Kan_Drv.prg" Memory="UserROM" Language="IEC" Debugging="true" Disabled="true" />
     <Task Name="mnEth" Source="Mewa.KGFramework.Pkg_mnEth.mnEth.prg" Memory="UserROM" Language="IEC" Debugging="true" />
     <Task Name="BatchInfo" Source="Mewa.KanLink.BatchInfo.prg" Memory="UserROM" Language="IEC" Debugging="true" />
-    <Task Name="zzKanLink" Source="Mewa.KanLink.zzKanLink.prg" Memory="UserROM" Language="IEC" Debugging="true" />
+    <Task Name="zzKanLink" Source="Mewa.KanLink.zzKanLink.prg" Memory="UserROM" Language="IEC" Debugging="true" Disabled="true" />
   </TaskClass>
   <TaskClass Name="Cyclic#5">
     <Task Name="zzweigh" Source="zzweigh.prg" Memory="UserROM" Language="IEC" Debugging="true" />

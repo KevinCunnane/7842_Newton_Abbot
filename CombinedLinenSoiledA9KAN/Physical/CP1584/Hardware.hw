@@ -10,7 +10,7 @@
     <Connection Connector="ETH2" TargetModule="X20BC0083" TargetConnector="PLK1">
       <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
     </Connection>
-    <Connection Connector="ETH4" TargetModule="X20BC0083b" TargetConnector="PLK2">
+    <Connection Connector="ETH4" TargetModule="X20BC0083_SS1-4" TargetConnector="PLK2">
       <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
     </Connection>
   </Module>
@@ -167,18 +167,8 @@
     <Connection Connector="SL" TargetModule="X20BB80" TargetConnector="SL1" />
     <Parameter ID="Supervision" Value="off" />
   </Module>
-  <Module Name="X20BC0083a" Type="X20BC0083" Version="2.14.0.0">
-    <Connection Connector="PLK1" TargetModule="X20BC0083b" TargetConnector="PLK1" NodeNumber="3">
-      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
-    </Connection>
-    <Connection Connector="PLK2" TargetModule="X20BC0083c" TargetConnector="PLK2" NodeNumber="3">
-      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
-    </Connection>
-    <Connection Connector="SL" TargetModule="X20BB80b" TargetConnector="SL1" />
-    <Parameter ID="Supervision" Value="off" />
-  </Module>
-  <Module Name="X20BC0083b" Type="X20BC0083" Version="2.14.0.0">
-    <Connection Connector="PLK1" TargetModule="X20BC0083a" TargetConnector="PLK1">
+  <Module Name="X20BC0083_SS1-4" Type="X20BC0083" Version="2.14.0.0">
+    <Connection Connector="PLK1" TargetModule="X20BC0083_SS5-8" TargetConnector="PLK1">
       <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
     </Connection>
     <Connection Connector="PLK2" TargetModule="0AC808.9a" TargetConnector="ETH4">
@@ -187,21 +177,31 @@
     <Connection Connector="SL" TargetModule="X20BB80a" TargetConnector="SL1" />
     <Parameter ID="Supervision" Value="off" />
   </Module>
-  <Module Name="X20BC0083c" Type="X20BC0083" Version="2.14.0.0">
-    <Connection Connector="PLK1" TargetModule="X20BC0083d" TargetConnector="PLK2" NodeNumber="4">
-      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
-    </Connection>
-    <Connection Connector="PLK2" TargetModule="X20BC0083a" TargetConnector="PLK2" NodeNumber="4">
-      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
-    </Connection>
-    <Connection Connector="SL" TargetModule="X20BB80c" TargetConnector="SL1" />
-    <Parameter ID="Supervision" Value="off" />
-  </Module>
-  <Module Name="X20BC0083d" Type="X20BC0083" Version="2.14.0.0">
-    <Connection Connector="PLK2" TargetModule="X20BC0083c" TargetConnector="PLK1" NodeNumber="5">
+  <Module Name="X20BC0083_SS13-16" Type="X20BC0083" Version="2.14.0.0">
+    <Connection Connector="PLK2" TargetModule="X20BC0083_SS9-12" TargetConnector="PLK1" NodeNumber="5">
       <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
     </Connection>
     <Connection Connector="SL" TargetModule="X20BB80d" TargetConnector="SL1" />
+    <Parameter ID="Supervision" Value="off" />
+  </Module>
+  <Module Name="X20BC0083_SS5-8" Type="X20BC0083" Version="2.14.0.0">
+    <Connection Connector="PLK1" TargetModule="X20BC0083_SS1-4" TargetConnector="PLK1" NodeNumber="3">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="X20BC0083_SS9-12" TargetConnector="PLK2" NodeNumber="3">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="SL" TargetModule="X20BB80b" TargetConnector="SL1" />
+    <Parameter ID="Supervision" Value="off" />
+  </Module>
+  <Module Name="X20BC0083_SS9-12" Type="X20BC0083" Version="2.14.0.0">
+    <Connection Connector="PLK1" TargetModule="X20BC0083_SS13-16" TargetConnector="PLK2" NodeNumber="4">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="PLK2" TargetModule="X20BC0083_SS5-8" TargetConnector="PLK2" NodeNumber="4">
+      <Cable Type="PowerlinkCable" Length="10" Version="1.0.0.3" />
+    </Connection>
+    <Connection Connector="SL" TargetModule="X20BB80c" TargetConnector="SL1" />
     <Parameter ID="Supervision" Value="off" />
   </Module>
   <Module Name="X20BM01" Type="X20BM01" Version="2.1.0.0">

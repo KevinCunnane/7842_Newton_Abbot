@@ -27,7 +27,7 @@ O_Closer				= FALSE ;Y[6].Y05
 
 ;Alarm
 Alarm[6].Name 			= 0 ;Clear sequence alarm name
-Alarm[6].Bag 			= 140
+Alarm[6].Bag 			= 228
 Alarm[6].Beacon			= TRUE
 Alarm[6].Extra			= 0
 Alarm[6].Time			= 3000

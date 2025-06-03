@@ -27,7 +27,11 @@ PLS = (STEP <> LASTSTEP)
 LASTSTEP = STEP
 
 ;Alarm
-;TON_10ms(((NOT PLS) AND ((STEP = 3) OR (STEP = 4) OR (STEP = 8))),6000,Alarm[10],AlarmET[10])
+Alarm[10].Name 		= 0
+Alarm[10].Bag		= 10003
+Alarm[10].Beacon		= TRUE
+Alarm[10].Extra	 	= 0
+Alarm[10].Time		= 3000
 
 IF (STEP = 0) THEN
 	;Do Nothing
@@ -37,7 +41,7 @@ ENDIF
 TON_10ms((STEP = 1),100,ResetPoint,ResetPointET)
 IF (STEP = 1) THEN
 	O_SelectLineA = TRUE
-	IF ResetPoint THEN
+	IF ResetPoint AND (D[22]>0)THEN
 		D[910] = 2
 	ENDIF
 ENDIF
@@ -111,6 +115,30 @@ ENDIF
 ;Pusher Cylinder
 TON_10ms(((STEP = 7) OR (STEP = 8)) AND (NOT Pushed),500,O_OperatePusher,RequirePusherET)
 TON_10ms(O_OperatePusher,500,Pushed,PushedET)
+
+
+;Bagstacker Pressure relief 1
+TON_10ms((NOT X[6].X06) AND (NOT X[6].X07),500,Y[6].Y06,PR1_LineClearET)
+
+
+;Bagstacker Pressure relief 2
+TON_10ms((NOT X[7].X03) AND (NOT X[7].X04),500,Y[6].Y15,PR2_LineClearET)
+
+
+;Bagstacker Pressure relief 3
+TON_10ms((NOT X[7].X01) AND (NOT X[7].X02),500,Y[7].Y01,PR3_LineClearET)
+
+
+;Bagstacker Pressure relief 4 - Offgoing
+TON_10ms((NOT X[6].X14) AND (NOT X[6].X15),500,Y[6].Y14,PR4_LineClearET)
+
+;Alarms
+TimerAlarm.IN = NOT PLS AND (Alarm[10].Name > 0)
+TimerAlarm.PT = Alarm[10].Time
+TimerAlarm FUB TON_10ms()
+Alarm[10].On = TimerAlarm.Q
+Alarm[10].ET = TimerAlarm.ET
+
 
 Y[5].Y10 = Enable.SDC[2]
 Y[5].Y11 = Enable.SDC[1]

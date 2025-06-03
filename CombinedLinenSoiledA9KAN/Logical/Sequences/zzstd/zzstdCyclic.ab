@@ -37,5 +37,12 @@ Std.Clock200ms 	= TimerClkA[1].Q ;M9031
 Std.Clock500ms 	= TimerClkA[2].Q
 Std.Clock1s 	= TimerClkA[3].Q ;M9032
 Std.Clock2s 	= TimerClkA[4].Q ;M9033
+
+Y[6].Y16 = NOT OK[1]
+Y[7].Y13 = NOT OK[2]
+Y[7].Y14 = NOT OK[3]
+Y[7].Y16 = NOT OK[4]
+
+Y[7].Y15 =  NOT OK[5]
 END_PROGRAM
 

@@ -23,11 +23,11 @@ PLS = (STEP <> LASTSTEP)
 LASTSTEP = STEP
 
 ;Alarm
-Alarm[4].Name 		= 0
-Alarm[4].Bag		= 224
-Alarm[4].Beacon		= TRUE
-Alarm[4].Extra	 	= 0
-Alarm[4].Time		= 3000
+Alarm[8].Name 		= 0
+Alarm[8].Bag		= 221
+Alarm[8].Beacon		= TRUE
+Alarm[8].Extra	 	= 0
+Alarm[8].Time		= 3000
 ;Step 0 - Disabled
 IF (STEP = 0) THEN
 	;Disabled
@@ -93,12 +93,17 @@ ENDIF
 ;Move carriage down to Bottom
 IF (STEP = 7) THEN
 	IF I_BagOnCarriage THEN
-				D[908] = 0
+				D[908] = 20
 	ENDIF
 	O_MoveDown = (NOT I_CarriageAtBottom)
 	IF I_CarriageAtBottom THEN
 		D[908] = 1
 	ENDIF
+ENDIF
+
+ IF (STEP = 20) THEN
+	Alarm[8].Name 		= almSwitchFault
+	Alarm[8].Time		= 3
 ENDIF
 
 ;Bag in transit to SIC1 buffer
@@ -115,6 +120,13 @@ ENDIF
 ;-------------------------
 ;High Speed Used For Up		= 60Hz
 ;Medium Speed Used For Down	= 80Hz
+
+;Alarms
+TimerAlarm.IN = NOT PLS AND (Alarm[8].Name > 0)
+TimerAlarm.PT = Alarm[8].Time
+TimerAlarm FUB TON_10ms()
+Alarm[8].On = TimerAlarm.Q
+Alarm[8].ET = TimerAlarm.ET
 
 TON_10ms(O_MoveUp  ,1680,HighSpeedUp,HighSpeedUpET) 	;Expected 16.94 seconds @ 591mm/sec
 TON_10ms(O_MoveDown,1630,HighSpeedDn,HighSpeedDnET) 		;Expected 16.94 seconds @ 591mm/sec

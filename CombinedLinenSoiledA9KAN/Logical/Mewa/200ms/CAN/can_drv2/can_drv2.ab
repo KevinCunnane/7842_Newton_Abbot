@@ -131,6 +131,7 @@ IF CANOK THEN
 		EventRead1 = FALSE
 
 		CAN[1].Live 		= BIT_TST(ReadFrame1.ControlSignals,0)
+	;	CAN1							= BIT_TST(ReadFrame1.ControlSignals,0)
 		CAN[1].DropLoad 	= BIT_TST(ReadFrame1.ControlSignals,1)
 		CAN[1].LoadDropped 	= BIT_TST(ReadFrame1.ControlSignals,2)
 		;CAN[1].FaultNumber	= ReadFrame1.FaultNumber
@@ -144,7 +145,7 @@ IF CANOK THEN
 		ENDIF
 
 	ENDIF
-
+	;CAN[1].Live = CAN1
 	;----------------------------------------------------
 	;Check for incomming data from CBW2
 	;----------------------------------------------------
@@ -161,11 +162,17 @@ IF CANOK THEN
 		ENDIF
 
 		IF NOT CAN[2].Live THEN
-		;	ReadFrame2.ControlSignals = BIT_CLR(ReadFrame2.ControlSignals,0)
+			ReadFrame2.ControlSignals = BIT_CLR(ReadFrame2.ControlSignals,0)
 		ENDIF
 
 	ENDIF
-
+;	IF (CAN1) THEN
+;		CAN[1].Live = TRUE
+ ;   ENDIF
+;TON_10ms(( NOT CAN1),200,CanOff,CanOffET) 
+;IF CanOff THEN
+;	CAN[1].Live = FALSE
+;ENDIF
 	;-----------------
 	;Live section
 	;-----------------
@@ -175,10 +182,20 @@ IF CANOK THEN
 			CAN[n].LiveTime = (CAN[n].LiveTime - 1)
 		ENDIF
 
-		CAN[n].Live = (CAN[n].LiveTime <> 0)
+;		CAN[n].Live = (CAN[n].LiveTime <> 0)
 
 	ENDLOOP
 
+ENDIF
+IF (CAN[1].LiveTime >0) THEN
+	CAN[1].Live = TRUE
+ELSE
+	CAN[1].Live = FALSE
+ENDIF
+IF (CAN[2].LiveTime >0) THEN
+	CAN[2].Live = TRUE
+ELSE
+	CAN[2].Live = FALSE
 ENDIF
 
 ;Monitor Registers for TrackView

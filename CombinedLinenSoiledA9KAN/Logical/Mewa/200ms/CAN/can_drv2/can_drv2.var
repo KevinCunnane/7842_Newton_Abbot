@@ -21,4 +21,7 @@ VAR
 	CANrwtab_01 : CANrwtab;
 	Remainder : UINT;
 	WgtRound : UINT;
+	CanOff : BOOL;
+	CanOffET : UDINT;
+	CAN1 : BOOL;
 END_VAR

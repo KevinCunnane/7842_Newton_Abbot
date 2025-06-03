@@ -2,8 +2,8 @@
 Language,Current,English
 Access,Level,4
 Config,MasterPC,1
-Config,WorkingPath,C:\Job\G\TrackView3 V2.3\
-Config,BrowsePath,C:\Job\G\TrackView3 V2.3\
+Config,WorkingPath,C:\Job\N\NewtonAbbot\trackview3\
+Config,BrowsePath,C:\Job\N\NewtonAbbot\trackview3\
 Config,MIS_FileUse,0
 Common,Run TCP/IP Driver,1
 Config,Reports_Station,1

@@ -21,11 +21,11 @@ O_OpenSelect[1]		= FALSE
 O_OpenSelect[2]		= FALSE
 O_OpenSelect[3]		= FALSE
 O_OpenSelect[4]		= FALSE
-
+Enable.SIC[1]           = FALSE
 
 
 Alarm[4].Name 		= 0
-Alarm[4].Bag		= 224
+Alarm[4].Bag		= 225
 Alarm[4].Beacon		= TRUE
 Alarm[4].Extra	 	= 0
 Alarm[4].Time		= 3000
@@ -151,7 +151,7 @@ ENDIF
 
 ;Step 4 - Select line / open buffer stop
 IF (STEP = 4) THEN
-
+	Enable.SIC[1] 		= TRUE
 	LineSelect[Dest] 	= TRUE
 	O_OpenSelect[Buff]    = TRUE
 

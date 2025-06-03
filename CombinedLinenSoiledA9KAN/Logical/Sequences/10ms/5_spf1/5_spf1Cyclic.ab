@@ -209,7 +209,7 @@ Alarm[5].ET = TimerAlarm.ET
 
 ;Outputs
 ;-------
-Y[5].Y07 = Reset
+Y[5].Y07 = O_Reset
 Y[4].Y12 = LineSelect[1]
 Y[4].Y13 = LineSelect[2]
 Y[4].Y14 = LineSelect[3]

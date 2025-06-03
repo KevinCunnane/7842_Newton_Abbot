@@ -14,8 +14,8 @@ PROGRAM _CYCLIC
 ;Move CAN Status to Registers
 
 ;1-16
-CANLive_1.Input[0] = CAN[1].Live
-CANLive_1.Input[1] = CAN[2].Live
+CANLive_1.Input[0] = CAN[1].Live OR TEST
+CANLive_1.Input[1] = CAN[2].Live OR TEST
 CANLive_1.Input[2] = CAN[3].Live
 CANLive_1.Input[3] = CAN[4].Live
 CANLive_1.Input[4] = CAN[5].Live

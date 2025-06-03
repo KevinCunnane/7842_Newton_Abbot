@@ -34,4 +34,8 @@ VAR
 	ResetPointET : UDINT;
 	BagatTilt : BOOL;
 	BagatTiltET : UDINT;
+	PR1_LineClearET : UDINT;
+	PR2_LineClearET : UDINT;
+	PR3_LineClearET : UDINT;
+	PR4_LineClearET : UDINT;
 END_VAR

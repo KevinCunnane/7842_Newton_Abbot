@@ -30,6 +30,11 @@ VAR CONSTANT
 	almMotorOverload : UINT := 2;
 	almNoAlarm : UINT := 0;
 	almSwitchFault : UINT := 5;
+END_VAR
+VAR
+	OK : ARRAY[0..40] OF BOOL;
+END_VAR
+VAR CONSTANT
 	almUldNoBag : UINT := 4;
 	almUldProgFinished : UINT := 3;
 END_VAR
@@ -45,7 +50,7 @@ VAR
 	SSS3Raw : DINT;
 	SSS3Weight : UINT;
 	SSS4Raw : DINT;
-	AI2744Raw : ARRAY[0..20] OF INT;
+	AI2744Raw : ARRAY[0..20] OF DINT;
 	SSS4Weight : UINT;
 	StnPrev : ARRAY[0..50] OF BagType;
 	TimerAlarm : TON_10ms;

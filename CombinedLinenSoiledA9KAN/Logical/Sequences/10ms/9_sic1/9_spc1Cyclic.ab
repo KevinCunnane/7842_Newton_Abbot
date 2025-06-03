@@ -27,6 +27,11 @@ STEP = D[909]
 PLS = (STEP <> LASTSTEP)
 LASTSTEP = STEP
 
+Alarm[9].Name 		= 0
+Alarm[9].Bag		= 224
+Alarm[9].Beacon		= TRUE
+Alarm[9].Extra	 	= 0
+Alarm[9].Time		= 3000
 ;Alarm
 ;TON_10ms(((NOT PLS) AND (STEP = 3)),1000,Alarm[9],AlarmET[9])
 
@@ -36,6 +41,7 @@ IF (STEP = 1) THEN
 	IF I_PaddleinPosition THEN
 		D[909] = 2
 	ENDIF
+	Alarm[9].Name 		= almSwitchFault
 ENDIF
 
 ;Check romm in buffer
@@ -61,6 +67,7 @@ IF (STEP = 3) THEN
 	IF I_BaginIncline THEN
 		D[909] = 4
 	ENDIF
+	Alarm[9].Name 		= almBagNotReleased
 ENDIF
 
 ;Let bag settle at base of incline
@@ -103,7 +110,15 @@ IF (STEP = 7) THEN
 	IF NOT Enable.SIC[1] THEN
 		D[909] = 1
 	ENDIF
+	Alarm[9].Name 		= almBagNotReleased
 ENDIF
+
+;Alarms
+TimerAlarm.IN = NOT PLS AND (Alarm[9].Name > 0)
+TimerAlarm.PT = Alarm[9].Time
+TimerAlarm FUB TON_10ms()
+Alarm[9].On = TimerAlarm.Q
+Alarm[9].ET = TimerAlarm.ET
 
 Y[10].Y09 = O_RunMotor
 Y[5].Y14 = O_OpenBufferStop

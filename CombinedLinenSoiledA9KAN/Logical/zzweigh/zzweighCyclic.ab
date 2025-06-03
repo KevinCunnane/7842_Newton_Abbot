@@ -34,7 +34,7 @@ LOOP n = 1 TO Std.MaxWeighstations DO
 	ELSE
 		myStnRaw = UINT((myRaw / 1000) + 32000)
 	ENDIF
-
+	StnRaw[n] = myStnRaw
 ENDLOOP
 
 LOOP n = 1 TO Std.MaxWeighstations DO

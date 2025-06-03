@@ -30,7 +30,11 @@ PLS = (STEP <> LASTSTEP)
 LASTSTEP = STEP
 
 ;Alarm
-;TON_10ms(((NOT PLS) AND ((STEP = 3) OR (STEP = 7) OR (STEP = 8) OR (STEP = 9))),3000,Alarm[11],AlarmET[11])
+Alarm[11].Name 		= 0
+Alarm[11].Bag		= 10002
+Alarm[11].Beacon		= TRUE
+Alarm[11].Extra	 	= 0
+Alarm[11].Time		= 3000
 
 ;Select Line 'A'
 TON_10ms((STEP = 1) AND ((NOT I_LevelA) AND (NOT I_LevelB)),100,SelectA,SelectAET)
@@ -112,6 +116,14 @@ IF (STEP = 9) THEN
 		D[911] = 1
 	ENDIF
 ENDIF
+
+;Alarms
+TimerAlarm.IN = NOT PLS AND (Alarm[11].Name > 0)
+TimerAlarm.PT = Alarm[11].Time
+TimerAlarm FUB TON_10ms()
+Alarm[11].On = TimerAlarm.Q
+Alarm[11].ET = TimerAlarm.ET
+
 
 ;Y000 = O_SelectLineA
 ;Y000 = O_SelectLineB

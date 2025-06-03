@@ -25,10 +25,14 @@ PLS = (STEP <> LASTSTEP)
 LASTSTEP = STEP
 
 IF (STEP = 7) AND I_BagOnCarriage THEN
-	D[912]  = 97
+	D[912]  = 20
 ENDIF
 ;Alarm
-;TON_10ms(((NOT PLS) AND ((STEP = 2) OR (STEP = 3) OR (STEP = 6))),3000,Alarm[12],AlarmET[12])
+Alarm[12].Name 		= 0
+Alarm[12].Bag		= 10004
+Alarm[12].Beacon		= TRUE
+Alarm[12].Extra	 	= 0
+Alarm[12].Time		= 3000
 
 ;Wait for Empty bag to be ready
 TON_10ms(I_BagAtBuffer,300,EBagReady,EBagReadyET)
@@ -89,6 +93,10 @@ IF (STEP = 7) THEN
 	ENDIF
 ENDIF
 
+ IF (STEP = 20) THEN
+	Alarm[12].Name 		= almSwitchFault
+	Alarm[12].Time		= 3
+ENDIF
 ;Inverter Speed Selections
 ;-------------------------
 ;High Speed Used For Up		= 60Hz
@@ -107,6 +115,13 @@ ELSE
 	Y[9].Y04 = FALSE
 ENDIF
 
+
+;Alarms
+TimerAlarm.IN = NOT PLS AND (Alarm[12].Name > 0)
+TimerAlarm.PT = Alarm[12].Time
+TimerAlarm FUB TON_10ms()
+Alarm[12].On = TimerAlarm.Q
+Alarm[12].ET = TimerAlarm.ET
 ;Outputs
 ;-------
 Y[10].Y05 = O_MoveUp
