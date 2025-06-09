@@ -66,6 +66,7 @@ IF (STEP = 3) THEN
 	IF EBagSettled THEN
 		D[903] = 4
 	ENDIF
+	Alarm[3].Name 		= almBagNotArrived
 ENDIF
 
 ;Move Steady Cylinders down
@@ -122,6 +123,7 @@ IF (STEP = 8) THEN
 	IF NOT Enable.SLU1 THEN
 		D[903] = 1
 	ENDIF
+	Alarm[3].Name 		= almBagNotReleased
 ENDIF
 
 ;Compression Cylinder Service routine

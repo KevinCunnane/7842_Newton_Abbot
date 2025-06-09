@@ -17,7 +17,7 @@ PROGRAM _CYCLIC
 ;Alarn[x].Extra - Extra data for Graphics to use ie. Line number with fault on offgoing storage
 
 I_CancelAlarm 	= FALSE ;X[4].X16
-I_EStop 		= Std.EStop
+I_EStop 		= NOT X[8].X16
 I_MotorOverload = Std.MotorOverload
 I_InverterFault = FALSE ;(X[3].X03 OR X[3].X04 OR X[3].X05 OR X[3].X06)
 

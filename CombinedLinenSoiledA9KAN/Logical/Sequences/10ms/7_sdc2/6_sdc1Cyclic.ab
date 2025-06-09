@@ -86,7 +86,7 @@ IF (STEP = 4) THEN
 		D[907] = 5
 	ENDIF
 	IF (Bag[231].Cat = Std.MaxCats) AND SteadysDown THEN
-		D[907] = 8
+		D[907] = 10
 	ENDIF
 ENDIF
 

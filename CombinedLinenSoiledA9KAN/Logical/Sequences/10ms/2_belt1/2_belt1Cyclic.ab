@@ -37,6 +37,10 @@ IF STEP = 0 THEN
 	;Disabled
 ENDIF
 
+IF (D[902] > 10) THEN
+	D[902] = 1
+ENDIF
+
 ;Step 1 - Check no stations are releasing
 IF STEP = 1 THEN
 	;Don't allow stations to release
@@ -132,7 +136,7 @@ IF STEP = 2 THEN
 
 		;Copy Station Data to Belt Bag
 		Bag[200] 		= Bag[StnBag]			;Copy complete bag data
-		Bag[200].Dst 	= USINT(Ldg[Bank].Found)	;Destination
+		Bag[200].Dst 	= USINT(Ldg[Bank].Line)	;Destination
 		Bag[StnBag].Dst = 0 					;Reset Destination (Manual)
 
 		;Clear Manual Release and Count
@@ -145,7 +149,7 @@ IF STEP = 2 THEN
 		;ELSE
 			BeltAddTime = (D[901] / 2)
 			Ldg[Bank].EnableStnRelease = TRUE
-			D[902] = 3
+			D[902] = 3   
 		;ENDIF
 
 		Alarm[2].Name = almNoAlarm

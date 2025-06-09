@@ -70,4 +70,5 @@ VAR
 	GetStn : UINT;
 	TestTim : BOOL;
 	NO : BOOL;
+	CHECK : UINT;
 END_VAR

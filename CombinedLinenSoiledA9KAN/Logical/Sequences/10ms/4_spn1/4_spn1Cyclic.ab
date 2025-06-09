@@ -188,7 +188,7 @@ Alarm[4].ET = TimerAlarm.ET
 AlarmOld = Alarm[4].Name ;Need to ensure alarm changes as may be multiple alarms on step 2
 
 ;Storage Line Selections
-Y[4].Y11 = Reset
+Y[4].Y11 = O_Reset
 Y[4].Y01 = LineSelect[1]
 Y[4].Y02 = LineSelect[2]
 Y[4].Y03 = LineSelect[3]

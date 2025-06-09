@@ -1,12 +1,12 @@
 1,1,1
 Language,Current,English
 Access,Level,4
-Config,MasterPC,1
-Config,WorkingPath,C:\Job\N\NewtonAbbot\trackview3\
-Config,BrowsePath,C:\Job\N\NewtonAbbot\trackview3\
+Config,MasterPC,0
+Config,WorkingPath,C:\Job\C\WSCLS\trackview3\
+Config,BrowsePath,C:\Job\C\WSCLS\trackview3\
 Config,MIS_FileUse,0
-Common,Run TCP/IP Driver,1
-Config,Reports_Station,1
+Common,Run TCP/IP Driver,0
+Config,Reports_Station,0
 Config,Printer_Station,0
 Common,Demo,0
 Common,Backup,0
@@ -14,7 +14,7 @@ Common,Shutdown,0
 Config,Reporting,0
 TCP_IP_Client Enabled,0,1
 TCP_IP_Client Enabled,1,0
-TCP_IP_Client RemoteHost,0,10x8x4x219
+TCP_IP_Client RemoteHost,0,10x8x4x220
 TCP_IP_Client RemotePortRead,1,31200
 TCP_IP_Client RemoteHost,1,10.0.10.51
 TCP_IP_Client RemotePortWrite,1,31300
@@ -33,7 +33,7 @@ TCP_IP_Driver,Spaces,88
 TCP_IP_Driver,LocalPort,31000
 TCP_IP_Driver,Sockets,6
 Common,Run PVI Manager,0
-System,DisplayOption,0
+System,DisplayOption,3
 Config,Ticket_Printer,0
 TCP_IP_Client RemoteHost,10,192
 TCP_IP_Client RemoteHost,20,168
@@ -54,7 +54,7 @@ TCP_IP_Driver,AlwaysSend,0
 Access,AccSupervisor,0
 Access,AccEngineer,0
 AutoDisplay,LoadingBigDisplay,1
-LoadingBigDisplay,StartForm,0
+LoadingBigDisplay,StartForm,3
 Categories,ShowOnlyUsed,1
 Access,PCNum,5
 RunAnotherProgram,0,D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\

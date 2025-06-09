@@ -161,6 +161,11 @@ IF (STEP = 3) THEN
 		Bag[226] 						= Bag[Line[FoundLine].FirstBag]
 		Bag[Line[FoundLine].FirstBag] 	= Bag[0]
 	ENDIF
+	IF  (Destination = 12) THEN
+		D[36] = 1
+	ELSE IF  (Destination = 13) THEN
+		D[36] = 2
+	ENDIF
 
 	IF PLS THEN
 			;C[13] = 0
@@ -174,18 +179,21 @@ IF (STEP = 3) THEN
 		 ;Unloading Program
 	IF (Destination = 12) AND Line[Destination].Trip THEN
 		Uld[1].DischargerStartLine = FoundLine
+		Bag[226].Dst = 0
 		Bag[227] = Bag[226]
 		Bag[226] = Bag[0]
 		D[905] 					= 1
 	ELSE IF (Destination = 13) AND Line[Destination].Trip THEN
 		Uld[2].DischargerStartLine = FoundLine
+		Bag[226].Dst = 0
 		Bag[230] = Bag[226]
 		Bag[226] = Bag[0]
 		D[905] 					= 1
 	ENDIF
 
 	Alarm[5].Name	= almBagNotReleased
-
+	ELSE
+		D[36] = 0
 ENDIF
 
 ;move transit bag to buffer

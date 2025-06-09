@@ -2,16 +2,16 @@ VERSION 5.00
 Begin VB.Form LoadingBig 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Sorting Stations 1-10"
-   ClientHeight    =   8955
+   ClientHeight    =   12525
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   14115
+   ClientWidth     =   16110
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8955
-   ScaleWidth      =   14115
+   ScaleHeight     =   12525
+   ScaleWidth      =   16110
    ShowInTaskbar   =   0   'False
    Begin VB.Timer tmrUpdate 
       Interval        =   1000
@@ -30,9 +30,9 @@ Begin VB.Form LoadingBig
       EndProperty
       ForeColor       =   &H00800000&
       Height          =   4545
-      Left            =   6225
+      Left            =   5670
       TabIndex        =   49
-      Top             =   6675
+      Top             =   11175
       Width           =   4290
    End
    Begin VB.ListBox lstCus 
@@ -47,9 +47,9 @@ Begin VB.Form LoadingBig
       EndProperty
       ForeColor       =   &H00800000&
       Height          =   4545
-      Left            =   2325
+      Left            =   1770
       TabIndex        =   0
-      Top             =   6825
+      Top             =   11325
       Width           =   4290
    End
    Begin VB.CommandButton cmdAllCustomers 
@@ -81,11 +81,11 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   2
-      Left            =   12450
+      Left            =   13290
       Picture         =   "LoadingBig.frx":0000
       Style           =   1  'Graphical
       TabIndex        =   60
-      Top             =   8100
+      Top             =   11475
       Width           =   765
    End
    Begin VB.CommandButton cmdCursor 
@@ -100,11 +100,11 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   1
-      Left            =   11700
+      Left            =   12540
       Picture         =   "LoadingBig.frx":0442
       Style           =   1  'Graphical
       TabIndex        =   59
-      Top             =   8100
+      Top             =   11475
       Width           =   765
    End
    Begin VB.CommandButton cmdCursor 
@@ -119,11 +119,11 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   0
-      Left            =   10950
+      Left            =   13215
       Picture         =   "LoadingBig.frx":0884
       Style           =   1  'Graphical
       TabIndex        =   58
-      Top             =   8100
+      Top             =   12570
       Width           =   765
    End
    Begin VB.TextBox txtCatName 
@@ -215,9 +215,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   19
-      Left            =   10050
+      Left            =   12315
       TabIndex        =   22
-      Top             =   8100
+      Top             =   12570
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -233,9 +233,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   25
-      Left            =   10050
+      Left            =   12315
       TabIndex        =   28
-      Top             =   7350
+      Top             =   11820
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -251,9 +251,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   26
-      Left            =   10050
+      Left            =   12315
       TabIndex        =   29
-      Top             =   6600
+      Top             =   11070
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -269,9 +269,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   5
-      Left            =   9300
+      Left            =   11565
       TabIndex        =   8
-      Top             =   8100
+      Top             =   12570
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -287,9 +287,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   20
-      Left            =   8550
+      Left            =   10815
       TabIndex        =   23
-      Top             =   8100
+      Top             =   12570
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -305,9 +305,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   1
-      Left            =   7800
+      Left            =   10065
       TabIndex        =   4
-      Top             =   8100
+      Top             =   12570
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -323,9 +323,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   22
-      Left            =   7050
+      Left            =   6495
       TabIndex        =   25
-      Top             =   8100
+      Top             =   12600
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -341,9 +341,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   6
-      Left            =   6300
+      Left            =   5745
       TabIndex        =   9
-      Top             =   8100
+      Top             =   12600
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -359,9 +359,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   4
-      Left            =   5550
+      Left            =   4995
       TabIndex        =   7
-      Top             =   8100
+      Top             =   12600
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -377,9 +377,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   11
-      Left            =   4800
+      Left            =   4245
       TabIndex        =   14
-      Top             =   8100
+      Top             =   12600
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -395,9 +395,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   3
-      Left            =   4050
+      Left            =   3495
       TabIndex        =   6
-      Top             =   8100
+      Top             =   12600
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -413,9 +413,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   0
-      Left            =   3300
+      Left            =   2745
       TabIndex        =   3
-      Top             =   8100
+      Top             =   12600
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -431,9 +431,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   9
-      Left            =   2550
+      Left            =   1995
       TabIndex        =   12
-      Top             =   8100
+      Top             =   12600
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -449,9 +449,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   8
-      Left            =   1800
+      Left            =   1245
       TabIndex        =   11
-      Top             =   8100
+      Top             =   12600
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -467,9 +467,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   24
-      Left            =   1050
+      Left            =   495
       TabIndex        =   27
-      Top             =   8100
+      Top             =   12600
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -485,9 +485,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   18
-      Left            =   9300
+      Left            =   11565
       TabIndex        =   21
-      Top             =   7350
+      Top             =   11820
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -503,9 +503,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   17
-      Left            =   8550
+      Left            =   10815
       TabIndex        =   20
-      Top             =   7350
+      Top             =   11820
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -521,9 +521,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   16
-      Left            =   7800
+      Left            =   10065
       TabIndex        =   19
-      Top             =   7350
+      Top             =   11820
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -539,9 +539,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   7
-      Left            =   7050
+      Left            =   6495
       TabIndex        =   10
-      Top             =   7350
+      Top             =   11850
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -557,9 +557,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   15
-      Left            =   6300
+      Left            =   5745
       TabIndex        =   18
-      Top             =   7350
+      Top             =   11850
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -575,9 +575,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   14
-      Left            =   5550
+      Left            =   4995
       TabIndex        =   17
-      Top             =   7350
+      Top             =   11850
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -593,9 +593,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   13
-      Left            =   4800
+      Left            =   4245
       TabIndex        =   16
-      Top             =   7350
+      Top             =   11850
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -611,9 +611,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   2
-      Left            =   4050
+      Left            =   3495
       TabIndex        =   5
-      Top             =   7350
+      Top             =   11850
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -629,9 +629,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   12
-      Left            =   3300
+      Left            =   2745
       TabIndex        =   15
-      Top             =   7350
+      Top             =   11850
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -647,9 +647,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   21
-      Left            =   2550
+      Left            =   1995
       TabIndex        =   24
-      Top             =   7350
+      Top             =   11850
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -665,9 +665,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   23
-      Left            =   1800
+      Left            =   1245
       TabIndex        =   26
-      Top             =   7350
+      Top             =   11850
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -683,9 +683,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   10
-      Left            =   1050
+      Left            =   495
       TabIndex        =   13
-      Top             =   7350
+      Top             =   11850
       Width           =   765
    End
    Begin VB.CommandButton cmdDel 
@@ -700,9 +700,9 @@ Begin VB.Form LoadingBig
          Strikethrough   =   0   'False
       EndProperty
       Height          =   765
-      Left            =   9300
+      Left            =   11565
       TabIndex        =   41
-      Top             =   6600
+      Top             =   11070
       Width           =   765
    End
    Begin VB.CommandButton cmdBS 
@@ -716,11 +716,11 @@ Begin VB.Form LoadingBig
          Strikethrough   =   0   'False
       EndProperty
       Height          =   765
-      Left            =   8550
+      Left            =   10815
       Picture         =   "LoadingBig.frx":0CC6
       Style           =   1  'Graphical
       TabIndex        =   40
-      Top             =   6600
+      Top             =   11070
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -736,9 +736,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   36
-      Left            =   7800
+      Left            =   10065
       TabIndex        =   39
-      Top             =   6600
+      Top             =   11070
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -754,9 +754,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   35
-      Left            =   7050
+      Left            =   6495
       TabIndex        =   32
-      Top             =   6600
+      Top             =   11100
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -772,9 +772,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   34
-      Left            =   6300
+      Left            =   5745
       TabIndex        =   31
-      Top             =   6600
+      Top             =   11100
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -790,9 +790,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   33
-      Left            =   5550
+      Left            =   4995
       TabIndex        =   30
-      Top             =   6600
+      Top             =   11100
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -808,9 +808,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   32
-      Left            =   4800
+      Left            =   4245
       TabIndex        =   35
-      Top             =   6600
+      Top             =   11100
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -826,9 +826,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   31
-      Left            =   4050
+      Left            =   3495
       TabIndex        =   34
-      Top             =   6600
+      Top             =   11100
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -844,9 +844,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   30
-      Left            =   3300
+      Left            =   2745
       TabIndex        =   33
-      Top             =   6600
+      Top             =   11100
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -862,9 +862,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   29
-      Left            =   2550
+      Left            =   1995
       TabIndex        =   38
-      Top             =   6600
+      Top             =   11100
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -880,9 +880,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   28
-      Left            =   1800
+      Left            =   1245
       TabIndex        =   37
-      Top             =   6600
+      Top             =   11100
       Width           =   765
    End
    Begin VB.CommandButton cmdKey 
@@ -898,9 +898,9 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   27
-      Left            =   1050
+      Left            =   495
       TabIndex        =   36
-      Top             =   6600
+      Top             =   11100
       Width           =   765
    End
    Begin VB.TextBox txtCusName 
@@ -954,11 +954,11 @@ Begin VB.Form LoadingBig
       EndProperty
       Height          =   765
       Index           =   3
-      Left            =   11700
+      Left            =   12540
       Picture         =   "LoadingBig.frx":1108
       Style           =   1  'Graphical
       TabIndex        =   61
-      Top             =   7350
+      Top             =   10725
       Width           =   765
    End
    Begin VB.Label BagData2 
@@ -979,9 +979,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   16
-      Left            =   12225
+      Left            =   60
       TabIndex        =   115
-      Top             =   3450
+      Top             =   3390
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1003,9 +1003,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   16
-      Left            =   12225
+      Left            =   60
       TabIndex        =   114
-      Top             =   2775
+      Top             =   2715
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1027,9 +1027,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   15
-      Left            =   12225
+      Left            =   105
       TabIndex        =   113
-      Top             =   5025
+      Top             =   4965
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1051,9 +1051,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   15
-      Left            =   12225
+      Left            =   105
       TabIndex        =   112
-      Top             =   4350
+      Top             =   4290
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1075,9 +1075,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   14
-      Left            =   10500
+      Left            =   1800
       TabIndex        =   111
-      Top             =   3450
+      Top             =   3465
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1099,9 +1099,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   14
-      Left            =   10500
+      Left            =   1800
       TabIndex        =   110
-      Top             =   2775
+      Top             =   2790
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1123,9 +1123,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   13
-      Left            =   10500
+      Left            =   1875
       TabIndex        =   109
-      Top             =   5025
+      Top             =   5070
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1147,9 +1147,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   13
-      Left            =   10500
+      Left            =   1845
       TabIndex        =   108
-      Top             =   4350
+      Top             =   4365
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1171,7 +1171,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   12
-      Left            =   8775
+      Left            =   3570
       TabIndex        =   107
       Top             =   3450
       Width           =   1740
@@ -1195,7 +1195,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   12
-      Left            =   8775
+      Left            =   3570
       TabIndex        =   106
       Top             =   2775
       Width           =   1740
@@ -1219,9 +1219,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   11
-      Left            =   8775
+      Left            =   3570
       TabIndex        =   105
-      Top             =   5025
+      Top             =   5040
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1243,9 +1243,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   11
-      Left            =   8775
+      Left            =   3570
       TabIndex        =   104
-      Top             =   4350
+      Top             =   4365
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1267,7 +1267,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   10
-      Left            =   7050
+      Left            =   5310
       TabIndex        =   103
       Top             =   3450
       Width           =   1740
@@ -1291,7 +1291,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   10
-      Left            =   7050
+      Left            =   5310
       TabIndex        =   102
       Top             =   2775
       Width           =   1740
@@ -1315,9 +1315,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   9
-      Left            =   7050
+      Left            =   5325
       TabIndex        =   101
-      Top             =   5025
+      Top             =   5055
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1339,9 +1339,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   9
-      Left            =   7050
+      Left            =   5310
       TabIndex        =   100
-      Top             =   4350
+      Top             =   4380
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1363,9 +1363,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   8
-      Left            =   5325
+      Left            =   7050
       TabIndex        =   99
-      Top             =   3450
+      Top             =   3480
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1387,9 +1387,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   8
-      Left            =   5325
+      Left            =   7050
       TabIndex        =   98
-      Top             =   2775
+      Top             =   2805
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1411,9 +1411,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   7
-      Left            =   5325
+      Left            =   7080
       TabIndex        =   97
-      Top             =   5025
+      Top             =   5070
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1435,9 +1435,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   7
-      Left            =   5325
+      Left            =   7080
       TabIndex        =   96
-      Top             =   4350
+      Top             =   4395
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1459,9 +1459,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   6
-      Left            =   3600
+      Left            =   8805
       TabIndex        =   94
-      Top             =   2775
+      Top             =   2745
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1483,9 +1483,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   6
-      Left            =   3600
+      Left            =   8805
       TabIndex        =   95
-      Top             =   3450
+      Top             =   3420
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1495,9 +1495,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   6
-      Left            =   3600
+      Left            =   8805
       Shape           =   4  'Rounded Rectangle
-      Top             =   2775
+      Top             =   2745
       Width           =   1740
    End
    Begin VB.Label BagData2 
@@ -1518,9 +1518,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   5
-      Left            =   3600
+      Left            =   8835
       TabIndex        =   93
-      Top             =   5025
+      Top             =   5010
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1542,9 +1542,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   5
-      Left            =   3600
+      Left            =   8835
       TabIndex        =   92
-      Top             =   4350
+      Top             =   4335
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1566,9 +1566,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   4
-      Left            =   1875
+      Left            =   10485
       TabIndex        =   91
-      Top             =   3450
+      Top             =   3420
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1590,9 +1590,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   4
-      Left            =   1875
+      Left            =   10485
       TabIndex        =   90
-      Top             =   2775
+      Top             =   2745
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1614,9 +1614,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   3
-      Left            =   1875
+      Left            =   10515
       TabIndex        =   89
-      Top             =   5025
+      Top             =   5040
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1638,9 +1638,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   3
-      Left            =   1875
+      Left            =   10515
       TabIndex        =   88
-      Top             =   4350
+      Top             =   4365
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1662,7 +1662,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   1
-      Left            =   150
+      Left            =   12255
       TabIndex        =   87
       Top             =   5025
       Width           =   1740
@@ -1686,7 +1686,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   1
-      Left            =   150
+      Left            =   12255
       TabIndex        =   86
       Top             =   4350
       Width           =   1740
@@ -1710,9 +1710,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   390
       Index           =   2
-      Left            =   150
+      Left            =   12240
       TabIndex        =   85
-      Top             =   3450
+      Top             =   3405
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -1732,9 +1732,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   16
-      Left            =   12300
+      Left            =   135
       TabIndex        =   84
-      Top             =   2400
+      Top             =   2340
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -1753,9 +1753,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   15
-      Left            =   12375
+      Left            =   255
       TabIndex        =   83
-      Top             =   5475
+      Top             =   5415
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -1774,9 +1774,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   14
-      Left            =   10650
+      Left            =   1905
       TabIndex        =   82
-      Top             =   2400
+      Top             =   2430
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -1795,9 +1795,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   13
-      Left            =   10650
+      Left            =   1995
       TabIndex        =   81
-      Top             =   5475
+      Top             =   5490
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -1816,7 +1816,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   12
-      Left            =   8925
+      Left            =   3720
       TabIndex        =   80
       Top             =   2400
       Width           =   315
@@ -1837,9 +1837,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   11
-      Left            =   8925
+      Left            =   3645
       TabIndex        =   79
-      Top             =   5475
+      Top             =   5460
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -1858,7 +1858,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   10
-      Left            =   7200
+      Left            =   5460
       TabIndex        =   78
       Top             =   2400
       Width           =   315
@@ -1879,9 +1879,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   9
-      Left            =   7200
+      Left            =   5475
       TabIndex        =   77
-      Top             =   5475
+      Top             =   5505
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -1900,9 +1900,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   8
-      Left            =   5475
+      Left            =   7200
       TabIndex        =   76
-      Top             =   2400
+      Top             =   2430
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -1921,9 +1921,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   7
-      Left            =   5475
+      Left            =   7230
       TabIndex        =   75
-      Top             =   5475
+      Top             =   5520
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -1942,9 +1942,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   6
-      Left            =   3750
+      Left            =   8955
       TabIndex        =   74
-      Top             =   2400
+      Top             =   2370
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -1963,9 +1963,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   5
-      Left            =   3750
+      Left            =   8925
       TabIndex        =   73
-      Top             =   5475
+      Top             =   5460
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -1984,9 +1984,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   4
-      Left            =   2025
+      Left            =   10635
       TabIndex        =   72
-      Top             =   2400
+      Top             =   2370
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -2005,9 +2005,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   3
-      Left            =   2025
+      Left            =   10665
       TabIndex        =   71
-      Top             =   5475
+      Top             =   5490
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -2026,9 +2026,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   2
-      Left            =   300
+      Left            =   12390
       TabIndex        =   70
-      Top             =   2400
+      Top             =   2355
       Width           =   315
    End
    Begin VB.Label lblStnNum 
@@ -2047,7 +2047,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00808080&
       Height          =   390
       Index           =   1
-      Left            =   300
+      Left            =   12390
       TabIndex        =   69
       Top             =   5475
       Width           =   315
@@ -2067,9 +2067,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   16
-      Left            =   12225
+      Left            =   60
       TabIndex        =   68
-      Top             =   2025
+      Top             =   1965
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2087,9 +2087,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   15
-      Left            =   12300
+      Left            =   180
       TabIndex        =   67
-      Top             =   5850
+      Top             =   5790
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2107,9 +2107,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   14
-      Left            =   10500
+      Left            =   1800
       TabIndex        =   66
-      Top             =   2025
+      Top             =   2040
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2127,9 +2127,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   13
-      Left            =   10575
+      Left            =   1920
       TabIndex        =   65
-      Top             =   5850
+      Top             =   5865
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2147,7 +2147,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   12
-      Left            =   8775
+      Left            =   3570
       TabIndex        =   64
       Top             =   2025
       Width           =   1740
@@ -2167,9 +2167,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   11
-      Left            =   8775
+      Left            =   3570
       TabIndex        =   63
-      Top             =   5850
+      Top             =   5865
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2187,7 +2187,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   10
-      Left            =   7050
+      Left            =   5310
       TabIndex        =   57
       Top             =   2025
       Width           =   1740
@@ -2207,9 +2207,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   9
-      Left            =   7050
+      Left            =   5325
       TabIndex        =   56
-      Top             =   5850
+      Top             =   5880
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2227,9 +2227,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   8
-      Left            =   5325
+      Left            =   7050
       TabIndex        =   55
-      Top             =   2025
+      Top             =   2055
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2247,9 +2247,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   7
-      Left            =   5325
+      Left            =   7080
       TabIndex        =   54
-      Top             =   5850
+      Top             =   5895
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2267,9 +2267,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   6
-      Left            =   3600
+      Left            =   8805
       TabIndex        =   53
-      Top             =   2025
+      Top             =   1995
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2287,9 +2287,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   5
-      Left            =   3600
+      Left            =   8835
       TabIndex        =   52
-      Top             =   5850
+      Top             =   5835
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2307,9 +2307,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   4
-      Left            =   1875
+      Left            =   10485
       TabIndex        =   51
-      Top             =   2025
+      Top             =   1995
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2318,9 +2318,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   6
-      Left            =   3600
+      Left            =   8805
       Shape           =   4  'Rounded Rectangle
-      Top             =   2400
+      Top             =   2370
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2338,9 +2338,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   3
-      Left            =   1875
+      Left            =   10515
       TabIndex        =   50
-      Top             =   5850
+      Top             =   5865
       Width           =   1740
    End
    Begin VB.Label lblWeight 
@@ -2358,7 +2358,7 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   1
-      Left            =   150
+      Left            =   12255
       TabIndex        =   46
       Top             =   5850
       Width           =   1740
@@ -2378,9 +2378,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00800000&
       Height          =   390
       Index           =   2
-      Left            =   150
+      Left            =   12240
       TabIndex        =   45
-      Top             =   2025
+      Top             =   1980
       Width           =   1740
    End
    Begin VB.Label BagData 
@@ -2401,9 +2401,9 @@ Begin VB.Form LoadingBig
       ForeColor       =   &H00FFFFFF&
       Height          =   615
       Index           =   2
-      Left            =   150
+      Left            =   12240
       TabIndex        =   42
-      Top             =   2775
+      Top             =   2730
       Width           =   1740
       WordWrap        =   -1  'True
    End
@@ -2413,9 +2413,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   2
-      Left            =   150
+      Left            =   12240
       Shape           =   4  'Rounded Rectangle
-      Top             =   2775
+      Top             =   2730
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2424,9 +2424,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   2
-      Left            =   150
+      Left            =   12240
       Shape           =   4  'Rounded Rectangle
-      Top             =   2400
+      Top             =   2355
       Width           =   1740
    End
    Begin VB.Shape BagRing 
@@ -2435,7 +2435,7 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   1
-      Left            =   150
+      Left            =   12255
       Shape           =   4  'Rounded Rectangle
       Top             =   4350
       Width           =   1740
@@ -2446,7 +2446,7 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   1
-      Left            =   150
+      Left            =   12255
       Shape           =   4  'Rounded Rectangle
       Top             =   4125
       Width           =   1740
@@ -2457,9 +2457,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   4
-      Left            =   1875
+      Left            =   10485
       Shape           =   4  'Rounded Rectangle
-      Top             =   2775
+      Top             =   2745
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2468,9 +2468,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   4
-      Left            =   1875
+      Left            =   10485
       Shape           =   4  'Rounded Rectangle
-      Top             =   2400
+      Top             =   2370
       Width           =   1740
    End
    Begin VB.Shape BagRing 
@@ -2479,9 +2479,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   3
-      Left            =   1875
+      Left            =   10515
       Shape           =   4  'Rounded Rectangle
-      Top             =   4350
+      Top             =   4365
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2490,9 +2490,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   3
-      Left            =   1875
+      Left            =   10515
       Shape           =   4  'Rounded Rectangle
-      Top             =   4125
+      Top             =   4140
       Width           =   1740
    End
    Begin VB.Shape BagRing 
@@ -2501,9 +2501,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   5
-      Left            =   3600
+      Left            =   8835
       Shape           =   4  'Rounded Rectangle
-      Top             =   4350
+      Top             =   4335
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2512,9 +2512,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   5
-      Left            =   3600
+      Left            =   8835
       Shape           =   4  'Rounded Rectangle
-      Top             =   4125
+      Top             =   4110
       Width           =   1740
    End
    Begin VB.Shape BagRing 
@@ -2523,9 +2523,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   7
-      Left            =   5325
+      Left            =   7080
       Shape           =   4  'Rounded Rectangle
-      Top             =   4350
+      Top             =   4395
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2534,9 +2534,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   7
-      Left            =   5325
+      Left            =   7080
       Shape           =   4  'Rounded Rectangle
-      Top             =   4125
+      Top             =   4170
       Width           =   1740
    End
    Begin VB.Shape BagRing 
@@ -2545,7 +2545,51 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   8
+      Left            =   7050
+      Shape           =   4  'Rounded Rectangle
+      Top             =   2805
+      Width           =   1740
+   End
+   Begin VB.Shape shpStation 
+      BackStyle       =   1  'Opaque
+      BorderStyle     =   0  'Transparent
+      FillColor       =   &H00FFFFFF&
+      Height          =   1740
+      Index           =   8
+      Left            =   7050
+      Shape           =   4  'Rounded Rectangle
+      Top             =   2430
+      Width           =   1740
+   End
+   Begin VB.Shape BagRing 
+      BackColor       =   &H00FF0000&
+      BackStyle       =   1  'Opaque
+      BorderColor     =   &H00FFFFFF&
+      Height          =   1140
+      Index           =   9
       Left            =   5325
+      Shape           =   4  'Rounded Rectangle
+      Top             =   4380
+      Width           =   1740
+   End
+   Begin VB.Shape shpStation 
+      BackStyle       =   1  'Opaque
+      BorderStyle     =   0  'Transparent
+      FillColor       =   &H00FFFFFF&
+      Height          =   1740
+      Index           =   9
+      Left            =   5325
+      Shape           =   4  'Rounded Rectangle
+      Top             =   4155
+      Width           =   1740
+   End
+   Begin VB.Shape BagRing 
+      BackColor       =   &H00FF0000&
+      BackStyle       =   1  'Opaque
+      BorderColor     =   &H00FFFFFF&
+      Height          =   1140
+      Index           =   10
+      Left            =   5310
       Shape           =   4  'Rounded Rectangle
       Top             =   2775
       Width           =   1740
@@ -2555,52 +2599,8 @@ Begin VB.Form LoadingBig
       BorderStyle     =   0  'Transparent
       FillColor       =   &H00FFFFFF&
       Height          =   1740
-      Index           =   8
-      Left            =   5325
-      Shape           =   4  'Rounded Rectangle
-      Top             =   2400
-      Width           =   1740
-   End
-   Begin VB.Shape BagRing 
-      BackColor       =   &H00FF0000&
-      BackStyle       =   1  'Opaque
-      BorderColor     =   &H00FFFFFF&
-      Height          =   1140
-      Index           =   9
-      Left            =   7050
-      Shape           =   4  'Rounded Rectangle
-      Top             =   4350
-      Width           =   1740
-   End
-   Begin VB.Shape shpStation 
-      BackStyle       =   1  'Opaque
-      BorderStyle     =   0  'Transparent
-      FillColor       =   &H00FFFFFF&
-      Height          =   1740
-      Index           =   9
-      Left            =   7050
-      Shape           =   4  'Rounded Rectangle
-      Top             =   4125
-      Width           =   1740
-   End
-   Begin VB.Shape BagRing 
-      BackColor       =   &H00FF0000&
-      BackStyle       =   1  'Opaque
-      BorderColor     =   &H00FFFFFF&
-      Height          =   1140
       Index           =   10
-      Left            =   7050
-      Shape           =   4  'Rounded Rectangle
-      Top             =   2775
-      Width           =   1740
-   End
-   Begin VB.Shape shpStation 
-      BackStyle       =   1  'Opaque
-      BorderStyle     =   0  'Transparent
-      FillColor       =   &H00FFFFFF&
-      Height          =   1740
-      Index           =   10
-      Left            =   7050
+      Left            =   5310
       Shape           =   4  'Rounded Rectangle
       Top             =   2400
       Width           =   1740
@@ -2611,9 +2611,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   11
-      Left            =   8775
+      Left            =   3570
       Shape           =   4  'Rounded Rectangle
-      Top             =   4350
+      Top             =   4365
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2622,9 +2622,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   11
-      Left            =   8775
+      Left            =   3570
       Shape           =   4  'Rounded Rectangle
-      Top             =   4125
+      Top             =   4140
       Width           =   1740
    End
    Begin VB.Shape BagRing 
@@ -2633,7 +2633,7 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   12
-      Left            =   8775
+      Left            =   3570
       Shape           =   4  'Rounded Rectangle
       Top             =   2775
       Width           =   1740
@@ -2644,7 +2644,7 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   12
-      Left            =   8775
+      Left            =   3570
       Shape           =   4  'Rounded Rectangle
       Top             =   2400
       Width           =   1740
@@ -2655,9 +2655,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   13
-      Left            =   10500
+      Left            =   1845
       Shape           =   4  'Rounded Rectangle
-      Top             =   4350
+      Top             =   4365
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2666,9 +2666,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   13
-      Left            =   10500
+      Left            =   1845
       Shape           =   4  'Rounded Rectangle
-      Top             =   4125
+      Top             =   4140
       Width           =   1740
    End
    Begin VB.Shape BagRing 
@@ -2677,9 +2677,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   14
-      Left            =   10500
+      Left            =   1800
       Shape           =   4  'Rounded Rectangle
-      Top             =   2775
+      Top             =   2790
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2688,9 +2688,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   14
-      Left            =   10500
+      Left            =   1800
       Shape           =   4  'Rounded Rectangle
-      Top             =   2400
+      Top             =   2415
       Width           =   1740
    End
    Begin VB.Shape BagRing 
@@ -2699,9 +2699,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   15
-      Left            =   12225
+      Left            =   105
       Shape           =   4  'Rounded Rectangle
-      Top             =   4350
+      Top             =   4290
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2710,9 +2710,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   15
-      Left            =   12225
+      Left            =   105
       Shape           =   4  'Rounded Rectangle
-      Top             =   4125
+      Top             =   4065
       Width           =   1740
    End
    Begin VB.Shape BagRing 
@@ -2721,9 +2721,9 @@ Begin VB.Form LoadingBig
       BorderColor     =   &H00FFFFFF&
       Height          =   1140
       Index           =   16
-      Left            =   12225
+      Left            =   60
       Shape           =   4  'Rounded Rectangle
-      Top             =   2775
+      Top             =   2715
       Width           =   1740
    End
    Begin VB.Shape shpStation 
@@ -2732,9 +2732,9 @@ Begin VB.Form LoadingBig
       FillColor       =   &H00FFFFFF&
       Height          =   1740
       Index           =   16
-      Left            =   12225
+      Left            =   60
       Shape           =   4  'Rounded Rectangle
-      Top             =   2400
+      Top             =   2340
       Width           =   1740
    End
 End

@@ -62,8 +62,8 @@ IF (Bank <= Std.MaxStationBanks) THEN
 		SearchLine  = 0
 
 		Stn[0].QTime = 0
-
-		LOOP x = Ldg[Bank].StartStn TO Ldg[Bank].EndStn DO
+;	LOOP x = 1 TO 1 DO
+		LOOP x = Ldg[Bank].StartStn TO Ldg[Bank].EndStn DO   
 		;	x = 11
 			n = x
 			;Std.StnsToPurge = TRUE    ;KEV
@@ -320,6 +320,7 @@ IF (Bank <= Std.MaxStationBanks) THEN
 							IF (LineSearch[Choice] > 0) AND (Line[LineSearch[Choice]].SpaceBIT >= Stn[n].SpacesRequired)  THEN
 								SearchFound  		= n
 								SearchLine   		= LineSearch[Choice]
+								CHECK              =  LineSearch[Choice]
 								Stn[0].QTime 		= Stn[n].QTime
 								Ldg[Bank].Search   	= 2
 

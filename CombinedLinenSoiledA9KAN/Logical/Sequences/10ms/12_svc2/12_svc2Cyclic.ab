@@ -48,6 +48,7 @@ IF (STEP = 2) THEN
 	IF I_BagOnCarriage THEN
 		D[912] = 3
 	ENDIF
+	Alarm[12].Name 		= almBagNotSettled
 ENDIF
 
 ;Wait for bag to settle on carriage
@@ -56,6 +57,7 @@ IF (STEP = 3) THEN
 	IF BagSettled THEN
 		D[912] = 4
 	ENDIF
+	Alarm[12].Name 		= almBagNotSettled
 ENDIF
 
 ;Move Carriage down to bottom
@@ -83,6 +85,7 @@ IF (STEP = 6) THEN
 	IF NOT Enable.SVC2 THEN
 		D[912] = 7
 	ENDIF
+	Alarm[12].Name 		= almBagNotReleased
 ENDIF
 
 ;Move Carriage up to top

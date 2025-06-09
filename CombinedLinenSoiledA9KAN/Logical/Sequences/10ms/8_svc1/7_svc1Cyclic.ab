@@ -56,6 +56,7 @@ IF (STEP = 3) THEN
 	IF SettledOnCarriage THEN
 		D[908] = 4
 	ENDIF
+	Alarm[8].Name 		= almBagNotSettled
 ENDIF
 
 ;Move carriage up to top
@@ -88,6 +89,7 @@ IF (STEP = 6) THEN
 	IF NOT PLS AND (C[15] > 0) THEN
 		D[908] = 7
 	ENDIF
+	Alarm[8].Name 		= almBagNotReleased
 ENDIF
 
 ;Move carriage down to Bottom

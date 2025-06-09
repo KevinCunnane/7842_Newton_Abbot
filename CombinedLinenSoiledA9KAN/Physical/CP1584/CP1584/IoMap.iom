@@ -8,14 +8,14 @@
  * IO mapping file
  ********************************************************************)
 VAR_CONFIG
-	X[3].X01 AT %QX."X20DO8332_Y301".DigitalOutput01;
-	X[3].X02 AT %QX."X20DO8332_Y301".DigitalOutput02;
-	X[3].X03 AT %QX."X20DO8332_Y301".DigitalOutput03;
-	X[3].X04 AT %QX."X20DO8332_Y301".DigitalOutput04;
-	X[3].X05 AT %QX."X20DO8332_Y301".DigitalOutput05;
-	X[3].X06 AT %QX."X20DO8332_Y301".DigitalOutput06;
-	X[3].X07 AT %QX."X20DO8332_Y301".DigitalOutput07;
-	X[3].X08 AT %QX."X20DO8332_Y301".DigitalOutput08;
+	::Y[3].Y01 AT %QX."X20DO8332_Y301".DigitalOutput01;
+	::Y[3].Y02 AT %QX."X20DO8332_Y301".DigitalOutput02;
+	::Y[3].Y03 AT %QX."X20DO8332_Y301".DigitalOutput03;
+	::Y[3].Y04 AT %QX."X20DO8332_Y301".DigitalOutput04;
+	::Y[3].Y05 AT %QX."X20DO8332_Y301".DigitalOutput05;
+	::Y[3].Y06 AT %QX."X20DO8332_Y301".DigitalOutput06;
+	::Y[3].Y07 AT %QX."X20DO8332_Y301".DigitalOutput07;
+	::Y[3].Y08 AT %QX."X20DO8332_Y301".DigitalOutput08;
 	X[3].X09 AT %IX."X20DM9324_X309".DigitalInput01;
 	X[3].X10 AT %IX."X20DM9324_X309".DigitalInput02;
 	X[3].X11 AT %IX."X20DM9324_X309".DigitalInput03;
@@ -24,14 +24,14 @@ VAR_CONFIG
 	X[3].X14 AT %IX."X20DM9324_X309".DigitalInput06;
 	X[3].X15 AT %IX."X20DM9324_X309".DigitalInput07;
 	X[3].X16 AT %IX."X20DM9324_X309".DigitalInput08;
-	Y[3].Y01 AT %IX."X20DM9324_X301".DigitalInput01;
-	Y[3].Y02 AT %IX."X20DM9324_X301".DigitalInput02;
-	Y[3].Y03 AT %IX."X20DM9324_X301".DigitalInput03;
-	Y[3].Y04 AT %IX."X20DM9324_X301".DigitalInput04;
-	Y[3].Y05 AT %IX."X20DM9324_X301".DigitalInput05;
-	Y[3].Y06 AT %IX."X20DM9324_X301".DigitalInput06;
-	Y[3].Y07 AT %IX."X20DM9324_X301".DigitalInput07;
-	Y[3].Y08 AT %IX."X20DM9324_X301".DigitalInput08;
+	::X[3].X01 AT %IX."X20DM9324_X301".DigitalInput01;
+	::X[3].X02 AT %IX."X20DM9324_X301".DigitalInput02;
+	::X[3].X03 AT %IX."X20DM9324_X301".DigitalInput03;
+	::X[3].X04 AT %IX."X20DM9324_X301".DigitalInput04;
+	::X[3].X05 AT %IX."X20DM9324_X301".DigitalInput05;
+	::X[3].X06 AT %IX."X20DM9324_X301".DigitalInput06;
+	::X[3].X07 AT %IX."X20DM9324_X301".DigitalInput07;
+	::X[3].X08 AT %IX."X20DM9324_X301".DigitalInput08;
 	Y[3].Y09 AT %QX."X20DO8332_Y309".DigitalOutput01;
 	Y[3].Y10 AT %QX."X20DO8332_Y309".DigitalOutput02;
 	Y[3].Y11 AT %QX."X20DO8332_Y309".DigitalOutput03;
@@ -298,7 +298,7 @@ VAR_CONFIG
 	Y[15].Y08 AT %QX."X20DO8332c".DigitalOutput08;
 	OK[1] AT %IX."X20BC0083".ModuleOk;
 	OK[2] AT %IX."X20BC0083_SS1-4".ModuleOk;
-	OK[5]  AT %IX."X20BC0083_SS13-16".ModuleOk;
+	OK[5] AT %IX."X20BC0083_SS13-16".ModuleOk;
 	OK[4] AT %IX."X20BC0083_SS9-12".ModuleOk;
-	OK[3]  AT %IX."X20BC0083_SS5-8".ModuleOk;
+	OK[3] AT %IX."X20BC0083_SS5-8".ModuleOk;
 END_VAR

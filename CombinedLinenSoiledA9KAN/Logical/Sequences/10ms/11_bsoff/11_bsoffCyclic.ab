@@ -52,6 +52,7 @@ IF (STEP = 2) THEN
 	IF RockerReady THEN
 		D[911] = 3
 	ENDIF
+	Alarm[11].Name 		= almBagNotSettled
 ENDIF
 
 ;Wait for bag to be in leveller position
@@ -60,6 +61,7 @@ IF (STEP = 3) THEN
 	IF LevellerFull THEN
 		D[911] = 4
 	ENDIF
+	Alarm[11].Name 		= almBagNotSettled
 ENDIF
 
 ;Move bag leveller down
@@ -95,6 +97,7 @@ IF (STEP = 7) THEN
 	IF I_OutLineA THEN
 		D[911] = 8
 	ENDIF
+	Alarm[11].Name 		= almBagNotSettled
 ENDIF
 
 ;Open stop on line 'B'until bag in rotary point
@@ -104,6 +107,7 @@ IF (STEP = 8) THEN
 	IF SettledInRotary THEN
 		D[911] = 9
 	ENDIF
+	Alarm[11].Name 		= almBagNotReleased
 ENDIF
 
 ;Select bag stop and wait for bag out of leveller
@@ -115,6 +119,7 @@ IF (STEP = 9) THEN
 	IF Line[16].Full THEN
 		D[911] = 1
 	ENDIF
+	Alarm[11].Name 		= almBagNotSettled
 ENDIF
 
 ;Alarms

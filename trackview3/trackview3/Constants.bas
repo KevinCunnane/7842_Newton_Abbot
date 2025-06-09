@@ -12,9 +12,9 @@ Public Const MinPLCCards = 1         'Start PLC Card
 Public Const MaxPLCCards = 16        'Max PLC I/O Cards Last Card
 Public Const UsedPLC = 1             'Set to number of used PLC's - 1 0=1 1=2 2=3
 
-Public Const Maindisp0Used = False    'Display form 0 is used?
+Public Const Maindisp0Used = True    'Display form 0 is used?
 Public Const Maindisp1Used = True    'Display form 1 is used?
-Public Const Maindisp2Used = False   'Display form 0 is used?
+Public Const Maindisp2Used = True   'Display form 0 is used?
 
 Public Const MaxStations = 16         'Min Value = 1
 Public Const MaxStationBanks = 1     'Number Of Station Banks Min Value = 1
@@ -29,7 +29,7 @@ Public Const UseDay = False          'Use day on this system
 Public Const ShowCatCusDay = False    'Enable the display option for Cat,Cus and Day in the bag - NOT STD
 
 Public Const MaxBatch = 2            'Do Not Set Above 4 as the PLC code will need changing
-Public Const MaxLines = 8            'Line / Destinations
+Public Const MaxLines = 11            'Line / Destinations
 Public Const MaxDischargers = 2      'Max Unloading Programs
 
 Public Const MaxRecircDepth = 6
@@ -82,10 +82,10 @@ Public Const Drycode_Max_Value = 50
 'Parts of database to transfer to the PLC "D" registers if a value is set then the
 'item will be transfered to the PLC (Be carefull with register spacing)
 Public Const PLC_Transfer_WashCode = 0 '2000         '"D2000" Register where washcodes start
-Public Const PLC_Transfer_Line1 = 3000 '2200
-Public Const PLC_Transfer_Line2 = 3100 '2300
-Public Const PLC_Transfer_Line3 = 3200 '2400
-Public Const PLC_Transfer_Line4 = 3300 '2500
+Public Const PLC_Transfer_Line1 = 2200 '2200
+Public Const PLC_Transfer_Line2 = 2300 '2300
+Public Const PLC_Transfer_Line3 = 2400 '2400
+Public Const PLC_Transfer_Line4 = 2500 '2500
 Public Const PLC_Transfer_SP1 = 0
 Public Const PLC_Transfer_SP2 = 0
 Public Const PLC_Transfer_SP3 = 0
@@ -119,7 +119,7 @@ Public Const PLC_Stn_Type = 0
 'Forms PLC Station Number
 Public Const PLC_Stn_maindisp0_frm = 0
 Public Const PLC_Stn_maindisp1_frm = 1
-Public Const PLC_Stn_maindisp2_frm = 1
+Public Const PLC_Stn_maindisp2_frm = 0
 Public Const PLC_Stn_maindisp3_frm = 0
 
 Public Const PLC_Stn_snapshot_frm = 0

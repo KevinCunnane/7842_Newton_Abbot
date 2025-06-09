@@ -177,7 +177,7 @@ CallOff,ShowCustomers 14,0
 CallOff,BatchSameCat 14,0
 CallOff,BatchSameCus 14,0
 CallOff,AllowBatchChange 14,0
-dbOptions,CatDbUseLongID,0
+dbOptions,CatDbUseLongID,1
 dbOptions,CatDbUseSoiledLines,1
 dbOptions,CatDbSoiledLines=2,1
 dbOptions,CatDbUseSetpoints,1
@@ -187,8 +187,8 @@ dbOptions,CatDbUseBatchSize,0
 dbOptions,CatDbUsePieceWeight,0
 dbOptions,CatDbUseCategoryType,1
 dbOptions,CatDbUseWashCodes,0
-dbOptions,CatDbLongIDInBag,0
-dbOptions,CatDbLongIDShowLeft,0
+dbOptions,CatDbLongIDInBag,1
+dbOptions,CatDbLongIDShowLeft,1
 dbOptions,SystemUseBatchCodes,1
 dbOptions,0,0
 dbOptions,1,0
@@ -200,7 +200,7 @@ dbOptions,SysBatchCodes,0
 dbOptions,CatDbUseBagColour,1
 dbOptions,dbRepairAtStart,0
 dbOptions,dbRepairAtTime,1
-dbOptions,dbRepairTimeVal,04/04/2025 23:59:00
+dbOptions,dbRepairTimeVal,06/06/2025 23:59:00
 System,SystemName,Newton Abbott
 Config,ColorChoice,1
 Config,ColourChoice,0
@@ -216,7 +216,7 @@ dbOptions,CusDbLongCharAllow,2
 dbOptions,CusDbLongIDMax,5
 Purging,PurgeWeight,200
 Config,StationProgName 1,116.LDG
-Stations,UseLoadingBig,0
+Stations,UseLoadingBig,1
 Config,StationProgName 2,StationProgName 2wt$
 Config,DischargerProgName 1,Dave.ULD
 Config,DischargerProgName 2,DischargerProgName 2$
@@ -264,7 +264,7 @@ Database,LastRepair D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\Data\db
 Database,LastRepair D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\Data\dbLanguage.mdb,13/02/2006
 Database,LastRepair D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\Data\dbGroups.mdb,13/02/2006
 Database,LastRepair D:\Projects\Mewa Bottrop\TrackView3 V1.1\TVIEW\FORMS\Data\dbTCPDriver.mdb,13/02/2006
-Master,IP,10x8x4x102
+Master,IP,169x254x163x32
 Database,LastRepair D:\Projects\Grief\TrackView3 V1.1\TVIEW\FORMS\Data\dbCategories.mdb,11/05/2006
 Database,LastRepair D:\Projects\Grief\TrackView3 V1.1\TVIEW\FORMS\Data\dbCustomers.mdb,11/05/2006
 Database,LastRepair D:\Projects\Grief\TrackView3 V1.1\TVIEW\FORMS\Data\dbTCPDriver.mdb,11/05/2006

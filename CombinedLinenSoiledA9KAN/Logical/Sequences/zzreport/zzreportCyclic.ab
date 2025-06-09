@@ -14,7 +14,7 @@ PROGRAM _CYCLIC
 	ReportBuffer[0].Mcn = 0
 
 	;Report array sizes - see declerations
-	MaxReportBuffer		= 199	;1 less than array allocation as Array 0 is used as Zero values
+	MaxReportBuffer		= 197	;1 less than array allocation as Array 0 is used as Zero values
 	MaxReportLoading 	= 49	;Normally at least MaxStations
 	MaxReportUnloading 	= 9		;Normally at least MaxDischargers
 

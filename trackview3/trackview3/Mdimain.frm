@@ -45,7 +45,7 @@ Begin VB.MDIForm MDIMaindisp_frm
             AutoSize        =   2
             Object.Width           =   2593
             MinWidth        =   88
-            TextSave        =   "15/04/2025"
+            TextSave        =   "08/06/2025"
             Key             =   "Date"
          EndProperty
          BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
@@ -54,7 +54,7 @@ Begin VB.MDIForm MDIMaindisp_frm
             AutoSize        =   2
             Object.Width           =   1296
             MinWidth        =   88
-            TextSave        =   "08:12"
+            TextSave        =   "08:44"
             Key             =   "Time"
          EndProperty
          BeginProperty Panel3 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
@@ -178,6 +178,8 @@ Begin VB.MDIForm MDIMaindisp_frm
       End
       Begin VB.Menu mnu_primary 
          Caption         =   "Primary"
+         Enabled         =   0   'False
+         Visible         =   0   'False
       End
       Begin VB.Menu mnu_exhibition 
          Caption         =   "Exhibition"
@@ -797,7 +799,7 @@ End Sub
 
 Private Sub mnu_primary_Click()
     If DebugToErrorFile Then ErrorHandler 0, "DEBUG", "mnu_primary_Click", False
-    DisplayForm maindisp1_frm, mnu_primary.Caption
+    DisplayForm maindisp2_frm, mnu_primary.Caption
 End Sub
 
 Private Sub mnu_prog_options_Click()
