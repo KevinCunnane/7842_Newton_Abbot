@@ -1877,11 +1877,107 @@ Begin VB.Form maindisp0_frm
       Top             =   7065
       Width           =   315
    End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1304
+      Left            =   12630
+      Picture         =   "Maindis0.frx":162888
+      Top             =   1470
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1303
+      Left            =   12645
+      Picture         =   "Maindis0.frx":162BE9
+      Top             =   2415
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1301
+      Left            =   13170
+      Picture         =   "Maindis0.frx":162F4A
+      Top             =   2430
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1302
+      Left            =   13140
+      Picture         =   "Maindis0.frx":1632AB
+      Top             =   1485
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1402
+      Left            =   12105
+      Picture         =   "Maindis0.frx":16360C
+      Top             =   1470
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1404
+      Left            =   11565
+      Picture         =   "Maindis0.frx":16396D
+      Top             =   1485
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1502
+      Left            =   11040
+      Picture         =   "Maindis0.frx":163CCE
+      Top             =   1500
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1504
+      Left            =   10530
+      Picture         =   "Maindis0.frx":16402F
+      Top             =   1485
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1401
+      Left            =   12120
+      Picture         =   "Maindis0.frx":164390
+      Top             =   2430
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1403
+      Left            =   11580
+      Picture         =   "Maindis0.frx":1646F1
+      Top             =   2415
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1501
+      Left            =   11040
+      Picture         =   "Maindis0.frx":164A52
+      Top             =   2430
+      Width           =   75
+   End
+   Begin VB.Image picY 
+      Height          =   165
+      Index           =   1503
+      Left            =   10515
+      Picture         =   "Maindis0.frx":164DB3
+      Top             =   2430
+      Width           =   75
+   End
    Begin VB.Image picX 
       Height          =   75
       Index           =   613
       Left            =   15900
-      Picture         =   "Maindis0.frx":162888
+      Picture         =   "Maindis0.frx":165114
       Top             =   7620
       Width           =   165
    End
@@ -1889,7 +1985,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1204
       Left            =   13665
-      Picture         =   "Maindis0.frx":162BCF
+      Picture         =   "Maindis0.frx":16545B
       Top             =   1485
       Width           =   75
    End
@@ -1897,7 +1993,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1203
       Left            =   13680
-      Picture         =   "Maindis0.frx":162F30
+      Picture         =   "Maindis0.frx":1657BC
       Top             =   2400
       Width           =   75
    End
@@ -1905,7 +2001,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1202
       Left            =   14205
-      Picture         =   "Maindis0.frx":163291
+      Picture         =   "Maindis0.frx":165B1D
       Top             =   1470
       Width           =   75
    End
@@ -1913,7 +2009,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1201
       Left            =   14190
-      Picture         =   "Maindis0.frx":1635F2
+      Picture         =   "Maindis0.frx":165E7E
       Top             =   2415
       Width           =   75
    End
@@ -1921,7 +2017,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   302
       Left            =   -30
-      Picture         =   "Maindis0.frx":163953
+      Picture         =   "Maindis0.frx":1661DF
       Top             =   6840
       Width           =   300
    End
@@ -1929,7 +2025,7 @@ Begin VB.Form maindisp0_frm
       Height          =   300
       Index           =   307
       Left            =   3330
-      Picture         =   "Maindis0.frx":163CBF
+      Picture         =   "Maindis0.frx":16654B
       Top             =   6390
       Width           =   165
    End
@@ -1937,7 +2033,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   303
       Left            =   450
-      Picture         =   "Maindis0.frx":16402D
+      Picture         =   "Maindis0.frx":1668B9
       Top             =   7140
       Width           =   165
    End
@@ -1945,7 +2041,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   308
       Left            =   3600
-      Picture         =   "Maindis0.frx":1640A3
+      Picture         =   "Maindis0.frx":16692F
       Top             =   6615
       Width           =   165
    End
@@ -1953,7 +2049,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   904
       Left            =   16200
-      Picture         =   "Maindis0.frx":16411B
+      Picture         =   "Maindis0.frx":1669A7
       Top             =   2370
       Width           =   165
    End
@@ -1961,7 +2057,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   903
       Left            =   16215
-      Picture         =   "Maindis0.frx":164190
+      Picture         =   "Maindis0.frx":166A1C
       Tag             =   "1002"
       Top             =   3045
       Width           =   165
@@ -1970,7 +2066,7 @@ Begin VB.Form maindisp0_frm
       Height          =   90
       Index           =   702
       Left            =   14355
-      Picture         =   "Maindis0.frx":164206
+      Picture         =   "Maindis0.frx":166A92
       Top             =   8025
       Width           =   315
    End
@@ -1978,7 +2074,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   6
       Left            =   14295
-      Picture         =   "Maindis0.frx":16455F
+      Picture         =   "Maindis0.frx":166DEB
       Top             =   8040
       Width           =   75
    End
@@ -1986,7 +2082,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   701
       Left            =   14130
-      Picture         =   "Maindis0.frx":1648A5
+      Picture         =   "Maindis0.frx":167131
       Top             =   7965
       Width           =   165
    End
@@ -1994,7 +2090,7 @@ Begin VB.Form maindisp0_frm
       Height          =   90
       Index           =   5
       Left            =   12765
-      Picture         =   "Maindis0.frx":16491A
+      Picture         =   "Maindis0.frx":1671A6
       Top             =   8760
       Width           =   315
    End
@@ -2002,7 +2098,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   703
       Left            =   11895
-      Picture         =   "Maindis0.frx":164C73
+      Picture         =   "Maindis0.frx":1674FF
       Top             =   8040
       Width           =   75
    End
@@ -2010,7 +2106,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   615
       Left            =   11730
-      Picture         =   "Maindis0.frx":164FB9
+      Picture         =   "Maindis0.frx":167845
       Top             =   7965
       Width           =   165
    End
@@ -2018,7 +2114,7 @@ Begin VB.Form maindisp0_frm
       Height          =   90
       Index           =   607
       Left            =   9495
-      Picture         =   "Maindis0.frx":16502E
+      Picture         =   "Maindis0.frx":1678BA
       Top             =   8040
       Width           =   315
    End
@@ -2026,7 +2122,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   606
       Left            =   9450
-      Picture         =   "Maindis0.frx":165387
+      Picture         =   "Maindis0.frx":167C13
       Top             =   8055
       Width           =   75
    End
@@ -2034,7 +2130,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   606
       Left            =   9285
-      Picture         =   "Maindis0.frx":1656CD
+      Picture         =   "Maindis0.frx":167F59
       Top             =   7980
       Width           =   165
    End
@@ -2042,7 +2138,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   601
       Left            =   5235
-      Picture         =   "Maindis0.frx":165742
+      Picture         =   "Maindis0.frx":167FCE
       Top             =   7605
       Width           =   165
    End
@@ -2050,7 +2146,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   602
       Left            =   5010
-      Picture         =   "Maindis0.frx":1657BB
+      Picture         =   "Maindis0.frx":168047
       Top             =   7725
       Width           =   165
    End
@@ -2058,7 +2154,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   507
       Left            =   1635
-      Picture         =   "Maindis0.frx":165830
+      Picture         =   "Maindis0.frx":1680BC
       Top             =   1050
       Width           =   165
    End
@@ -2066,7 +2162,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   902
       Left            =   16200
-      Picture         =   "Maindis0.frx":1658A8
+      Picture         =   "Maindis0.frx":168134
       Top             =   1560
       Width           =   165
    End
@@ -2074,7 +2170,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   901
       Left            =   16185
-      Picture         =   "Maindis0.frx":16591D
+      Picture         =   "Maindis0.frx":1681A9
       Top             =   840
       Width           =   165
    End
@@ -2082,7 +2178,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   707
       Left            =   16155
-      Picture         =   "Maindis0.frx":165992
+      Picture         =   "Maindis0.frx":16821E
       Top             =   2190
       Width           =   165
    End
@@ -2090,7 +2186,7 @@ Begin VB.Form maindisp0_frm
       Height          =   300
       Index           =   616
       Left            =   15870
-      Picture         =   "Maindis0.frx":165CD9
+      Picture         =   "Maindis0.frx":168565
       Top             =   4350
       Width           =   1590
    End
@@ -2098,7 +2194,7 @@ Begin VB.Form maindisp0_frm
       Height          =   510
       Index           =   713
       Left            =   13380
-      Picture         =   "Maindis0.frx":16761B
+      Picture         =   "Maindis0.frx":169EA7
       Top             =   3075
       Width           =   765
    End
@@ -2106,7 +2202,7 @@ Begin VB.Form maindisp0_frm
       Height          =   510
       Index           =   614
       Left            =   12330
-      Picture         =   "Maindis0.frx":168B15
+      Picture         =   "Maindis0.frx":16B3A1
       Top             =   3105
       Width           =   765
    End
@@ -2114,7 +2210,7 @@ Begin VB.Form maindisp0_frm
       Height          =   510
       Index           =   716
       Left            =   11235
-      Picture         =   "Maindis0.frx":16A00F
+      Picture         =   "Maindis0.frx":16C89B
       Top             =   3105
       Width           =   765
    End
@@ -2122,7 +2218,7 @@ Begin VB.Form maindisp0_frm
       Height          =   510
       Index           =   715
       Left            =   10170
-      Picture         =   "Maindis0.frx":16B509
+      Picture         =   "Maindis0.frx":16DD95
       Top             =   3090
       Width           =   765
    End
@@ -2142,7 +2238,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   513
       Left            =   15885
-      Picture         =   "Maindis0.frx":16CA03
+      Picture         =   "Maindis0.frx":16F28F
       Top             =   1950
       Width           =   165
    End
@@ -2150,7 +2246,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   512
       Left            =   15810
-      Picture         =   "Maindis0.frx":16CD4A
+      Picture         =   "Maindis0.frx":16F5D6
       Top             =   2190
       Width           =   165
    End
@@ -2158,7 +2254,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1009
       Left            =   11490
-      Picture         =   "Maindis0.frx":16D091
+      Picture         =   "Maindis0.frx":16F91D
       Top             =   300
       Width           =   165
    End
@@ -2166,7 +2262,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   507
       Left            =   12780
-      Picture         =   "Maindis0.frx":16D107
+      Picture         =   "Maindis0.frx":16F993
       Top             =   300
       Width           =   75
    End
@@ -2174,7 +2270,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   510
       Left            =   13080
-      Picture         =   "Maindis0.frx":16D44D
+      Picture         =   "Maindis0.frx":16FCD9
       Top             =   435
       Width           =   75
    End
@@ -2182,7 +2278,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1005
       Left            =   16200
-      Picture         =   "Maindis0.frx":16D793
+      Picture         =   "Maindis0.frx":17001F
       Tag             =   "1005"
       Top             =   2490
       Width           =   165
@@ -2191,7 +2287,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1006
       Left            =   16200
-      Picture         =   "Maindis0.frx":16D808
+      Picture         =   "Maindis0.frx":170094
       Top             =   2925
       Width           =   165
    End
@@ -2199,7 +2295,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1007
       Left            =   16200
-      Picture         =   "Maindis0.frx":16D87E
+      Picture         =   "Maindis0.frx":17010A
       Top             =   2715
       Width           =   165
    End
@@ -2207,7 +2303,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1001
       Left            =   16185
-      Picture         =   "Maindis0.frx":16D8F6
+      Picture         =   "Maindis0.frx":170182
       Top             =   975
       Width           =   165
    End
@@ -2215,31 +2311,31 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   311
       Left            =   15630
-      Picture         =   "Maindis0.frx":16D96B
+      Picture         =   "Maindis0.frx":1701F7
       Top             =   855
       Width           =   165
    End
    Begin VB.Image picX 
       Height          =   165
       Index           =   610
-      Left            =   14625
-      Picture         =   "Maindis0.frx":16DCB2
-      Top             =   7380
+      Left            =   15030
+      Picture         =   "Maindis0.frx":17053E
+      Top             =   8070
       Width           =   75
    End
    Begin VB.Image picX 
       Height          =   165
       Index           =   609
-      Left            =   15060
-      Picture         =   "Maindis0.frx":16DFF8
-      Top             =   8130
+      Left            =   14640
+      Picture         =   "Maindis0.frx":170884
+      Top             =   8115
       Width           =   75
    End
    Begin VB.Image picY 
       Height          =   165
       Index           =   608
       Left            =   15030
-      Picture         =   "Maindis0.frx":16E33E
+      Picture         =   "Maindis0.frx":170BCA
       Top             =   7485
       Width           =   165
    End
@@ -2247,7 +2343,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   610
       Left            =   14610
-      Picture         =   "Maindis0.frx":16E3B3
+      Picture         =   "Maindis0.frx":170C3F
       Top             =   7500
       Width           =   165
    End
@@ -2255,7 +2351,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   8
       Left            =   14640
-      Picture         =   "Maindis0.frx":16E428
+      Picture         =   "Maindis0.frx":170CB4
       Top             =   7980
       Width           =   165
    End
@@ -2263,7 +2359,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   310
       Left            =   16425
-      Picture         =   "Maindis0.frx":16E49D
+      Picture         =   "Maindis0.frx":170D29
       Top             =   1575
       Width           =   165
    End
@@ -2271,7 +2367,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   314
       Left            =   16410
-      Picture         =   "Maindis0.frx":16E7E4
+      Picture         =   "Maindis0.frx":171070
       Top             =   2415
       Width           =   165
    End
@@ -2279,7 +2375,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   315
       Left            =   15600
-      Picture         =   "Maindis0.frx":16EB2B
+      Picture         =   "Maindis0.frx":1713B7
       Top             =   2370
       Width           =   165
    End
@@ -2287,7 +2383,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   516
       Left            =   15660
-      Picture         =   "Maindis0.frx":16EE72
+      Picture         =   "Maindis0.frx":1716FE
       Top             =   4665
       Width           =   75
    End
@@ -2295,7 +2391,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   303
       Left            =   465
-      Picture         =   "Maindis0.frx":16F1D3
+      Picture         =   "Maindis0.frx":171A5F
       Top             =   5805
       Width           =   75
    End
@@ -2303,7 +2399,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   307
       Left            =   1665
-      Picture         =   "Maindis0.frx":16F534
+      Picture         =   "Maindis0.frx":171DC0
       Top             =   6570
       Width           =   75
    End
@@ -2311,7 +2407,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   509
       Left            =   13710
-      Picture         =   "Maindis0.frx":16F895
+      Picture         =   "Maindis0.frx":172121
       Top             =   495
       Width           =   75
    End
@@ -2319,7 +2415,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   411
       Left            =   9240
-      Picture         =   "Maindis0.frx":16FBF6
+      Picture         =   "Maindis0.frx":172482
       Top             =   5280
       Width           =   75
    End
@@ -2327,7 +2423,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   410
       Left            =   9255
-      Picture         =   "Maindis0.frx":16FF57
+      Picture         =   "Maindis0.frx":1727E3
       Top             =   4800
       Width           =   75
    End
@@ -2335,7 +2431,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   409
       Left            =   9255
-      Picture         =   "Maindis0.frx":1702B8
+      Picture         =   "Maindis0.frx":172B44
       Top             =   4245
       Width           =   75
    End
@@ -2343,7 +2439,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   408
       Left            =   9285
-      Picture         =   "Maindis0.frx":170619
+      Picture         =   "Maindis0.frx":172EA5
       Top             =   3735
       Width           =   75
    End
@@ -2351,7 +2447,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   407
       Left            =   9270
-      Picture         =   "Maindis0.frx":17097A
+      Picture         =   "Maindis0.frx":173206
       Top             =   3240
       Width           =   75
    End
@@ -2359,7 +2455,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   406
       Left            =   9270
-      Picture         =   "Maindis0.frx":170CDB
+      Picture         =   "Maindis0.frx":173567
       Top             =   2685
       Width           =   75
    End
@@ -2367,7 +2463,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   405
       Left            =   9285
-      Picture         =   "Maindis0.frx":17103C
+      Picture         =   "Maindis0.frx":1738C8
       Top             =   2160
       Width           =   75
    End
@@ -2375,7 +2471,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   404
       Left            =   9270
-      Picture         =   "Maindis0.frx":17139D
+      Picture         =   "Maindis0.frx":173C29
       Top             =   1665
       Width           =   75
    End
@@ -2383,7 +2479,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   403
       Left            =   9240
-      Picture         =   "Maindis0.frx":1716FE
+      Picture         =   "Maindis0.frx":173F8A
       Top             =   1140
       Width           =   75
    End
@@ -2391,7 +2487,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   402
       Left            =   9225
-      Picture         =   "Maindis0.frx":171A5F
+      Picture         =   "Maindis0.frx":1742EB
       Top             =   585
       Width           =   75
    End
@@ -2399,7 +2495,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   407
       Left            =   9375
-      Picture         =   "Maindis0.frx":171DC0
+      Picture         =   "Maindis0.frx":17464C
       Top             =   3375
       Width           =   165
    End
@@ -2407,7 +2503,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   401
       Left            =   9375
-      Picture         =   "Maindis0.frx":171E36
+      Picture         =   "Maindis0.frx":1746C2
       Top             =   225
       Width           =   165
    End
@@ -2415,7 +2511,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   404
       Left            =   9375
-      Picture         =   "Maindis0.frx":171EAC
+      Picture         =   "Maindis0.frx":174738
       Top             =   1800
       Width           =   165
    End
@@ -2423,7 +2519,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   405
       Left            =   9375
-      Picture         =   "Maindis0.frx":171F22
+      Picture         =   "Maindis0.frx":1747AE
       Top             =   2325
       Width           =   165
    End
@@ -2431,7 +2527,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   403
       Left            =   9375
-      Picture         =   "Maindis0.frx":171F98
+      Picture         =   "Maindis0.frx":174824
       Top             =   1260
       Width           =   165
    End
@@ -2439,7 +2535,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   402
       Left            =   9375
-      Picture         =   "Maindis0.frx":17200E
+      Picture         =   "Maindis0.frx":17489A
       Top             =   750
       Width           =   165
    End
@@ -2447,7 +2543,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   410
       Left            =   9375
-      Picture         =   "Maindis0.frx":172084
+      Picture         =   "Maindis0.frx":174910
       Top             =   4950
       Width           =   165
    End
@@ -2455,7 +2551,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   409
       Left            =   9375
-      Picture         =   "Maindis0.frx":1720FA
+      Picture         =   "Maindis0.frx":174986
       Top             =   4425
       Width           =   165
    End
@@ -2463,7 +2559,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   406
       Left            =   9375
-      Picture         =   "Maindis0.frx":172170
+      Picture         =   "Maindis0.frx":1749FC
       Top             =   2850
       Width           =   165
    End
@@ -2471,7 +2567,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   408
       Left            =   9375
-      Picture         =   "Maindis0.frx":1721E6
+      Picture         =   "Maindis0.frx":174A72
       Top             =   3885
       Width           =   165
    End
@@ -2479,7 +2575,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   411
       Left            =   9375
-      Picture         =   "Maindis0.frx":17225C
+      Picture         =   "Maindis0.frx":174AE8
       Top             =   5490
       Width           =   165
    End
@@ -2883,7 +2979,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   309
       Left            =   16395
-      Picture         =   "Maindis0.frx":1722D2
+      Picture         =   "Maindis0.frx":174B5E
       Top             =   915
       Width           =   165
    End
@@ -2891,7 +2987,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1014
       Left            =   18795
-      Picture         =   "Maindis0.frx":172619
+      Picture         =   "Maindis0.frx":174EA5
       Top             =   8340
       Width           =   165
    End
@@ -2899,7 +2995,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3404
       Left            =   18630
-      Picture         =   "Maindis0.frx":172691
+      Picture         =   "Maindis0.frx":174F1D
       Top             =   13755
       Width           =   90
    End
@@ -2907,7 +3003,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3412
       Left            =   18630
-      Picture         =   "Maindis0.frx":172727
+      Picture         =   "Maindis0.frx":174FB3
       Top             =   14055
       Width           =   90
    End
@@ -2915,7 +3011,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3403
       Left            =   18705
-      Picture         =   "Maindis0.frx":1727BD
+      Picture         =   "Maindis0.frx":175049
       Top             =   13755
       Width           =   90
    End
@@ -2923,7 +3019,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3411
       Left            =   18705
-      Picture         =   "Maindis0.frx":172853
+      Picture         =   "Maindis0.frx":1750DF
       Top             =   14055
       Width           =   90
    End
@@ -2931,7 +3027,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3402
       Left            =   18630
-      Picture         =   "Maindis0.frx":1728E9
+      Picture         =   "Maindis0.frx":175175
       Top             =   13230
       Width           =   90
    End
@@ -2939,7 +3035,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3410
       Left            =   18630
-      Picture         =   "Maindis0.frx":17297F
+      Picture         =   "Maindis0.frx":17520B
       Top             =   13530
       Width           =   90
    End
@@ -2947,7 +3043,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3401
       Left            =   18705
-      Picture         =   "Maindis0.frx":172A15
+      Picture         =   "Maindis0.frx":1752A1
       Top             =   13230
       Width           =   90
    End
@@ -2955,7 +3051,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3409
       Left            =   18705
-      Picture         =   "Maindis0.frx":172AAB
+      Picture         =   "Maindis0.frx":175337
       Top             =   13530
       Width           =   90
    End
@@ -2963,7 +3059,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3304
       Left            =   18630
-      Picture         =   "Maindis0.frx":172B41
+      Picture         =   "Maindis0.frx":1753CD
       Top             =   12705
       Width           =   90
    End
@@ -2971,7 +3067,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3312
       Left            =   18630
-      Picture         =   "Maindis0.frx":172BD7
+      Picture         =   "Maindis0.frx":175463
       Top             =   13005
       Width           =   90
    End
@@ -2979,7 +3075,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3303
       Left            =   18705
-      Picture         =   "Maindis0.frx":172C6D
+      Picture         =   "Maindis0.frx":1754F9
       Top             =   12705
       Width           =   90
    End
@@ -2987,7 +3083,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3311
       Left            =   18705
-      Picture         =   "Maindis0.frx":172D03
+      Picture         =   "Maindis0.frx":17558F
       Top             =   13005
       Width           =   90
    End
@@ -2995,7 +3091,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3302
       Left            =   18630
-      Picture         =   "Maindis0.frx":172D99
+      Picture         =   "Maindis0.frx":175625
       Top             =   12180
       Width           =   90
    End
@@ -3003,7 +3099,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3310
       Left            =   18630
-      Picture         =   "Maindis0.frx":172E2F
+      Picture         =   "Maindis0.frx":1756BB
       Top             =   12480
       Width           =   90
    End
@@ -3011,7 +3107,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3301
       Left            =   18705
-      Picture         =   "Maindis0.frx":172EC5
+      Picture         =   "Maindis0.frx":175751
       Top             =   12180
       Width           =   90
    End
@@ -3019,7 +3115,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3309
       Left            =   18705
-      Picture         =   "Maindis0.frx":172F5B
+      Picture         =   "Maindis0.frx":1757E7
       Top             =   12480
       Width           =   90
    End
@@ -3027,7 +3123,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3204
       Left            =   18630
-      Picture         =   "Maindis0.frx":172FF1
+      Picture         =   "Maindis0.frx":17587D
       Top             =   11730
       Width           =   90
    End
@@ -3035,7 +3131,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3212
       Left            =   18630
-      Picture         =   "Maindis0.frx":173087
+      Picture         =   "Maindis0.frx":175913
       Top             =   12030
       Width           =   90
    End
@@ -3043,7 +3139,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3203
       Left            =   18705
-      Picture         =   "Maindis0.frx":17311D
+      Picture         =   "Maindis0.frx":1759A9
       Top             =   11730
       Width           =   90
    End
@@ -3051,7 +3147,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3211
       Left            =   18705
-      Picture         =   "Maindis0.frx":1731B3
+      Picture         =   "Maindis0.frx":175A3F
       Top             =   12030
       Width           =   90
    End
@@ -3059,7 +3155,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3202
       Left            =   18630
-      Picture         =   "Maindis0.frx":173249
+      Picture         =   "Maindis0.frx":175AD5
       Top             =   11205
       Width           =   90
    End
@@ -3067,7 +3163,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3210
       Left            =   18630
-      Picture         =   "Maindis0.frx":1732DF
+      Picture         =   "Maindis0.frx":175B6B
       Top             =   11505
       Width           =   90
    End
@@ -3075,7 +3171,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3201
       Left            =   18705
-      Picture         =   "Maindis0.frx":173375
+      Picture         =   "Maindis0.frx":175C01
       Top             =   11205
       Width           =   90
    End
@@ -3083,7 +3179,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3209
       Left            =   18705
-      Picture         =   "Maindis0.frx":17340B
+      Picture         =   "Maindis0.frx":175C97
       Top             =   11505
       Width           =   90
    End
@@ -3091,7 +3187,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3104
       Left            =   18630
-      Picture         =   "Maindis0.frx":1734A1
+      Picture         =   "Maindis0.frx":175D2D
       Top             =   10680
       Width           =   90
    End
@@ -3099,7 +3195,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3112
       Left            =   18630
-      Picture         =   "Maindis0.frx":173537
+      Picture         =   "Maindis0.frx":175DC3
       Top             =   10980
       Width           =   90
    End
@@ -3107,7 +3203,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3103
       Left            =   18705
-      Picture         =   "Maindis0.frx":1735CD
+      Picture         =   "Maindis0.frx":175E59
       Top             =   10680
       Width           =   90
    End
@@ -3115,7 +3211,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3111
       Left            =   18705
-      Picture         =   "Maindis0.frx":173663
+      Picture         =   "Maindis0.frx":175EEF
       Top             =   10980
       Width           =   90
    End
@@ -3123,7 +3219,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3102
       Left            =   18630
-      Picture         =   "Maindis0.frx":1736F9
+      Picture         =   "Maindis0.frx":175F85
       Top             =   10080
       Width           =   90
    End
@@ -3131,7 +3227,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3110
       Left            =   18630
-      Picture         =   "Maindis0.frx":17378F
+      Picture         =   "Maindis0.frx":17601B
       Top             =   10380
       Width           =   90
    End
@@ -3139,7 +3235,7 @@ Begin VB.Form maindisp0_frm
       Height          =   240
       Index           =   2
       Left            =   3660
-      Picture         =   "Maindis0.frx":173825
+      Picture         =   "Maindis0.frx":1760B1
       Top             =   7245
       Width           =   240
    End
@@ -3147,7 +3243,7 @@ Begin VB.Form maindisp0_frm
       Height          =   480
       Index           =   77
       Left            =   90
-      Picture         =   "Maindis0.frx":173927
+      Picture         =   "Maindis0.frx":1761B3
       Top             =   345
       Width           =   480
    End
@@ -3155,7 +3251,7 @@ Begin VB.Form maindisp0_frm
       Height          =   480
       Index           =   78
       Left            =   165
-      Picture         =   "Maindis0.frx":173D69
+      Picture         =   "Maindis0.frx":1765F5
       Top             =   990
       Width           =   480
    End
@@ -3163,7 +3259,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3109
       Left            =   18705
-      Picture         =   "Maindis0.frx":1741AB
+      Picture         =   "Maindis0.frx":176A37
       Top             =   10380
       Width           =   90
    End
@@ -3171,7 +3267,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   3101
       Left            =   18705
-      Picture         =   "Maindis0.frx":174241
+      Picture         =   "Maindis0.frx":176ACD
       Top             =   10080
       Width           =   90
    End
@@ -3179,7 +3275,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   506
       Left            =   2190
-      Picture         =   "Maindis0.frx":1742D7
+      Picture         =   "Maindis0.frx":176B63
       Top             =   5490
       Width           =   165
    End
@@ -3187,7 +3283,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   611
       Left            =   15150
-      Picture         =   "Maindis0.frx":17434D
+      Picture         =   "Maindis0.frx":176BD9
       Top             =   7710
       Width           =   300
    End
@@ -3195,7 +3291,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   513
       Left            =   15780
-      Picture         =   "Maindis0.frx":1746BB
+      Picture         =   "Maindis0.frx":176F47
       Top             =   1740
       Width           =   165
    End
@@ -3203,7 +3299,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   316
       Left            =   15780
-      Picture         =   "Maindis0.frx":174733
+      Picture         =   "Maindis0.frx":176FBF
       Top             =   3360
       Width           =   165
    End
@@ -3211,7 +3307,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1004
       Left            =   15780
-      Picture         =   "Maindis0.frx":1747AB
+      Picture         =   "Maindis0.frx":177037
       Tag             =   "1004"
       Top             =   765
       Width           =   165
@@ -3220,7 +3316,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   612
       Left            =   15765
-      Picture         =   "Maindis0.frx":174823
+      Picture         =   "Maindis0.frx":1770AF
       Top             =   7590
       Width           =   165
    End
@@ -3228,7 +3324,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1003
       Left            =   16185
-      Picture         =   "Maindis0.frx":17489B
+      Picture         =   "Maindis0.frx":177127
       Top             =   1200
       Width           =   165
    End
@@ -3236,7 +3332,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   304
       Left            =   300
-      Picture         =   "Maindis0.frx":174913
+      Picture         =   "Maindis0.frx":17719F
       Top             =   7245
       Width           =   165
    End
@@ -3244,7 +3340,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   605
       Left            =   5745
-      Picture         =   "Maindis0.frx":17498B
+      Picture         =   "Maindis0.frx":177217
       Top             =   7710
       Width           =   300
    End
@@ -3252,7 +3348,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1002
       Left            =   16215
-      Picture         =   "Maindis0.frx":174CF7
+      Picture         =   "Maindis0.frx":177583
       Tag             =   "1002"
       Top             =   1425
       Width           =   165
@@ -3261,7 +3357,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1008
       Left            =   15750
-      Picture         =   "Maindis0.frx":174D6D
+      Picture         =   "Maindis0.frx":1775F9
       Top             =   2295
       Width           =   165
    End
@@ -3269,7 +3365,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   503
       Left            =   2190
-      Picture         =   "Maindis0.frx":174DE5
+      Picture         =   "Maindis0.frx":177671
       Top             =   3885
       Width           =   165
    End
@@ -3277,7 +3373,7 @@ Begin VB.Form maindisp0_frm
       Height          =   90
       Index           =   704
       Left            =   11955
-      Picture         =   "Maindis0.frx":174E5B
+      Picture         =   "Maindis0.frx":1776E7
       Top             =   7995
       Width           =   315
    End
@@ -3285,7 +3381,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   501
       Left            =   2190
-      Picture         =   "Maindis0.frx":1751B4
+      Picture         =   "Maindis0.frx":177A40
       Top             =   2850
       Width           =   165
    End
@@ -3293,7 +3389,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   508
       Left            =   12630
-      Picture         =   "Maindis0.frx":17522A
+      Picture         =   "Maindis0.frx":177AB6
       Top             =   120
       Width           =   75
    End
@@ -3301,7 +3397,7 @@ Begin VB.Form maindisp0_frm
       Height          =   90
       Index           =   714
       Left            =   18915
-      Picture         =   "Maindis0.frx":175570
+      Picture         =   "Maindis0.frx":177DFC
       Top             =   6990
       Width           =   315
    End
@@ -3309,7 +3405,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   613
       Left            =   15645
-      Picture         =   "Maindis0.frx":1758C9
+      Picture         =   "Maindis0.frx":178155
       Top             =   7485
       Width           =   165
    End
@@ -3317,7 +3413,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   713
       Left            =   19275
-      Picture         =   "Maindis0.frx":17593F
+      Picture         =   "Maindis0.frx":1781CB
       Top             =   6975
       Width           =   75
    End
@@ -3325,7 +3421,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   509
       Left            =   750
-      Picture         =   "Maindis0.frx":175C85
+      Picture         =   "Maindis0.frx":178511
       Top             =   5400
       Width           =   165
    End
@@ -3480,7 +3576,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   504
       Left            =   2190
-      Picture         =   "Maindis0.frx":175CFB
+      Picture         =   "Maindis0.frx":178587
       Top             =   4425
       Width           =   165
    End
@@ -3500,7 +3596,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   414
       Left            =   2295
-      Picture         =   "Maindis0.frx":175D71
+      Picture         =   "Maindis0.frx":1785FD
       Top             =   1170
       Width           =   75
    End
@@ -3519,16 +3615,16 @@ Begin VB.Form maindisp0_frm
    Begin VB.Image picX 
       Height          =   165
       Index           =   611
-      Left            =   14670
-      Picture         =   "Maindis0.frx":1760B7
-      Top             =   8130
+      Left            =   15030
+      Picture         =   "Maindis0.frx":178943
+      Top             =   7350
       Width           =   75
    End
    Begin VB.Image picY 
       Height          =   165
       Index           =   510
       Left            =   4200
-      Picture         =   "Maindis0.frx":1763FD
+      Picture         =   "Maindis0.frx":178C89
       Top             =   7350
       Width           =   165
    End
@@ -3536,7 +3632,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   504
       Left            =   2280
-      Picture         =   "Maindis0.frx":176475
+      Picture         =   "Maindis0.frx":178D01
       Top             =   4305
       Width           =   75
    End
@@ -3544,7 +3640,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   505
       Left            =   2190
-      Picture         =   "Maindis0.frx":1767BB
+      Picture         =   "Maindis0.frx":179047
       Top             =   4950
       Width           =   165
    End
@@ -3552,7 +3648,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   502
       Left            =   2280
-      Picture         =   "Maindis0.frx":176831
+      Picture         =   "Maindis0.frx":1790BD
       Top             =   3255
       Width           =   75
    End
@@ -3560,7 +3656,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   503
       Left            =   2280
-      Picture         =   "Maindis0.frx":176B77
+      Picture         =   "Maindis0.frx":179403
       Top             =   3780
       Width           =   75
    End
@@ -3568,7 +3664,7 @@ Begin VB.Form maindisp0_frm
       Height          =   240
       Index           =   1010
       Left            =   14445
-      Picture         =   "Maindis0.frx":176EBD
+      Picture         =   "Maindis0.frx":179749
       Top             =   1890
       Width           =   225
    End
@@ -3600,7 +3696,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   9
       Left            =   9180
-      Picture         =   "Maindis0.frx":1771FF
+      Picture         =   "Maindis0.frx":179A8B
       Tag             =   "409"
       Top             =   4425
       Width           =   165
@@ -3609,7 +3705,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   12
       Left            =   315
-      Picture         =   "Maindis0.frx":177280
+      Picture         =   "Maindis0.frx":179B0C
       Tag             =   "303"
       Top             =   5805
       Width           =   165
@@ -3618,7 +3714,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   15
       Left            =   13650
-      Picture         =   "Maindis0.frx":177301
+      Picture         =   "Maindis0.frx":179B8D
       Tag             =   "509"
       Top             =   285
       Width           =   165
@@ -3627,7 +3723,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   20
       Left            =   9780
-      Picture         =   "Maindis0.frx":177382
+      Picture         =   "Maindis0.frx":179C0E
       Tag             =   "809"
       Top             =   8520
       Width           =   165
@@ -3660,7 +3756,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   8
       Left            =   9180
-      Picture         =   "Maindis0.frx":177403
+      Picture         =   "Maindis0.frx":179C8F
       Tag             =   "408"
       Top             =   3900
       Width           =   165
@@ -3669,7 +3765,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   7
       Left            =   9180
-      Picture         =   "Maindis0.frx":177484
+      Picture         =   "Maindis0.frx":179D10
       Tag             =   "407"
       Top             =   3375
       Width           =   165
@@ -3678,7 +3774,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   413
       Left            =   2190
-      Picture         =   "Maindis0.frx":177505
+      Picture         =   "Maindis0.frx":179D91
       Top             =   750
       Width           =   165
    End
@@ -3686,7 +3782,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   710
       Left            =   6975
-      Picture         =   "Maindis0.frx":17757B
+      Picture         =   "Maindis0.frx":179E07
       Top             =   8715
       Width           =   75
    End
@@ -3694,7 +3790,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   414
       Left            =   2190
-      Picture         =   "Maindis0.frx":1778C1
+      Picture         =   "Maindis0.frx":17A14D
       Top             =   1275
       Width           =   165
    End
@@ -3702,7 +3798,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   709
       Left            =   6990
-      Picture         =   "Maindis0.frx":177937
+      Picture         =   "Maindis0.frx":17A1C3
       Top             =   9180
       Width           =   75
    End
@@ -3710,7 +3806,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   416
       Left            =   2190
-      Picture         =   "Maindis0.frx":177C7D
+      Picture         =   "Maindis0.frx":17A509
       Top             =   2325
       Width           =   165
    End
@@ -3718,7 +3814,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   706
       Left            =   16170
-      Picture         =   "Maindis0.frx":177CF3
+      Picture         =   "Maindis0.frx":17A57F
       Top             =   1980
       Width           =   75
    End
@@ -3726,7 +3822,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   514
       Left            =   13005
-      Picture         =   "Maindis0.frx":178039
+      Picture         =   "Maindis0.frx":17A8C5
       Top             =   300
       Width           =   165
    End
@@ -3734,7 +3830,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   312
       Left            =   15585
-      Picture         =   "Maindis0.frx":1780AF
+      Picture         =   "Maindis0.frx":17A93B
       Top             =   300
       Width           =   75
    End
@@ -3742,7 +3838,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   415
       Left            =   2190
-      Picture         =   "Maindis0.frx":1783F5
+      Picture         =   "Maindis0.frx":17AC81
       Top             =   1800
       Width           =   165
    End
@@ -3750,7 +3846,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   708
       Left            =   7365
-      Picture         =   "Maindis0.frx":17846B
+      Picture         =   "Maindis0.frx":17ACF7
       Top             =   8580
       Width           =   75
    End
@@ -3758,7 +3854,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   705
       Left            =   16155
-      Picture         =   "Maindis0.frx":1787B1
+      Picture         =   "Maindis0.frx":17B03D
       Top             =   1755
       Width           =   75
    End
@@ -3766,7 +3862,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   413
       Left            =   2280
-      Picture         =   "Maindis0.frx":178AF7
+      Picture         =   "Maindis0.frx":17B383
       Top             =   630
       Width           =   75
    End
@@ -3774,7 +3870,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   101
       Left            =   5985
-      Picture         =   "Maindis0.frx":178E3D
+      Picture         =   "Maindis0.frx":17B6C9
       Tag             =   "603"
       Top             =   7965
       Width           =   165
@@ -3783,7 +3879,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   306
       Left            =   2700
-      Picture         =   "Maindis0.frx":178EB2
+      Picture         =   "Maindis0.frx":17B73E
       Top             =   6855
       Width           =   75
    End
@@ -3791,7 +3887,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   412
       Left            =   2190
-      Picture         =   "Maindis0.frx":1791F8
+      Picture         =   "Maindis0.frx":17BA84
       Top             =   225
       Width           =   165
    End
@@ -3799,7 +3895,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   511
       Left            =   4215
-      Picture         =   "Maindis0.frx":17926E
+      Picture         =   "Maindis0.frx":17BAFA
       Top             =   7725
       Width           =   165
    End
@@ -3807,7 +3903,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   506
       Left            =   2265
-      Picture         =   "Maindis0.frx":1792E3
+      Picture         =   "Maindis0.frx":17BB6F
       Top             =   5370
       Width           =   75
    End
@@ -3815,7 +3911,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   603
       Left            =   6030
-      Picture         =   "Maindis0.frx":179629
+      Picture         =   "Maindis0.frx":17BEB5
       Top             =   8070
       Width           =   75
    End
@@ -3823,7 +3919,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   712
       Left            =   6480
-      Picture         =   "Maindis0.frx":17996F
+      Picture         =   "Maindis0.frx":17C1FB
       Top             =   8805
       Width           =   75
    End
@@ -3831,7 +3927,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   604
       Left            =   5415
-      Picture         =   "Maindis0.frx":179CB5
+      Picture         =   "Maindis0.frx":17C541
       Top             =   7530
       Width           =   75
    End
@@ -3839,7 +3935,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   505
       Left            =   2280
-      Picture         =   "Maindis0.frx":179FFB
+      Picture         =   "Maindis0.frx":17C887
       Top             =   4860
       Width           =   75
    End
@@ -3847,7 +3943,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   401
       Left            =   9225
-      Picture         =   "Maindis0.frx":17A341
+      Picture         =   "Maindis0.frx":17CBCD
       Top             =   60
       Width           =   75
    End
@@ -3855,7 +3951,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   415
       Left            =   2280
-      Picture         =   "Maindis0.frx":17A6A2
+      Picture         =   "Maindis0.frx":17CF2E
       Top             =   1680
       Width           =   75
    End
@@ -3863,23 +3959,23 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   605
       Left            =   6210
-      Picture         =   "Maindis0.frx":17A9E8
+      Picture         =   "Maindis0.frx":17D274
       Top             =   7485
       Width           =   75
    End
    Begin VB.Image picX 
       Height          =   165
       Index           =   608
-      Left            =   15030
-      Picture         =   "Maindis0.frx":17AD2E
-      Top             =   7365
+      Left            =   14625
+      Picture         =   "Maindis0.frx":17D5BA
+      Top             =   7380
       Width           =   75
    End
    Begin VB.Image picX 
       Height          =   165
       Index           =   501
       Left            =   2295
-      Picture         =   "Maindis0.frx":17B074
+      Picture         =   "Maindis0.frx":17D900
       Top             =   2760
       Width           =   75
    End
@@ -3887,7 +3983,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   416
       Left            =   2280
-      Picture         =   "Maindis0.frx":17B3BA
+      Picture         =   "Maindis0.frx":17DC46
       Top             =   2220
       Width           =   75
    End
@@ -3895,7 +3991,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   309
       Left            =   3705
-      Picture         =   "Maindis0.frx":17B700
+      Picture         =   "Maindis0.frx":17DF8C
       Top             =   6735
       Width           =   165
    End
@@ -5103,7 +5199,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   21
       Left            =   10050
-      Picture         =   "Maindis0.frx":17B775
+      Picture         =   "Maindis0.frx":17E001
       Tag             =   "206"
       Top             =   9150
       Width           =   165
@@ -5112,7 +5208,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   16
       Left            =   15765
-      Picture         =   "Maindis0.frx":17B7F6
+      Picture         =   "Maindis0.frx":17E082
       Tag             =   "516"
       Top             =   4680
       Width           =   165
@@ -5121,7 +5217,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   13
       Left            =   1635
-      Picture         =   "Maindis0.frx":17B877
+      Picture         =   "Maindis0.frx":17E103
       Tag             =   "307"
       Top             =   6750
       Width           =   165
@@ -5130,7 +5226,7 @@ Begin VB.Form maindisp0_frm
       Height          =   240
       Index           =   1
       Left            =   1380
-      Picture         =   "Maindis0.frx":17B8F8
+      Picture         =   "Maindis0.frx":17E184
       Top             =   7215
       Width           =   240
    End
@@ -5138,7 +5234,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   10
       Left            =   9180
-      Picture         =   "Maindis0.frx":17B9FA
+      Picture         =   "Maindis0.frx":17E286
       Tag             =   "410"
       Top             =   4950
       Width           =   165
@@ -5147,7 +5243,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   6
       Left            =   9180
-      Picture         =   "Maindis0.frx":17BA7B
+      Picture         =   "Maindis0.frx":17E307
       Tag             =   "406"
       Top             =   2850
       Width           =   165
@@ -5156,7 +5252,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   5
       Left            =   9180
-      Picture         =   "Maindis0.frx":17BAFC
+      Picture         =   "Maindis0.frx":17E388
       Tag             =   "405"
       Top             =   2325
       Width           =   165
@@ -5165,7 +5261,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   4
       Left            =   9180
-      Picture         =   "Maindis0.frx":17BB7D
+      Picture         =   "Maindis0.frx":17E409
       Tag             =   "404"
       Top             =   1800
       Width           =   165
@@ -5174,7 +5270,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   3
       Left            =   9180
-      Picture         =   "Maindis0.frx":17BBFE
+      Picture         =   "Maindis0.frx":17E48A
       Tag             =   "403"
       Top             =   1275
       Width           =   165
@@ -5183,7 +5279,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   2
       Left            =   9180
-      Picture         =   "Maindis0.frx":17BC7F
+      Picture         =   "Maindis0.frx":17E50B
       Tag             =   "402"
       Top             =   750
       Width           =   165
@@ -5192,7 +5288,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   1
       Left            =   9180
-      Picture         =   "Maindis0.frx":17BD00
+      Picture         =   "Maindis0.frx":17E58C
       Tag             =   "401"
       Top             =   225
       Width           =   165
@@ -5201,7 +5297,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   18
       Left            =   3060
-      Picture         =   "Maindis0.frx":17BD81
+      Picture         =   "Maindis0.frx":17E60D
       Tag             =   "210"
       Top             =   8685
       Width           =   165
@@ -5210,7 +5306,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   508
       Left            =   810
-      Picture         =   "Maindis0.frx":17BE02
+      Picture         =   "Maindis0.frx":17E68E
       Top             =   5760
       Width           =   165
    End
@@ -5218,7 +5314,7 @@ Begin VB.Form maindisp0_frm
       Height          =   480
       Index           =   79
       Left            =   180
-      Picture         =   "Maindis0.frx":17BE7A
+      Picture         =   "Maindis0.frx":17E706
       Top             =   1620
       Width           =   480
    End
@@ -5226,7 +5322,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   11
       Left            =   9180
-      Picture         =   "Maindis0.frx":17C2BC
+      Picture         =   "Maindis0.frx":17EB48
       Tag             =   "411"
       Top             =   5475
       Width           =   165
@@ -5235,7 +5331,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   302
       Left            =   375
-      Picture         =   "Maindis0.frx":17C33D
+      Picture         =   "Maindis0.frx":17EBC9
       Top             =   6405
       Width           =   165
    End
@@ -5243,7 +5339,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   602
       Left            =   6000
-      Picture         =   "Maindis0.frx":17C684
+      Picture         =   "Maindis0.frx":17EF10
       Top             =   7395
       Width           =   75
    End
@@ -5251,7 +5347,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   207
       Left            =   11565
-      Picture         =   "Maindis0.frx":17C9CA
+      Picture         =   "Maindis0.frx":17F256
       Top             =   9285
       Width           =   75
    End
@@ -5259,7 +5355,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   313
       Left            =   16380
-      Picture         =   "Maindis0.frx":17CD10
+      Picture         =   "Maindis0.frx":17F59C
       Top             =   3015
       Width           =   165
    End
@@ -5267,7 +5363,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   412
       Left            =   2280
-      Picture         =   "Maindis0.frx":17D057
+      Picture         =   "Maindis0.frx":17F8E3
       Top             =   105
       Width           =   75
    End
@@ -5275,7 +5371,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   301
       Left            =   165
-      Picture         =   "Maindis0.frx":17D39D
+      Picture         =   "Maindis0.frx":17FC29
       Top             =   7260
       Width           =   165
    End
@@ -5283,7 +5379,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   502
       Left            =   2190
-      Picture         =   "Maindis0.frx":17D6E4
+      Picture         =   "Maindis0.frx":17FF70
       Top             =   3375
       Width           =   165
    End
@@ -5291,7 +5387,7 @@ Begin VB.Form maindisp0_frm
       Height          =   750
       Index           =   514
       Left            =   15315
-      Picture         =   "Maindis0.frx":17D75A
+      Picture         =   "Maindis0.frx":17FFE6
       Top             =   1650
       Width           =   75
    End
@@ -5299,7 +5395,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   306
       Left            =   2685
-      Picture         =   "Maindis0.frx":17DACE
+      Picture         =   "Maindis0.frx":18035A
       Top             =   6735
       Width           =   165
    End
@@ -5307,7 +5403,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   609
       Left            =   15030
-      Picture         =   "Maindis0.frx":17DB43
+      Picture         =   "Maindis0.frx":1803CF
       Top             =   7965
       Width           =   165
    End
@@ -5315,7 +5411,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   305
       Left            =   3720
-      Picture         =   "Maindis0.frx":17DBB8
+      Picture         =   "Maindis0.frx":180444
       Top             =   6855
       Width           =   75
    End
@@ -5323,7 +5419,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   704
       Left            =   19125
-      Picture         =   "Maindis0.frx":17DEFE
+      Picture         =   "Maindis0.frx":18078A
       Top             =   3000
       Width           =   165
    End
@@ -5331,23 +5427,23 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   705
       Left            =   19125
-      Picture         =   "Maindis0.frx":17DF76
+      Picture         =   "Maindis0.frx":180802
       Top             =   2775
       Width           =   165
    End
    Begin VB.Image picX 
       Height          =   165
       Index           =   612
-      Left            =   12270
-      Picture         =   "Maindis0.frx":17DFEC
-      Top             =   10500
+      Left            =   15390
+      Picture         =   "Maindis0.frx":180878
+      Top             =   7500
       Width           =   75
    End
    Begin VB.Image picY 
       Height          =   165
       Index           =   301
       Left            =   330
-      Picture         =   "Maindis0.frx":17E332
+      Picture         =   "Maindis0.frx":180BBE
       Top             =   6420
       Width           =   165
    End
@@ -5355,7 +5451,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   601
       Left            =   21750
-      Picture         =   "Maindis0.frx":17E3AA
+      Picture         =   "Maindis0.frx":180C36
       Top             =   3480
       Width           =   75
    End
@@ -5363,7 +5459,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   603
       Left            =   5985
-      Picture         =   "Maindis0.frx":17E6F0
+      Picture         =   "Maindis0.frx":180F7C
       Top             =   7485
       Width           =   165
    End
@@ -5371,7 +5467,7 @@ Begin VB.Form maindisp0_frm
       Height          =   75
       Index           =   316
       Left            =   15675
-      Picture         =   "Maindis0.frx":17E765
+      Picture         =   "Maindis0.frx":180FF1
       Top             =   3495
       Width           =   165
    End
@@ -5379,7 +5475,7 @@ Begin VB.Form maindisp0_frm
       Height          =   165
       Index           =   711
       Left            =   6810
-      Picture         =   "Maindis0.frx":17EAAC
+      Picture         =   "Maindis0.frx":181338
       Top             =   8940
       Width           =   165
    End
@@ -6520,7 +6616,7 @@ Begin VB.Form maindisp0_frm
       Height          =   315
       Left            =   0
       TabIndex        =   47
-      Top             =   0
+      Top             =   15
       Width           =   1815
    End
 End

@@ -105,7 +105,7 @@ ENDIF
 ;High Speed Used For Up		= 60Hz
 ;Medium Speed Used For Down	= 60Hz
 
-TON_10ms(O_MoveUp  ,920,HighSpeedUp,HighSpeedUpET) 	;Expected 16.94 seconds @ 591mm/sec
+TON_10ms(O_MoveUp  ,1070,HighSpeedUp,HighSpeedUpET) 	;Expected 16.94 seconds @ 591mm/sec
 TON_10ms(O_MoveDown,900,HighSpeedDn,HighSpeedDnET) 		;Expected 16.94 seconds @ 591mm/sec
 IF (STEP = 4) THEN
 	Y[9].Y03 = (NOT HighSpeedDn) 							;High Speed
