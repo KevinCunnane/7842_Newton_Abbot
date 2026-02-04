@@ -123,7 +123,7 @@ O_OpenBag = ((STEP >= 6) AND (STEP <= 8))
 ;Bag Ready to Washing Machine
 IF (STEP = 5) THEN
 	O_BagReady = TRUE
-	O_Closer        = TRUE
+;	O_Closer        = TRUE
 	IF I_OpenBag OR TestDischarger THEN
 		D[900+MySeq] = 6
 	ENDIF

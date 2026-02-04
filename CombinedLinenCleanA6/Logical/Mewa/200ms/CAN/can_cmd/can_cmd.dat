@@ -7,8 +7,8 @@
 ;----------------------------------------------------------------------------------------
 
 ;         1234567890123456789012345678901   1234567890123456789012345678901
-00000231,"can_drv2:ReadFrame1            ","can_drv2:EventRead1            ",$00000000
-00000230,"can_drv2:WriteFrame1           ","can_drv2:EventWrite1           ",$00000001
+00000251,"can_drv2:ReadFrame1            ","can_drv2:EventRead1            ",$00000000
+00000252,"can_drv2:WriteFrame1           ","can_drv2:EventWrite1           ",$00000001
 
 ;00000131,"can_drv2:ReadFrame2            ","can_drv2:EventRead2            ",$00000000
 ;00000130,"can_drv2:WriteFrame2           ","can_drv2:EventWrite2           ",$00000001

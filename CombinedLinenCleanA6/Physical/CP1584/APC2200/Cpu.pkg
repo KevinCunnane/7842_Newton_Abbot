@@ -16,6 +16,6 @@
     <TaskClasses DefaultIoTaskClass="Automatic" DefaultTaskClass="Cyclic4" />
     <Transfer AllowWarmRestart="true" DownloadMode="Overload" GeneratePviTransferList="true" IgnoreBrDependencies="false" IgnoreTargetOnlyObjects="false" PackedArConfig="false" PackedIoMap="false" PromptBeforeProject="false" PromptBeforeTask="false" SavedOfflineInstallationFolder="" SavedPipDestinationFolder="" SavedRuntimeUtilityCenterPackagePath="" TransferOnlyRelevantChanges="false" />
     <Vc FirmwareVersion="V4.72.3" />
-    <OnlineConfiguration Name="10.8.4.21" DeviceType="TCPIP" DeviceParameters="/IF=tcpip /LOPO=11159 /SA=25" ConnectionParameters="/RT=1000 /AM=* /DAIP=10.8.4.21 /REPO=11159 /ANSL=1" Description="" />
+    <OnlineConfiguration Name="10.8.4.21" DeviceType="TCPIP" DeviceParameters="/IF=tcpip /LOPO=11159 /SA=25" ConnectionParameters="/COMT=2500 /RT=1000 /AM=* /DAIP=10.8.4.21 /REPO=11159 /ANSL=1" Description="" />
   </Configuration>
 </Cpu>
